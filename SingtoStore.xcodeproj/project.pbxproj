@@ -1,0 +1,307 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		092889521DF26A5800A1DCEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889511DF26A5800A1DCEB /* AppDelegate.swift */; };
+		092889541DF26A5800A1DCEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889531DF26A5800A1DCEB /* ViewController.swift */; };
+		092889571DF26A5800A1DCEB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 092889551DF26A5800A1DCEB /* Main.storyboard */; };
+		092889591DF26A5800A1DCEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 092889581DF26A5800A1DCEB /* Assets.xcassets */; };
+		0928895C1DF26A5800A1DCEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0928895A1DF26A5800A1DCEB /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0928894E1DF26A5800A1DCEB /* SingtoStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SingtoStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		092889511DF26A5800A1DCEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		092889531DF26A5800A1DCEB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		092889561DF26A5800A1DCEB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		092889581DF26A5800A1DCEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0928895B1DF26A5800A1DCEB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		0928895D1DF26A5800A1DCEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0928894B1DF26A5800A1DCEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		092889451DF26A5800A1DCEB = {
+			isa = PBXGroup;
+			children = (
+				092889501DF26A5800A1DCEB /* SingtoStore */,
+				0928894F1DF26A5800A1DCEB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0928894F1DF26A5800A1DCEB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0928894E1DF26A5800A1DCEB /* SingtoStore.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		092889501DF26A5800A1DCEB /* SingtoStore */ = {
+			isa = PBXGroup;
+			children = (
+				092889511DF26A5800A1DCEB /* AppDelegate.swift */,
+				092889531DF26A5800A1DCEB /* ViewController.swift */,
+				092889551DF26A5800A1DCEB /* Main.storyboard */,
+				092889581DF26A5800A1DCEB /* Assets.xcassets */,
+				0928895A1DF26A5800A1DCEB /* LaunchScreen.storyboard */,
+				0928895D1DF26A5800A1DCEB /* Info.plist */,
+			);
+			path = SingtoStore;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0928894D1DF26A5800A1DCEB /* SingtoStore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 092889601DF26A5800A1DCEB /* Build configuration list for PBXNativeTarget "SingtoStore" */;
+			buildPhases = (
+				0928894A1DF26A5800A1DCEB /* Sources */,
+				0928894B1DF26A5800A1DCEB /* Frameworks */,
+				0928894C1DF26A5800A1DCEB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SingtoStore;
+			productName = SingtoStore;
+			productReference = 0928894E1DF26A5800A1DCEB /* SingtoStore.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		092889461DF26A5800A1DCEB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = Singto;
+				TargetAttributes = {
+					0928894D1DF26A5800A1DCEB = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = E83K3DESG7;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 092889491DF26A5800A1DCEB /* Build configuration list for PBXProject "SingtoStore" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 092889451DF26A5800A1DCEB;
+			productRefGroup = 0928894F1DF26A5800A1DCEB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0928894D1DF26A5800A1DCEB /* SingtoStore */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0928894C1DF26A5800A1DCEB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0928895C1DF26A5800A1DCEB /* LaunchScreen.storyboard in Resources */,
+				092889591DF26A5800A1DCEB /* Assets.xcassets in Resources */,
+				092889571DF26A5800A1DCEB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0928894A1DF26A5800A1DCEB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				092889541DF26A5800A1DCEB /* ViewController.swift in Sources */,
+				092889521DF26A5800A1DCEB /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		092889551DF26A5800A1DCEB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				092889561DF26A5800A1DCEB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		0928895A1DF26A5800A1DCEB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0928895B1DF26A5800A1DCEB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0928895E1DF26A5800A1DCEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		0928895F1DF26A5800A1DCEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		092889611DF26A5800A1DCEB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = E83K3DESG7;
+				INFOPLIST_FILE = SingtoStore/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = store.singto.SingtoStore;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		092889621DF26A5800A1DCEB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = E83K3DESG7;
+				INFOPLIST_FILE = SingtoStore/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = store.singto.SingtoStore;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		092889491DF26A5800A1DCEB /* Build configuration list for PBXProject "SingtoStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0928895E1DF26A5800A1DCEB /* Debug */,
+				0928895F1DF26A5800A1DCEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		092889601DF26A5800A1DCEB /* Build configuration list for PBXNativeTarget "SingtoStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				092889611DF26A5800A1DCEB /* Debug */,
+				092889621DF26A5800A1DCEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 092889461DF26A5800A1DCEB /* Project object */;
+}
