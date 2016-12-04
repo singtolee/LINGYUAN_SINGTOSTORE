@@ -7,14 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09059A371DF277C000DA572A /* DancingShoesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A361DF277C000DA572A /* DancingShoesViewController.swift */; };
+		09059A3A1DF28CDE00DA572A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A391DF28CDE00DA572A /* LoginVC.swift */; };
+		09059A3C1DF2C1BB00DA572A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09059A3B1DF2C1BB00DA572A /* GoogleService-Info.plist */; };
+		09059A3E1DF308FC00DA572A /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A3D1DF308FC00DA572A /* RegisterVC.swift */; };
+		09059A431DF3DE0800DA572A /* EditUserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A421DF3DE0800DA572A /* EditUserProfileVC.swift */; };
+		09059A451DF3DF3400DA572A /* EditUserName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A441DF3DF3400DA572A /* EditUserName.swift */; };
+		09059A471DF3DF7700DA572A /* EditPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A461DF3DF7700DA572A /* EditPhoneNumber.swift */; };
+		09059A491DF3DFA600DA572A /* EditProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A481DF3DFA600DA572A /* EditProfilePhoto.swift */; };
+		09059A4B1DF3DFDD00DA572A /* MyIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A4A1DF3DFDD00DA572A /* MyIndicator.swift */; };
 		092889521DF26A5800A1DCEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889511DF26A5800A1DCEB /* AppDelegate.swift */; };
 		092889541DF26A5800A1DCEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889531DF26A5800A1DCEB /* ViewController.swift */; };
 		092889571DF26A5800A1DCEB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 092889551DF26A5800A1DCEB /* Main.storyboard */; };
 		092889591DF26A5800A1DCEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 092889581DF26A5800A1DCEB /* Assets.xcassets */; };
 		0928895C1DF26A5800A1DCEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0928895A1DF26A5800A1DCEB /* LaunchScreen.storyboard */; };
+		092889661DF26B9F00A1DCEB /* Tabbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889651DF26B9F00A1DCEB /* Tabbar.swift */; };
+		092889691DF26D1500A1DCEB /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889681DF26D1500A1DCEB /* Tools.swift */; };
+		0928896F1DF26E1200A1DCEB /* StoryTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0928896E1DF26E1200A1DCEB /* StoryTab.swift */; };
+		092889711DF26E2B00A1DCEB /* ProductTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889701DF26E2B00A1DCEB /* ProductTab.swift */; };
+		092889731DF26E3B00A1DCEB /* CartTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889721DF26E3B00A1DCEB /* CartTab.swift */; };
+		092889751DF26E4800A1DCEB /* MeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889741DF26E4800A1DCEB /* MeTab.swift */; };
+		430008F5153A23603667FFE3 /* Pods_SingtoStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AABEBB40E62B6CF7EA3DD0DF /* Pods_SingtoStore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		09059A361DF277C000DA572A /* DancingShoesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DancingShoesViewController.swift; sourceTree = "<group>"; };
+		09059A391DF28CDE00DA572A /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		09059A3B1DF2C1BB00DA572A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		09059A3D1DF308FC00DA572A /* RegisterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
+		09059A421DF3DE0800DA572A /* EditUserProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditUserProfileVC.swift; sourceTree = "<group>"; };
+		09059A441DF3DF3400DA572A /* EditUserName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditUserName.swift; sourceTree = "<group>"; };
+		09059A461DF3DF7700DA572A /* EditPhoneNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPhoneNumber.swift; sourceTree = "<group>"; };
+		09059A481DF3DFA600DA572A /* EditProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfilePhoto.swift; sourceTree = "<group>"; };
+		09059A4A1DF3DFDD00DA572A /* MyIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyIndicator.swift; sourceTree = "<group>"; };
 		0928894E1DF26A5800A1DCEB /* SingtoStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SingtoStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		092889511DF26A5800A1DCEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		092889531DF26A5800A1DCEB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +47,16 @@
 		092889581DF26A5800A1DCEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0928895B1DF26A5800A1DCEB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0928895D1DF26A5800A1DCEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		092889631DF26A8800A1DCEB /* SingtoStore.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SingtoStore.entitlements; sourceTree = "<group>"; };
+		092889651DF26B9F00A1DCEB /* Tabbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tabbar.swift; sourceTree = "<group>"; };
+		092889681DF26D1500A1DCEB /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
+		0928896E1DF26E1200A1DCEB /* StoryTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryTab.swift; sourceTree = "<group>"; };
+		092889701DF26E2B00A1DCEB /* ProductTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductTab.swift; sourceTree = "<group>"; };
+		092889721DF26E3B00A1DCEB /* CartTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartTab.swift; sourceTree = "<group>"; };
+		092889741DF26E4800A1DCEB /* MeTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeTab.swift; sourceTree = "<group>"; };
+		98F3A6A83D5D930B0F2D357D /* Pods-SingtoStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SingtoStore.release.xcconfig"; path = "Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore.release.xcconfig"; sourceTree = "<group>"; };
+		AABEBB40E62B6CF7EA3DD0DF /* Pods_SingtoStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SingtoStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CBA645D63271893B714C1DD5 /* Pods-SingtoStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SingtoStore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +64,47 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430008F5153A23603667FFE3 /* Pods_SingtoStore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		09059A381DF28CAA00DA572A /* SignIn&Register */ = {
+			isa = PBXGroup;
+			children = (
+				09059A391DF28CDE00DA572A /* LoginVC.swift */,
+				09059A3D1DF308FC00DA572A /* RegisterVC.swift */,
+			);
+			name = "SignIn&Register";
+			sourceTree = "<group>";
+		};
+		09059A3F1DF3DD9300DA572A /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				09059A421DF3DE0800DA572A /* EditUserProfileVC.swift */,
+				09059A441DF3DF3400DA572A /* EditUserName.swift */,
+				09059A461DF3DF7700DA572A /* EditPhoneNumber.swift */,
+				09059A481DF3DFA600DA572A /* EditProfilePhoto.swift */,
+			);
+			name = UserProfile;
+			sourceTree = "<group>";
+		};
+		09059A411DF3DDB500DA572A /* UserAddress */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = UserAddress;
+			sourceTree = "<group>";
+		};
 		092889451DF26A5800A1DCEB = {
 			isa = PBXGroup;
 			children = (
 				092889501DF26A5800A1DCEB /* SingtoStore */,
 				0928894F1DF26A5800A1DCEB /* Products */,
+				9FD3BFA05A55176598DD3089 /* Pods */,
+				E3B033DD299C24A312A4F990 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +119,92 @@
 		092889501DF26A5800A1DCEB /* SingtoStore */ = {
 			isa = PBXGroup;
 			children = (
+				09059A381DF28CAA00DA572A /* SignIn&Register */,
+				092889671DF26D0800A1DCEB /* Helper */,
+				092889641DF26B6F00A1DCEB /* FourTabs */,
+				092889631DF26A8800A1DCEB /* SingtoStore.entitlements */,
 				092889511DF26A5800A1DCEB /* AppDelegate.swift */,
 				092889531DF26A5800A1DCEB /* ViewController.swift */,
 				092889551DF26A5800A1DCEB /* Main.storyboard */,
 				092889581DF26A5800A1DCEB /* Assets.xcassets */,
 				0928895A1DF26A5800A1DCEB /* LaunchScreen.storyboard */,
 				0928895D1DF26A5800A1DCEB /* Info.plist */,
+				09059A3B1DF2C1BB00DA572A /* GoogleService-Info.plist */,
 			);
 			path = SingtoStore;
+			sourceTree = "<group>";
+		};
+		092889641DF26B6F00A1DCEB /* FourTabs */ = {
+			isa = PBXGroup;
+			children = (
+				0928896D1DF26DA400A1DCEB /* Story */,
+				0928896C1DF26D9100A1DCEB /* Product */,
+				0928896B1DF26D8800A1DCEB /* Cart */,
+				0928896A1DF26D8000A1DCEB /* Me */,
+				092889651DF26B9F00A1DCEB /* Tabbar.swift */,
+			);
+			name = FourTabs;
+			sourceTree = "<group>";
+		};
+		092889671DF26D0800A1DCEB /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				092889681DF26D1500A1DCEB /* Tools.swift */,
+				09059A361DF277C000DA572A /* DancingShoesViewController.swift */,
+				09059A4A1DF3DFDD00DA572A /* MyIndicator.swift */,
+			);
+			name = Helper;
+			sourceTree = "<group>";
+		};
+		0928896A1DF26D8000A1DCEB /* Me */ = {
+			isa = PBXGroup;
+			children = (
+				09059A411DF3DDB500DA572A /* UserAddress */,
+				09059A3F1DF3DD9300DA572A /* UserProfile */,
+				092889741DF26E4800A1DCEB /* MeTab.swift */,
+			);
+			name = Me;
+			sourceTree = "<group>";
+		};
+		0928896B1DF26D8800A1DCEB /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				092889721DF26E3B00A1DCEB /* CartTab.swift */,
+			);
+			name = Cart;
+			sourceTree = "<group>";
+		};
+		0928896C1DF26D9100A1DCEB /* Product */ = {
+			isa = PBXGroup;
+			children = (
+				092889701DF26E2B00A1DCEB /* ProductTab.swift */,
+			);
+			name = Product;
+			sourceTree = "<group>";
+		};
+		0928896D1DF26DA400A1DCEB /* Story */ = {
+			isa = PBXGroup;
+			children = (
+				0928896E1DF26E1200A1DCEB /* StoryTab.swift */,
+			);
+			name = Story;
+			sourceTree = "<group>";
+		};
+		9FD3BFA05A55176598DD3089 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CBA645D63271893B714C1DD5 /* Pods-SingtoStore.debug.xcconfig */,
+				98F3A6A83D5D930B0F2D357D /* Pods-SingtoStore.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E3B033DD299C24A312A4F990 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AABEBB40E62B6CF7EA3DD0DF /* Pods_SingtoStore.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +214,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 092889601DF26A5800A1DCEB /* Build configuration list for PBXNativeTarget "SingtoStore" */;
 			buildPhases = (
+				88C282C55F8F171FFD0214C6 /* [CP] Check Pods Manifest.lock */,
 				0928894A1DF26A5800A1DCEB /* Sources */,
 				0928894B1DF26A5800A1DCEB /* Frameworks */,
 				0928894C1DF26A5800A1DCEB /* Resources */,
+				572F55093A82F2A116DEA192 /* [CP] Embed Pods Frameworks */,
+				AA616555D673ED9A0CD02B02 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -98,6 +244,11 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = E83K3DESG7;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -127,18 +278,81 @@
 				0928895C1DF26A5800A1DCEB /* LaunchScreen.storyboard in Resources */,
 				092889591DF26A5800A1DCEB /* Assets.xcassets in Resources */,
 				092889571DF26A5800A1DCEB /* Main.storyboard in Resources */,
+				09059A3C1DF2C1BB00DA572A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		572F55093A82F2A116DEA192 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		88C282C55F8F171FFD0214C6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		AA616555D673ED9A0CD02B02 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0928894A1DF26A5800A1DCEB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				092889661DF26B9F00A1DCEB /* Tabbar.swift in Sources */,
+				09059A451DF3DF3400DA572A /* EditUserName.swift in Sources */,
+				09059A431DF3DE0800DA572A /* EditUserProfileVC.swift in Sources */,
 				092889541DF26A5800A1DCEB /* ViewController.swift in Sources */,
 				092889521DF26A5800A1DCEB /* AppDelegate.swift in Sources */,
+				09059A471DF3DF7700DA572A /* EditPhoneNumber.swift in Sources */,
+				092889711DF26E2B00A1DCEB /* ProductTab.swift in Sources */,
+				09059A3E1DF308FC00DA572A /* RegisterVC.swift in Sources */,
+				09059A491DF3DFA600DA572A /* EditProfilePhoto.swift in Sources */,
+				09059A3A1DF28CDE00DA572A /* LoginVC.swift in Sources */,
+				092889691DF26D1500A1DCEB /* Tools.swift in Sources */,
+				0928896F1DF26E1200A1DCEB /* StoryTab.swift in Sources */,
+				09059A371DF277C000DA572A /* DancingShoesViewController.swift in Sources */,
+				092889731DF26E3B00A1DCEB /* CartTab.swift in Sources */,
+				092889751DF26E4800A1DCEB /* MeTab.swift in Sources */,
+				09059A4B1DF3DFDD00DA572A /* MyIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,10 +471,13 @@
 		};
 		092889611DF26A5800A1DCEB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CBA645D63271893B714C1DD5 /* Pods-SingtoStore.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SingtoStore/SingtoStore.entitlements;
 				DEVELOPMENT_TEAM = E83K3DESG7;
 				INFOPLIST_FILE = SingtoStore/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = store.singto.SingtoStore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -270,10 +487,13 @@
 		};
 		092889621DF26A5800A1DCEB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 98F3A6A83D5D930B0F2D357D /* Pods-SingtoStore.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SingtoStore/SingtoStore.entitlements;
 				DEVELOPMENT_TEAM = E83K3DESG7;
 				INFOPLIST_FILE = SingtoStore/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = store.singto.SingtoStore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -300,6 +520,7 @@
 				092889621DF26A5800A1DCEB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

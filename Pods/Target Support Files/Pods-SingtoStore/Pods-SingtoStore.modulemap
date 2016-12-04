@@ -1,0 +1,6 @@
+framework module Pods_SingtoStore {
+  umbrella header "Pods-SingtoStore-umbrella.h"
+
+  export *
+  module * { export * }
+}
