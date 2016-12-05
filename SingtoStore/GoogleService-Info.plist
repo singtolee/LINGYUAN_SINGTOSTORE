@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>846532488868-s75b4ma5u1r73n800lru2uhm93cgprdp.apps.googleusercontent.com</string>
+	<string>1050288730700-51p43mbn2rgfr73jvjaca6v1res5110h.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.846532488868-s75b4ma5u1r73n800lru2uhm93cgprdp</string>
+	<string>com.googleusercontent.apps.1050288730700-51p43mbn2rgfr73jvjaca6v1res5110h</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDhknkZqAtqOfUXjVutJoPHaZOl7z4g_SI</string>
+	<string>AIzaSyBj3BoA5jQlkOoBxikC2j1L_mlAANxqVvM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>846532488868</string>
+	<string>1050288730700</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>store.singto.SingtoStore</string>
 	<key>PROJECT_ID</key>
-	<string>ly-singtostore</string>
+	<string>aomai-f24a2</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ly-singtostore.appspot.com</string>
+	<string>aomai-f24a2.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:846532488868:ios:4dc1c7323df1e836</string>
+	<string>1:1050288730700:ios:4dc1c7323df1e836</string>
 	<key>DATABASE_URL</key>
-	<string>https://ly-singtostore.firebaseio.com</string>
+	<string>https://aomai-f24a2.firebaseio.com</string>
 </dict>
 </plist>

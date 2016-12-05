@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		09059A371DF277C000DA572A /* DancingShoesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A361DF277C000DA572A /* DancingShoesViewController.swift */; };
 		09059A3A1DF28CDE00DA572A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A391DF28CDE00DA572A /* LoginVC.swift */; };
-		09059A3C1DF2C1BB00DA572A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09059A3B1DF2C1BB00DA572A /* GoogleService-Info.plist */; };
 		09059A3E1DF308FC00DA572A /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A3D1DF308FC00DA572A /* RegisterVC.swift */; };
 		09059A431DF3DE0800DA572A /* EditUserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A421DF3DE0800DA572A /* EditUserProfileVC.swift */; };
 		09059A451DF3DF3400DA572A /* EditUserName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A441DF3DF3400DA572A /* EditUserName.swift */; };
@@ -34,13 +33,13 @@
 		092889711DF26E2B00A1DCEB /* ProductTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889701DF26E2B00A1DCEB /* ProductTab.swift */; };
 		092889731DF26E3B00A1DCEB /* CartTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889721DF26E3B00A1DCEB /* CartTab.swift */; };
 		092889751DF26E4800A1DCEB /* MeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889741DF26E4800A1DCEB /* MeTab.swift */; };
+		093A251A1DF546DF00C28592 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 093A25191DF546DF00C28592 /* GoogleService-Info.plist */; };
 		430008F5153A23603667FFE3 /* Pods_SingtoStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AABEBB40E62B6CF7EA3DD0DF /* Pods_SingtoStore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		09059A361DF277C000DA572A /* DancingShoesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DancingShoesViewController.swift; sourceTree = "<group>"; };
 		09059A391DF28CDE00DA572A /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
-		09059A3B1DF2C1BB00DA572A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		09059A3D1DF308FC00DA572A /* RegisterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		09059A421DF3DE0800DA572A /* EditUserProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditUserProfileVC.swift; sourceTree = "<group>"; };
 		09059A441DF3DF3400DA572A /* EditUserName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditUserName.swift; sourceTree = "<group>"; };
@@ -68,6 +67,7 @@
 		092889701DF26E2B00A1DCEB /* ProductTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductTab.swift; sourceTree = "<group>"; };
 		092889721DF26E3B00A1DCEB /* CartTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartTab.swift; sourceTree = "<group>"; };
 		092889741DF26E4800A1DCEB /* MeTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeTab.swift; sourceTree = "<group>"; };
+		093A25191DF546DF00C28592 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		98F3A6A83D5D930B0F2D357D /* Pods-SingtoStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SingtoStore.release.xcconfig"; path = "Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore.release.xcconfig"; sourceTree = "<group>"; };
 		AABEBB40E62B6CF7EA3DD0DF /* Pods_SingtoStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SingtoStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA645D63271893B714C1DD5 /* Pods-SingtoStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SingtoStore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore.debug.xcconfig"; sourceTree = "<group>"; };
@@ -173,8 +173,8 @@
 				092889551DF26A5800A1DCEB /* Main.storyboard */,
 				092889581DF26A5800A1DCEB /* Assets.xcassets */,
 				0928895A1DF26A5800A1DCEB /* LaunchScreen.storyboard */,
+				093A25191DF546DF00C28592 /* GoogleService-Info.plist */,
 				0928895D1DF26A5800A1DCEB /* Info.plist */,
-				09059A3B1DF2C1BB00DA572A /* GoogleService-Info.plist */,
 			);
 			path = SingtoStore;
 			sourceTree = "<group>";
@@ -322,8 +322,8 @@
 			files = (
 				0928895C1DF26A5800A1DCEB /* LaunchScreen.storyboard in Resources */,
 				092889591DF26A5800A1DCEB /* Assets.xcassets in Resources */,
+				093A251A1DF546DF00C28592 /* GoogleService-Info.plist in Resources */,
 				092889571DF26A5800A1DCEB /* Main.storyboard in Resources */,
-				09059A3C1DF2C1BB00DA572A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

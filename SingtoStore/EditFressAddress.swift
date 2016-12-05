@@ -276,7 +276,7 @@ class EditFreeAddress: DancingShoesViewController, UITextFieldDelegate, UIPicker
     }
     
     func fetchOFB() {
-        FIRDatabase.database().reference().child("CASHONDELIVERYADDRESS").observe(.childAdded, with: { (snapshot) in
+        FIRDatabase.database().reference().child("OfficeBuildings").observe(.childAdded, with: { (snapshot) in
             let ob = snapshot.value as! String
             self.buildings.append(ob)
             DispatchQueue.main.async(execute: {
