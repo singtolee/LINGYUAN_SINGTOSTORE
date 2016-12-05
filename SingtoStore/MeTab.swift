@@ -54,11 +54,10 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //hide navigation bar
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "exit"), style: .plain, target: self, action: #selector(signOutFromApp))
-        //self.navigationController?.navigationBar.isTranslucent = true
-        //self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        //self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+        //these two lines hide the 1 pixle line at the bottom of navigation bar
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
         
         addBGView()
         addUserAvatar()
@@ -126,6 +125,8 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
         userAvatar.heightAnchor.constraint(equalToConstant: 80).isActive = true
         userAvatar.widthAnchor.constraint(equalToConstant: 80).isActive = true
         userAvatar.centerXAnchor.constraint(equalTo: bgView.centerXAnchor).isActive = true
+        userAvatar.isUserInteractionEnabled = true
+        userAvatar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToProfilePage)))
     }
     
     func goToLogin() {
@@ -212,12 +213,12 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
                 //navigationController?.pushViewController(orderView, animated: true)
             }
             else if (indexPath as NSIndexPath).row == 1 {
-                //let addressView = MyAddress()
-                //navigationController?.pushViewController(addressView, animated: true)
+                let addressView = MyAddress()
+                navigationController?.pushViewController(addressView, animated: true)
             }
             else if (indexPath as NSIndexPath).row == 2 {
-                //let vc = MyAddress()
-                //navigationController?.pushViewController(vc, animated: true)
+                let vc = MyAddress()
+                navigationController?.pushViewController(vc, animated: true)
                 
             }
             else if (indexPath as NSIndexPath).row == 3 {
@@ -230,8 +231,8 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
                 
             }
             else {
-                //let vc = MyAddress()
-                //navigationController?.pushViewController(vc, animated: true)
+                let vc = MyAddress()
+                navigationController?.pushViewController(vc, animated: true)
             }
         }
         else {
@@ -267,12 +268,13 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func goToProfilePage() {
-        //handel user profile
         if FIRAuth.auth()?.currentUser != nil {
             let editProfile = EditProfileTableViewController()
             navigationController?.pushViewController(editProfile, animated: true)
         }
     }
+    
+
 
 
 

@@ -83,7 +83,7 @@ class EidtUserName: UIViewController, UITextFieldDelegate {
                     return
                 }
                 self.indicator.stopAnimating()
-                self.navigationController?.popViewController(animated: true)
+                _ = self.navigationController?.popViewController(animated: true)
             }
         } else {
             Tools.shakingUIView(nameTF)

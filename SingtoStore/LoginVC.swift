@@ -318,18 +318,15 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     func loginFB() {
         SVProgressHUD.setDefaultStyle(SVProgressHUDStyle.dark)
         SVProgressHUD.show(withStatus: "Logging in...")
-        let login: FBSDKLoginManager = FBSDKLoginManager()
-        login .logIn(withReadPermissions: ["public_profile", "email"], from: self, handler: { (result, error) -> Void in
-            if error != nil {
-                print("Process error")
+        //
+        FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self){ (result, err) in
+            if err != nil {
                 SVProgressHUD.dismiss()
-            }
-            else if (result?.isCancelled)! {
-                print("Cancelled")
+                return
+            } else if (result?.isCancelled)! {
                 SVProgressHUD.dismiss()
             }
             else {
-                print("Logged in")
                 let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                 FIRAuth.auth()?.signIn(with: credential) { (user, error) in
                     if error != nil{
@@ -369,8 +366,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                     }
                 }
             }
-        })
-        
+        }
     }
     func goToRegisterPage() {
         let registerPage = RegisterWithEmail()

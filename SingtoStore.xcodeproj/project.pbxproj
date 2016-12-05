@@ -16,6 +16,13 @@
 		09059A471DF3DF7700DA572A /* EditPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A461DF3DF7700DA572A /* EditPhoneNumber.swift */; };
 		09059A491DF3DFA600DA572A /* EditProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A481DF3DFA600DA572A /* EditProfilePhoto.swift */; };
 		09059A4B1DF3DFDD00DA572A /* MyIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A4A1DF3DFDD00DA572A /* MyIndicator.swift */; };
+		09059A501DF3F7B900DA572A /* FressAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A4F1DF3F7B900DA572A /* FressAddress.swift */; };
+		09059A521DF3F7D500DA572A /* PostAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A511DF3F7D500DA572A /* PostAddress.swift */; };
+		09059A541DF3F7FC00DA572A /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A531DF3F7FC00DA572A /* AddressCell.swift */; };
+		09059A561DF3F84700DA572A /* MyAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A551DF3F84700DA572A /* MyAddresses.swift */; };
+		09059A581DF3F88000DA572A /* EditFressAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A571DF3F88000DA572A /* EditFressAddress.swift */; };
+		09059A5A1DF3FA3900DA572A /* EditPostAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A591DF3FA3900DA572A /* EditPostAddress.swift */; };
+		09059A5C1DF3FAD300DA572A /* AddPostAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09059A5B1DF3FAD300DA572A /* AddPostAddress.swift */; };
 		092889521DF26A5800A1DCEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889511DF26A5800A1DCEB /* AppDelegate.swift */; };
 		092889541DF26A5800A1DCEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092889531DF26A5800A1DCEB /* ViewController.swift */; };
 		092889571DF26A5800A1DCEB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 092889551DF26A5800A1DCEB /* Main.storyboard */; };
@@ -40,6 +47,13 @@
 		09059A461DF3DF7700DA572A /* EditPhoneNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPhoneNumber.swift; sourceTree = "<group>"; };
 		09059A481DF3DFA600DA572A /* EditProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfilePhoto.swift; sourceTree = "<group>"; };
 		09059A4A1DF3DFDD00DA572A /* MyIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyIndicator.swift; sourceTree = "<group>"; };
+		09059A4F1DF3F7B900DA572A /* FressAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FressAddress.swift; sourceTree = "<group>"; };
+		09059A511DF3F7D500DA572A /* PostAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostAddress.swift; sourceTree = "<group>"; };
+		09059A531DF3F7FC00DA572A /* AddressCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
+		09059A551DF3F84700DA572A /* MyAddresses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAddresses.swift; sourceTree = "<group>"; };
+		09059A571DF3F88000DA572A /* EditFressAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFressAddress.swift; sourceTree = "<group>"; };
+		09059A591DF3FA3900DA572A /* EditPostAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostAddress.swift; sourceTree = "<group>"; };
+		09059A5B1DF3FAD300DA572A /* AddPostAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPostAddress.swift; sourceTree = "<group>"; };
 		0928894E1DF26A5800A1DCEB /* SingtoStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SingtoStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		092889511DF26A5800A1DCEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		092889531DF26A5800A1DCEB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -94,8 +108,39 @@
 		09059A411DF3DDB500DA572A /* UserAddress */ = {
 			isa = PBXGroup;
 			children = (
+				09059A4E1DF3F12D00DA572A /* Modal */,
+				09059A4D1DF3F0FE00DA572A /* Controllers */,
+				09059A4C1DF3F0DC00DA572A /* AddressCell */,
 			);
 			name = UserAddress;
+			sourceTree = "<group>";
+		};
+		09059A4C1DF3F0DC00DA572A /* AddressCell */ = {
+			isa = PBXGroup;
+			children = (
+				09059A531DF3F7FC00DA572A /* AddressCell.swift */,
+			);
+			name = AddressCell;
+			sourceTree = "<group>";
+		};
+		09059A4D1DF3F0FE00DA572A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				09059A551DF3F84700DA572A /* MyAddresses.swift */,
+				09059A571DF3F88000DA572A /* EditFressAddress.swift */,
+				09059A591DF3FA3900DA572A /* EditPostAddress.swift */,
+				09059A5B1DF3FAD300DA572A /* AddPostAddress.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		09059A4E1DF3F12D00DA572A /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				09059A4F1DF3F7B900DA572A /* FressAddress.swift */,
+				09059A511DF3F7D500DA572A /* PostAddress.swift */,
+			);
+			name = Modal;
 			sourceTree = "<group>";
 		};
 		092889451DF26A5800A1DCEB = {
@@ -337,14 +382,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09059A501DF3F7B900DA572A /* FressAddress.swift in Sources */,
 				092889661DF26B9F00A1DCEB /* Tabbar.swift in Sources */,
 				09059A451DF3DF3400DA572A /* EditUserName.swift in Sources */,
 				09059A431DF3DE0800DA572A /* EditUserProfileVC.swift in Sources */,
+				09059A561DF3F84700DA572A /* MyAddresses.swift in Sources */,
 				092889541DF26A5800A1DCEB /* ViewController.swift in Sources */,
 				092889521DF26A5800A1DCEB /* AppDelegate.swift in Sources */,
 				09059A471DF3DF7700DA572A /* EditPhoneNumber.swift in Sources */,
+				09059A541DF3F7FC00DA572A /* AddressCell.swift in Sources */,
 				092889711DF26E2B00A1DCEB /* ProductTab.swift in Sources */,
+				09059A5A1DF3FA3900DA572A /* EditPostAddress.swift in Sources */,
 				09059A3E1DF308FC00DA572A /* RegisterVC.swift in Sources */,
+				09059A581DF3F88000DA572A /* EditFressAddress.swift in Sources */,
 				09059A491DF3DFA600DA572A /* EditProfilePhoto.swift in Sources */,
 				09059A3A1DF28CDE00DA572A /* LoginVC.swift in Sources */,
 				092889691DF26D1500A1DCEB /* Tools.swift in Sources */,
@@ -352,6 +402,8 @@
 				09059A371DF277C000DA572A /* DancingShoesViewController.swift in Sources */,
 				092889731DF26E3B00A1DCEB /* CartTab.swift in Sources */,
 				092889751DF26E4800A1DCEB /* MeTab.swift in Sources */,
+				09059A521DF3F7D500DA572A /* PostAddress.swift in Sources */,
+				09059A5C1DF3FAD300DA572A /* AddPostAddress.swift in Sources */,
 				09059A4B1DF3DFDD00DA572A /* MyIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,6 +448,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -418,7 +471,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -445,6 +498,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -461,7 +515,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
