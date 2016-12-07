@@ -318,7 +318,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     func loginFB() {
         SVProgressHUD.setDefaultStyle(SVProgressHUDStyle.dark)
         SVProgressHUD.show(withStatus: "Logging in...")
-        //
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self){ (result, err) in
             if err != nil {
                 SVProgressHUD.dismiss()
@@ -331,12 +330,12 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                 FIRAuth.auth()?.signIn(with: credential) { (user, error) in
                     if error != nil{
                         //report error then return
-                        print(error)
+                        //print(error)
                         SVProgressHUD.dismiss()
                         return}
                     if let uid = user?.uid {
                         //check if this user exists or not
-                        print(uid)
+                        //print(uid)
                         let ref = FIRDatabase.database().reference().child("users")
                         ref.observeSingleEvent(of: FIRDataEventType.value, with: { (snapshot) in
                             if snapshot.hasChild(uid) {
