@@ -21,7 +21,7 @@ class DetailProduct: NSObject {
     var prdImages: [String]?
     var prdInfoImages: [String]?
     var prdCS: [String]?
-    var prdCSQty: [Int]?
+    var prdCSQty: [String]?
     
 }
 

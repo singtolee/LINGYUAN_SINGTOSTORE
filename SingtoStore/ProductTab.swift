@@ -21,7 +21,6 @@ class ProductTab: DancingShoesViewController {
         super.viewDidLoad()
         self.loadCategory()
         view.addSubview(indicator)
-        //navigationController?.hidesBarsOnSwipe = true
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.widthAnchor.constraint(equalToConstant: 42).isActive = true
         indicator.heightAnchor.constraint(equalToConstant: 24).isActive = true

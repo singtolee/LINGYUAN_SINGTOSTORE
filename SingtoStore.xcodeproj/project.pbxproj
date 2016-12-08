@@ -46,6 +46,7 @@
 		093A25381DF6BF7600C28592 /* MiddleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093A25371DF6BF7600C28592 /* MiddleView.swift */; };
 		09429F1B1DF7C06100EF69B6 /* ColorSizeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09429F1A1DF7C06100EF69B6 /* ColorSizeCollectionView.swift */; };
 		09429F1D1DF7C15E00EF69B6 /* ColorSizeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09429F1C1DF7C15E00EF69B6 /* ColorSizeCell.swift */; };
+		095601631DF99E20000B4DF4 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095601621DF99E20000B4DF4 /* InfoView.swift */; };
 		430008F5153A23603667FFE3 /* Pods_SingtoStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AABEBB40E62B6CF7EA3DD0DF /* Pods_SingtoStore.framework */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +93,7 @@
 		093A25371DF6BF7600C28592 /* MiddleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiddleView.swift; sourceTree = "<group>"; };
 		09429F1A1DF7C06100EF69B6 /* ColorSizeCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSizeCollectionView.swift; sourceTree = "<group>"; };
 		09429F1C1DF7C15E00EF69B6 /* ColorSizeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSizeCell.swift; sourceTree = "<group>"; };
+		095601621DF99E20000B4DF4 /* InfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		98F3A6A83D5D930B0F2D357D /* Pods-SingtoStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SingtoStore.release.xcconfig"; path = "Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore.release.xcconfig"; sourceTree = "<group>"; };
 		AABEBB40E62B6CF7EA3DD0DF /* Pods_SingtoStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SingtoStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA645D63271893B714C1DD5 /* Pods-SingtoStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SingtoStore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore.debug.xcconfig"; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				093A25351DF6B58E00C28592 /* CarouselCell.swift */,
 				093A25371DF6BF7600C28592 /* MiddleView.swift */,
 				09429F1A1DF7C06100EF69B6 /* ColorSizeCollectionView.swift */,
+				095601621DF99E20000B4DF4 /* InfoView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				092889711DF26E2B00A1DCEB /* ProductTab.swift in Sources */,
 				09059A5A1DF3FA3900DA572A /* EditPostAddress.swift in Sources */,
 				09059A3E1DF308FC00DA572A /* RegisterVC.swift in Sources */,
+				095601631DF99E20000B4DF4 /* InfoView.swift in Sources */,
 				09059A581DF3F88000DA572A /* EditFressAddress.swift in Sources */,
 				09059A491DF3DFA600DA572A /* EditProfilePhoto.swift in Sources */,
 				09059A3A1DF28CDE00DA572A /* LoginVC.swift in Sources */,

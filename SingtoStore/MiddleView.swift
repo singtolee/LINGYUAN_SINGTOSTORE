@@ -12,7 +12,7 @@ class MiddleView: UIView {
     
     var prdc: DetailProduct? {
         didSet{
-            self.titleLable.text = prdc!.prdName
+            self.titleLable.text = prdc!.prdName! + " (" + prdc!.prdPackageInfo! + ")"
             self.titleLable.font = UIFont(name: "AppleSDGothicNeo-Medium", size: frame.width/22)
             self.titleLable.heightAnchor.constraint(equalToConstant: frame.width / 14).isActive = true
             self.priceTag.text = "THB " + String(describing: prdc!.prdPrice!)
@@ -117,17 +117,6 @@ class MiddleView: UIView {
         return lb
     }()
     
-    //let csSection = ColorSizeView()
-    
-//    func addCSSction() {
-//        addSubview(csSection)
-//        csSection.translatesAutoresizingMaskIntoConstraints = false
-//        csSection.topAnchor.constraint(equalTo: cashOnDeliveryLable.bottomAnchor, constant: 30).isActive = true
-//        csSection.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-//        csSection.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-//        //self.csSection.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//    }
-    
     func addTitle() {
         addSubview(titleLable)
         titleLable.translatesAutoresizingMaskIntoConstraints = false
@@ -206,7 +195,6 @@ class MiddleView: UIView {
         addPriceTag()
         addDetailTag()
         addCommitmentView()
-        //addCSSction()
     }
     
     required init?(coder aDecoder: NSCoder) {

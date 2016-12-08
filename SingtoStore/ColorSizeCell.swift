@@ -31,17 +31,8 @@ class ColorSizeCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            //print("ASDA")
             csView.backgroundColor = isSelected ? Tools.dancingShoesColor : UIColor.white
             cs.textColor = isSelected ? UIColor.white : Tools.dancingShoesColor
-        }
-    }
-    
-    override var isHighlighted: Bool {
-        didSet {
-            //print("ASDASDASD")
-            //csView.backgroundColor = isHighlighted ? Tools.dancingShoesColor : UIColor.white
-            //cs.textColor = isHighlighted ? UIColor.white : Tools.dancingShoesColor
         }
     }
     

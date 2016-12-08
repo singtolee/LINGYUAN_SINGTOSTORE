@@ -15,6 +15,8 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
 
     var prdKey: String?
     var product: DetailProduct?
+    var handle: UInt!
+    let ref = FIRDatabase.database().reference().child("AllProduct")
     
     let sw = UIScreen.main.bounds.width
     
@@ -23,6 +25,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     let middleView = MiddleView()
     
     let csView = ColorSizeView()
+    let infoView = InfoView()
     
     let bottomBar = UIView()
     
@@ -54,13 +57,22 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.hidesBarsOnSwipe = true
         addScrollView()
         addTopView()
         addMiddleView()
         setUpBottomBar()
         addCSView()
+        //addInfoView()
         findPrdbyKey()
+    }
+    
+    func addInfoView() {
+        scrollView.addSubview(infoView)
+        infoView.translatesAutoresizingMaskIntoConstraints = false
+        infoView.topAnchor.constraint(equalTo: csView.bottomAnchor, constant: 10).isActive = true
+        infoView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        infoView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        infoView.heightAnchor.constraint(equalToConstant: 30 + view.frame.width * CGFloat((product?.prdInfoImages?.count)!)).isActive = true
     }
     
     func addCSView() {
@@ -107,8 +119,11 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     
     func findPrdbyKey() {
         if (prdKey != nil){
-            FIRDatabase.database().reference().child("AllProduct").child(prdKey!).observeSingleEvent(of: .value, with: { (snap) in
+            
+            //let ref = FIRDatabase.database().reference().child("AllProduct").child(prdKey!)
+            handle = ref.child(prdKey!).observe(.value, with: { (snap) in
                 if let dict = snap.value as? [String: AnyObject] {
+                    //print(dict)
                     let prd = DetailProduct()
                     var jg = "0"
                     prd.prdID = dict["productID"] as? String
@@ -125,13 +140,13 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
                     prd.isRefundable = dict["productRefundable"] as? Bool
                     prd.prdImages = dict["productImages"] as? [String]
                     prd.prdCS = dict["prodcutCS"] as? [String]
-                    prd.prdCSQty = dict["prodcutCSQty"] as? [Int]
+                    prd.prdCSQty = dict["prodcutCSQty"] as? [String]
                     if let info = dict["productInfoImages"] as? [String] {
                         prd.prdInfoImages = info
                     }
                     self.product = prd
                     self.populateView(prd)
-                    //print(self.product?.prdName)
+                    //print(self.product?.prdCSQty)
                     //self.populateView(prd)
                 }else {
                     //no prd with this key, error
@@ -152,30 +167,37 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         self.middleView.prdc = prd
         self.csView.heightAnchor.constraint(equalToConstant: 24 * CGFloat(round(Double(prd.prdCS!.count) / 2))).isActive = true
         self.csView.colorsizes = prd.prdCS!
+        self.csView.qtys = prd.prdCSQty!
         self.csView.collectionView.reloadData()
         let ss = IndexPath(item: 0, section: 0)
         csView.collectionView.selectItem(at: ss, animated: false, scrollPosition: [])
+        if (prd.prdInfoImages != nil) {
+            addInfoView()
+            infoView.imageUrls = prd.prdInfoImages!
+            infoView.collectionView.reloadData()
+            scrollView.contentSize = CGSize(width: view.bounds.width, height: 30 + view.frame.width * CGFloat((product?.prdInfoImages?.count)!) + 1.5 * view.bounds.width + 24 * CGFloat(round(Double(prd.prdCS!.count) / 2)))
+        } else {
+            scrollView.contentSize = CGSize(width: view.bounds.width, height: 1.5 * view.bounds.width + 24 * CGFloat(round(Double(prd.prdCS!.count) / 2)))
+            
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+        navigationController?.hidesBarsOnSwipe = true
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        ref.child(prdKey!).removeObserver(withHandle: handle)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.tabBarController?.tabBar.isHidden = false
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        //let y = middleView.frame.maxY
-        //print(y)
-        scrollView.contentSize = CGSize(width: view.bounds.width, height: view.bounds.height*2)
-        //print(y)
-        //let ss = IndexPath(item: 0, section: 0)
-        //csView.collectionView.selectItem(at: ss, animated: false, scrollPosition: [])
+        navigationController?.hidesBarsOnSwipe = false
         
     }
     

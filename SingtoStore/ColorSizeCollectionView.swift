@@ -24,6 +24,7 @@ class ColorSizeView: UIView, UICollectionViewDataSource, UICollectionViewDelegat
     let cellId = "cellId"
     
     var colorsizes = [String]()
+    var qtys = [String]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,7 +41,6 @@ class ColorSizeView: UIView, UICollectionViewDataSource, UICollectionViewDelegat
         collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     
         let selectedIndexPath = IndexPath(item: 0, section: 0)
-        //collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
         collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
     }
     
@@ -52,7 +52,8 @@ class ColorSizeView: UIView, UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ColorSizeCell
         let url = colorsizes[indexPath.item]
-        cell.cs.text = url
+        let qty = qtys[indexPath.item]
+        cell.cs.text = url + "  (" + qty + " LEFT)"
         return cell
     }
     

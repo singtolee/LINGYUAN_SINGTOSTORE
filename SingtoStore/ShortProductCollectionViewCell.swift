@@ -13,7 +13,7 @@ class PrdCell: UICollectionViewCell {
     
     var sprd: ShortProduct? {
         didSet {
-            prdPriceLable.text = String(describing: sprd!.pPrice!)
+            prdPriceLable.text = "THB " + String(describing: sprd!.pPrice!)
             prdPriceLable.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 12.5)
             prdNameLable.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 12.5)
             prdNameLable.text = sprd?.pName
