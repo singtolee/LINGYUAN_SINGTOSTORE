@@ -16,11 +16,17 @@ class CarouselView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
+        
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.dataSource = self
         cv.delegate = self
+        cv.isPagingEnabled = true
+        cv.backgroundColor = UIColor.white
+        cv.showsHorizontalScrollIndicator = false
         return cv
     }()
+    
+    var prdImg = [String]()
     
     lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -30,16 +36,11 @@ class CarouselView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     }()
     
     let cellId = "cellId"
-    var imageUrls = [String]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         collectionView.register(CarouselCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView.isPagingEnabled = true
-        collectionView.backgroundColor = UIColor.white
-        collectionView.showsHorizontalScrollIndicator = false
-        
         addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
@@ -47,19 +48,18 @@ class CarouselView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         collectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         addSubview(pageControl)
-        pageControl.numberOfPages = imageUrls.count
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         pageControl.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageUrls.count
+        return prdImg.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CarouselCell
-        let url = imageUrls[(indexPath as NSIndexPath).item]
+        let url = prdImg[indexPath.item]
         if let imageUrl = URL(string: url) {
             cell.imageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder48"))
         }
@@ -76,7 +76,6 @@ class CarouselView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetX = scrollView.contentOffset.x
-        //let page = offsetX / scrollView.width
         let page = offsetX / scrollView.frame.width
         pageControl.currentPage = Int(page + 0.5)
     }

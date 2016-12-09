@@ -5,7 +5,6 @@
 //  Created by li qiang on 12/6/2559 BE.
 //  Copyright © 2559 Singto. All rights reserved.
 //
-
 import UIKit
 import Firebase
 import FirebaseAuth
@@ -31,7 +30,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     
     let likeButton: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "like"), for: .highlighted)
+        btn.setImage(UIImage(named: "like"), for: .selected)
         btn.setImage(UIImage(named: "unlike"), for: UIControlState())
         return btn
     }()
@@ -54,7 +53,6 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         return buy
     }()
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         addScrollView()
@@ -62,14 +60,13 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         addMiddleView()
         setUpBottomBar()
         addCSView()
-        //addInfoView()
         findPrdbyKey()
     }
     
     func addInfoView() {
         scrollView.addSubview(infoView)
         infoView.translatesAutoresizingMaskIntoConstraints = false
-        infoView.topAnchor.constraint(equalTo: csView.bottomAnchor, constant: 10).isActive = true
+        infoView.topAnchor.constraint(equalTo: csView.bottomAnchor, constant: 6).isActive = true
         infoView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         infoView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         infoView.heightAnchor.constraint(equalToConstant: 30 + view.frame.width * CGFloat((product?.prdInfoImages?.count)!)).isActive = true
@@ -78,7 +75,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     func addCSView() {
         scrollView.addSubview(csView)
         csView.translatesAutoresizingMaskIntoConstraints = false
-        csView.topAnchor.constraint(equalTo: middleView.bottomAnchor, constant: 10).isActive = true
+        csView.topAnchor.constraint(equalTo: middleView.bottomAnchor, constant: 6).isActive = true
         csView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         csView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
@@ -113,14 +110,11 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         middleView.topAnchor.constraint(equalTo: self.carouselView.bottomAnchor).isActive = true
         middleView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         middleView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        middleView.heightAnchor.constraint(equalToConstant: (view.frame.width / 3.5) + 62).isActive = true
-        
+        middleView.heightAnchor.constraint(equalToConstant: (view.frame.width / 3.5) + 6 + (view.frame.width * 0.2)).isActive = true
     }
     
     func findPrdbyKey() {
         if (prdKey != nil){
-            
-            //let ref = FIRDatabase.database().reference().child("AllProduct").child(prdKey!)
             handle = ref.child(prdKey!).observe(.value, with: { (snap) in
                 if let dict = snap.value as? [String: AnyObject] {
                     //print(dict)
@@ -146,38 +140,36 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
                     }
                     self.product = prd
                     self.populateView(prd)
-                    //print(self.product?.prdCSQty)
-                    //self.populateView(prd)
                 }else {
-                    //no prd with this key, error
                     return
                 }
-                
             })
         }
     }
     
     func populateView(_ prd: DetailProduct) {
-        self.carouselView.pageControl.numberOfPages = prd.prdImages!.count
-        self.carouselView.imageUrls = prd.prdImages!
+        self.carouselView.prdImg = prd.prdImages!
         self.carouselView.collectionView.reloadData()
+        self.carouselView.pageControl.numberOfPages = prd.prdImages!.count
         
         self.middleView.commitmentView.isHidden = false
-        
         self.middleView.prdc = prd
+        
         self.csView.heightAnchor.constraint(equalToConstant: 24 * CGFloat(round(Double(prd.prdCS!.count) / 2))).isActive = true
         self.csView.colorsizes = prd.prdCS!
         self.csView.qtys = prd.prdCSQty!
         self.csView.collectionView.reloadData()
+        
         let ss = IndexPath(item: 0, section: 0)
         csView.collectionView.selectItem(at: ss, animated: false, scrollPosition: [])
+        
         if (prd.prdInfoImages != nil) {
             addInfoView()
             infoView.imageUrls = prd.prdInfoImages!
             infoView.collectionView.reloadData()
-            scrollView.contentSize = CGSize(width: view.bounds.width, height: 30 + view.frame.width * CGFloat((product?.prdInfoImages?.count)!) + 1.5 * view.bounds.width + 24 * CGFloat(round(Double(prd.prdCS!.count) / 2)))
+            scrollView.contentSize = CGSize(width: view.bounds.width, height: 48 + view.frame.width * CGFloat((product?.prdInfoImages?.count)!) + 1.5 * view.bounds.width + 24 * CGFloat(round(Double(prd.prdCS!.count) / 2)))
         } else {
-            scrollView.contentSize = CGSize(width: view.bounds.width, height: 1.5 * view.bounds.width + 24 * CGFloat(round(Double(prd.prdCS!.count) / 2)))
+            scrollView.contentSize = CGSize(width: view.bounds.width, height: 42  + 1.5 * view.bounds.width + 24 * CGFloat(round(Double(prd.prdCS!.count) / 2)))
             
         }
     }
@@ -186,7 +178,6 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         navigationController?.hidesBarsOnSwipe = true
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -198,7 +189,6 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         super.viewWillDisappear(animated)
         self.tabBarController?.tabBar.isHidden = false
         navigationController?.hidesBarsOnSwipe = false
-        
     }
     
     func setUpBottomBar() {
@@ -210,18 +200,21 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         bottomBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         bottomBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
         bottomBar.addSubview(likeButton)
+        
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         likeButton.topAnchor.constraint(equalTo: bottomBar.topAnchor).isActive = true
-        likeButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        likeButton.widthAnchor.constraint(equalToConstant: 36).isActive = true
-        likeButton.leftAnchor.constraint(equalTo: bottomBar.leftAnchor, constant: 20).isActive = true
+        likeButton.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor).isActive = true
+        
+        //likeButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        likeButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        likeButton.leftAnchor.constraint(equalTo: bottomBar.leftAnchor, constant: 0).isActive = true
         
         bottomBar.addSubview(addToCartBtn)
         addToCartBtn.translatesAutoresizingMaskIntoConstraints = false
         addToCartBtn.topAnchor.constraint(equalTo: bottomBar.topAnchor, constant: 2).isActive = true
         addToCartBtn.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor, constant: -2).isActive = true
         addToCartBtn.widthAnchor.constraint(equalToConstant: 110).isActive = true
-        addToCartBtn.leftAnchor.constraint(equalTo: likeButton.rightAnchor, constant: 20).isActive = true
+        addToCartBtn.leftAnchor.constraint(equalTo: likeButton.rightAnchor, constant: 0).isActive = true
         
         bottomBar.addSubview(buyBtn)
         buyBtn.translatesAutoresizingMaskIntoConstraints = false

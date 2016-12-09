@@ -15,28 +15,35 @@ class MiddleView: UIView {
             self.titleLable.text = prdc!.prdName! + " (" + prdc!.prdPackageInfo! + ")"
             self.titleLable.font = UIFont(name: "AppleSDGothicNeo-Medium", size: frame.width/22)
             self.titleLable.heightAnchor.constraint(equalToConstant: frame.width / 14).isActive = true
+            
             self.priceTag.text = "THB " + String(describing: prdc!.prdPrice!)
             self.priceTag.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: frame.width/22)
             self.priceTag.heightAnchor.constraint(equalToConstant: frame.width / 14).isActive = true
+            
             self.detailTag.text = prdc!.prdSub
             self.detailTag.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width/28)
             self.detailTag.heightAnchor.constraint(equalToConstant: frame.width / 7).isActive = true
+            
             self.freeShippingLable.font = UIFont(name: "AppleSDGothicNeo-Medium", size: frame.width/30)
+            self.freeShippingLable.heightAnchor.constraint(equalToConstant: frame.width / 20).isActive = true
+            
+            self.shippingTime.font = UIFont(name: "AppleSDGothicNeo-Medium", size: frame.width/30)
+            self.shippingTime.heightAnchor.constraint(equalToConstant: frame.width / 20).isActive = true
+            
             self.cashOnDeliveryLable.font = UIFont(name: "AppleSDGothicNeo-Medium", size: frame.width/30)
+            self.cashOnDeliveryLable.heightAnchor.constraint(equalToConstant: frame.width / 20).isActive = true
+            
             self.refundableLable.font = UIFont(name: "AppleSDGothicNeo-Medium", size: frame.width/30)
+            self.refundableLable.heightAnchor.constraint(equalToConstant: frame.width / 20).isActive = true
 
             self.nonrefundableLable.font = UIFont(name: "AppleSDGothicNeo-Medium", size: frame.width/30)
-            //self.csSection.heightAnchor.constraint(equalToConstant: 24 * CGFloat(round(Double(prdc!.prdCS!.count) / 2))).isActive = true
-            //self.csSection.heightAnchor.constraint(equalToConstant: 140).isActive = true
+            self.nonrefundableLable.heightAnchor.constraint(equalToConstant: frame.width / 20).isActive = true
             
             if(prdc!.isRefundable!) {
                 self.refundableLable.isHidden = false
             } else {
                 self.nonrefundableLable.isHidden = false
             }
-            
-            //self.csSection.colorsizes = prdc!.prdCS!
-            
         }
     }
     
@@ -54,6 +61,20 @@ class MiddleView: UIView {
         lb.isEditable = false
         lb.textColor = Tools.dancingShoesColor
         return lb
+    }()
+    
+    let shippingTime: UILabel = {
+        let lb = UILabel()
+        let iconSize = CGRect(x: 0, y: 1, width: 8, height: 8)
+        let attributedString = NSMutableAttributedString(string: "  ")
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(named: "dot")
+        attachment.bounds = iconSize
+        attributedString.append(NSAttributedString(attachment: attachment))
+        attributedString.append(NSAttributedString(string: " SHIPPING WITHIN 24 HOURS"))
+        lb.attributedText = attributedString
+        return lb
+        
     }()
     
     let detailTag: UITextView = {
@@ -106,7 +127,7 @@ class MiddleView: UIView {
     
     let nonrefundableLable: UILabel = {
         let lb = UILabel()
-        let iconSize = CGRect(x: 0, y: 1, width: 8, height: 8)
+        let iconSize = CGRect(x: 0, y: 0, width: 12, height: 12)
         let attributedString = NSMutableAttributedString(string: "  ")
         let attachment = NSTextAttachment()
         attachment.image = UIImage(named: "undot")
@@ -124,6 +145,7 @@ class MiddleView: UIView {
         titleLable.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         titleLable.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
     }
+    
     func addPriceTag() {
         addSubview(priceTag)
         //priceTag.textContainerInset = UIEdgeInsetsMake(0, 4, 0, 0)
@@ -131,6 +153,17 @@ class MiddleView: UIView {
         priceTag.topAnchor.constraint(equalTo: titleLable.bottomAnchor).isActive = true
         priceTag.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         priceTag.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+    }
+    
+    func addShippingTimeLable (){
+        addSubview(shippingTime)
+        shippingTime.translatesAutoresizingMaskIntoConstraints = false
+        //shippingTime.topAnchor.constraint(equalTo: titleLable.bottomAnchor).isActive = true
+        //shippingTime.centerYAnchor.constraint(equalTo: priceTag.centerYAnchor).isActive = true
+        shippingTime.leftAnchor.constraint(equalTo: priceTag.rightAnchor, constant: 0).isActive = true
+        shippingTime.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        
+    
     }
     
     func addDetailTag() {
@@ -147,32 +180,43 @@ class MiddleView: UIView {
         commitmentView.isHidden = true
         freeShippingLable.backgroundColor = UIColor.white
         freeShippingLable.translatesAutoresizingMaskIntoConstraints = false
-        freeShippingLable.topAnchor.constraint(equalTo: commitmentView.topAnchor, constant: 4).isActive = true
-        freeShippingLable.leftAnchor.constraint(equalTo: commitmentView.leftAnchor, constant: 0).isActive = true
+        freeShippingLable.topAnchor.constraint(equalTo: commitmentView.topAnchor).isActive = true
+        freeShippingLable.leftAnchor.constraint(equalTo: commitmentView.leftAnchor).isActive = true
         freeShippingLable.rightAnchor.constraint(equalTo: commitmentView.rightAnchor).isActive = true
+        
+        commitmentView.addSubview(shippingTime)
+        shippingTime.backgroundColor = UIColor.white
+        shippingTime.translatesAutoresizingMaskIntoConstraints = false
+        shippingTime.topAnchor.constraint(equalTo: freeShippingLable.bottomAnchor).isActive = true
+        shippingTime.leftAnchor.constraint(equalTo: commitmentView.leftAnchor).isActive = true
+        shippingTime.rightAnchor.constraint(equalTo: commitmentView.rightAnchor).isActive = true
+        
         
         commitmentView.addSubview(cashOnDeliveryLable)
         cashOnDeliveryLable.backgroundColor = UIColor.white
         cashOnDeliveryLable.translatesAutoresizingMaskIntoConstraints = false
-        cashOnDeliveryLable.topAnchor.constraint(equalTo: freeShippingLable.bottomAnchor, constant: 4).isActive = true
-        cashOnDeliveryLable.leftAnchor.constraint(equalTo: commitmentView.leftAnchor, constant: 0).isActive = true
+        cashOnDeliveryLable.topAnchor.constraint(equalTo: shippingTime.bottomAnchor).isActive = true
+        cashOnDeliveryLable.leftAnchor.constraint(equalTo: commitmentView.leftAnchor).isActive = true
         cashOnDeliveryLable.rightAnchor.constraint(equalTo: commitmentView.rightAnchor).isActive = true
+        //cashOnDeliveryLable.heightAnchor.constraint(equalToConstant: frame.width / 20).isActive = true
         
         commitmentView.addSubview(refundableLable)
         refundableLable.isHidden = true
         refundableLable.backgroundColor = UIColor.white
         refundableLable.translatesAutoresizingMaskIntoConstraints = false
-        refundableLable.topAnchor.constraint(equalTo: cashOnDeliveryLable.bottomAnchor, constant: 4).isActive = true
-        refundableLable.leftAnchor.constraint(equalTo: commitmentView.leftAnchor, constant: 0).isActive = true
+        refundableLable.topAnchor.constraint(equalTo: cashOnDeliveryLable.bottomAnchor).isActive = true
+        refundableLable.leftAnchor.constraint(equalTo: commitmentView.leftAnchor).isActive = true
         refundableLable.rightAnchor.constraint(equalTo: commitmentView.rightAnchor).isActive = true
+        //refundableLable.heightAnchor.constraint(equalToConstant: frame.width / 20).isActive = true
         
         commitmentView.addSubview(nonrefundableLable)
         nonrefundableLable.isHidden = true
         nonrefundableLable.backgroundColor = UIColor.white
         nonrefundableLable.translatesAutoresizingMaskIntoConstraints = false
-        nonrefundableLable.topAnchor.constraint(equalTo: cashOnDeliveryLable.bottomAnchor, constant: 4).isActive = true
-        nonrefundableLable.leftAnchor.constraint(equalTo: commitmentView.leftAnchor, constant: 0).isActive = true
+        nonrefundableLable.topAnchor.constraint(equalTo: cashOnDeliveryLable.bottomAnchor).isActive = true
+        nonrefundableLable.leftAnchor.constraint(equalTo: commitmentView.leftAnchor).isActive = true
         nonrefundableLable.rightAnchor.constraint(equalTo: commitmentView.rightAnchor).isActive = true
+        //nonrefundableLable.heightAnchor.constraint(equalToConstant: frame.width / 20).isActive = true
         
     }
     
@@ -185,7 +229,7 @@ class MiddleView: UIView {
         commitmentView.topAnchor.constraint(equalTo: detailTag.bottomAnchor, constant: 6).isActive = true
         commitmentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         commitmentView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        commitmentView.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        commitmentView.heightAnchor.constraint(equalToConstant: frame.width * 0.15).isActive = true
         
     }
     
@@ -193,6 +237,7 @@ class MiddleView: UIView {
         super.init(frame: frame)
         addTitle()
         addPriceTag()
+        addShippingTimeLable()
         addDetailTag()
         addCommitmentView()
     }
