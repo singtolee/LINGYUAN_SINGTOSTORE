@@ -30,8 +30,8 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     
     let likeButton: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "like"), for: .selected)
-        btn.setImage(UIImage(named: "unlike"), for: UIControlState())
+        btn.setImage(UIImage(named: "like"), for: .highlighted)
+        btn.setImage(UIImage(named: "unlike"), for: .normal)
         return btn
     }()
     
@@ -61,6 +61,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         setUpBottomBar()
         addCSView()
         findPrdbyKey()
+        likeorUnlikeBtn()
     }
     
     func addInfoView() {
@@ -177,7 +178,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
-        navigationController?.hidesBarsOnSwipe = true
+        //navigationController?.hidesBarsOnSwipe = true
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -204,6 +205,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         likeButton.topAnchor.constraint(equalTo: bottomBar.topAnchor).isActive = true
         likeButton.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor).isActive = true
+        likeButton.addTarget(self, action: #selector(handleLikeClick), for: .touchUpInside)
         
         //likeButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         likeButton.widthAnchor.constraint(equalToConstant: 80).isActive = true

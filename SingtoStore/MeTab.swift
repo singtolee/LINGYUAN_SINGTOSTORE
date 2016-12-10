@@ -217,7 +217,7 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
                 navigationController?.pushViewController(addressView, animated: true)
             }
             else if (indexPath as NSIndexPath).row == 2 {
-                let vc = MyAddress()
+                let vc = FavoriteVC()
                 navigationController?.pushViewController(vc, animated: true)
                 
             }
