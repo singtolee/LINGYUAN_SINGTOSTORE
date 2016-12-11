@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
+import FirebaseAuth
 import FirebaseDatabase
 class Tools {
     
@@ -47,5 +48,15 @@ class Tools {
                 print(err)
                 return}
         })
+    }
+    
+    static func isUserLogedin() -> Bool {
+        if FIRAuth.auth()?.currentUser != nil {
+            // User is signed in.
+            return true
+        } else {
+            // No user is signed in.
+            return false
+        }
     }
 }

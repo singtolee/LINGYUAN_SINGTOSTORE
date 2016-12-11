@@ -16,8 +16,8 @@ extension DetailProductViewController {
             if let uid = FIRAuth.auth()?.currentUser?.uid {
                 
                 let paths = self.csView.collectionView.indexPathsForSelectedItems
-                //let path = paths?[0]
-                let value = self.csView.colorsizes[(paths?[0].item)!]
+                let path = paths?[0].item
+                let value = self.csView.colorsizes[path!]
                 
                 //start adding to cart animation
                 self.addCartView()
@@ -27,7 +27,7 @@ extension DetailProductViewController {
                     }, completion: nil)
                 
                 
-                self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().setValue(["prdKey": self.prdKey!, "Color_Size": value])
+                self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().setValue(["prdKey": self.prdKey!, "Color_Size": value, "ID": path!])
                 
                 self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().setValue([], withCompletionBlock: { (error, refe) in
                     if error != nil {

@@ -30,6 +30,8 @@ class Tabbar: UITabBarController {
         let cart = CartTab()
         cart.tabBarItem.title = "Cart"
         cart.tabBarItem.image = UIImage(named: "cart")
+        let navCart = UINavigationController()
+        navCart.viewControllers = [cart]
         //me tab
         let me = MeTab()
         me.tabBarItem.title = "Me"
@@ -37,7 +39,7 @@ class Tabbar: UITabBarController {
         //test if I can put this view controller inside Navigation controller,
         let nav = UINavigationController()
         nav.viewControllers = [me]
-        viewControllers = [navStore, navPrd, cart, nav]
+        viewControllers = [navStore, navPrd, navCart, nav]
     }
 
 }
