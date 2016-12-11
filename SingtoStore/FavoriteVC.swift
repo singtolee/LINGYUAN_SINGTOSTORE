@@ -25,22 +25,18 @@ class FavoriteVC: UITableViewController {
         super.viewDidLoad()
         self.title = "FAVORITES"
         tableView.register(FavroitPrdCell.self, forCellReuseIdentifier: cellId)
-        //tableView.allowsSelection = false
         tableView.separatorStyle = .singleLine
-        //loadFavoritePrds()
-
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+        newloadFavoritePrds()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        favoritePrds.removeAll()
-        loadFavoritePrds()
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        ref.child((FIRAuth.auth()?.currentUser?.uid)!).child("FavoritePRD").removeObserver(withHandle: handle)
+        //ref.child((FIRAuth.auth()?.currentUser?.uid)!).child("FavoritePRD").removeObserver(withHandle: handle)
     }
     
     func loadFavoritePrds() {
@@ -49,6 +45,22 @@ class FavoriteVC: UITableViewController {
                 let ke = snapshot.key
                 self.loadFavoritePrdByKey(prdk: ke)
                 })
+        } else {
+            print("Not Login")
+            return
+        }
+    }
+    
+    func newloadFavoritePrds() {
+        if let uid = FIRAuth.auth()?.currentUser?.uid {
+            handle = ref.child(uid).child("FavoritePRD").observe(.value, with: { (snapshot) in
+                self.favoritePrds.removeAll()
+                for child in snapshot.children {
+                    let csnap = child as! FIRDataSnapshot
+                    let ke = csnap.key
+                    self.loadFavoritePrdByKey(prdk: ke)
+                }
+            })
         } else {
             print("Not Login")
             return
@@ -88,7 +100,7 @@ class FavoriteVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
+        return 64
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -105,16 +117,16 @@ class FavoriteVC: UITableViewController {
     }
     */
 
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            self.deletFavoritePrdByKey(key: favoritePrds[indexPath.item].pKey!)
+        }
     }
-    */
+    
+    func deletFavoritePrdByKey(key: String) {
+        ref.child((FIRAuth.auth()?.currentUser?.uid)!).child("FavoritePRD").child(key).removeValue()
+        
+    }
 
 }
