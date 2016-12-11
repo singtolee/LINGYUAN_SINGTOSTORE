@@ -17,7 +17,17 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     var handle: UInt!
     var loginHandle : UInt!
     
+    let cartView: UIImageView = {
+        let imgV = UIImageView()
+        imgV.image = UIImage(named: "cart")
+        imgV.backgroundColor = Tools.dancingShoesColor
+        imgV.layer.cornerRadius = 4
+        imgV.contentMode = .center
+        return imgV
+    }()
+    
     let ref = FIRDatabase.database().reference().child("AllProduct")
+    let userRef = FIRDatabase.database().reference().child("users")
     
     let sw = UIScreen.main.bounds.width
     
@@ -190,7 +200,9 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         super.viewDidDisappear(animated)
         ref.child(prdKey!).removeObserver(withHandle: handle)
         if isUserLogedin() {
-            FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("FavoritePRD").removeObserver(withHandle: loginHandle)
+            if let uid = FIRAuth.auth()?.currentUser?.uid {
+                self.userRef.child(uid).child("FavoritePRD").removeObserver(withHandle: loginHandle)
+            } else {return}
         }
     }
     
@@ -225,6 +237,8 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         addToCartBtn.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor, constant: -2).isActive = true
         addToCartBtn.widthAnchor.constraint(equalToConstant: 110).isActive = true
         addToCartBtn.leftAnchor.constraint(equalTo: likeButton.rightAnchor, constant: 0).isActive = true
+        addToCartBtn.addTarget(self, action: #selector(addToCart), for: .touchUpInside)
+        
         
         bottomBar.addSubview(buyBtn)
         buyBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -232,6 +246,19 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         buyBtn.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor, constant: -2).isActive = true
         buyBtn.rightAnchor.constraint(equalTo: bottomBar.rightAnchor, constant: -2).isActive = true
         buyBtn.leftAnchor.constraint(equalTo: addToCartBtn.rightAnchor, constant: 2).isActive = true
+        buyBtn.addTarget(self, action: #selector(buyNow), for: .touchUpInside)
+    }
+    
+    func addCartView() {
+        view.addSubview(cartView)
+        //cartView.translatesAutoresizingMaskIntoConstraints = false
+        cartView.frame = CGRect(x: 80, y: view.frame.height, width: 60, height: 30)
+        //cartView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        //cartView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        //cartView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        //cartView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        //cartView.topAnchor.constraint(equalTo: self.addToCartBtn.topAnchor).isActive = true
+        //cartView.leftAnchor.constraint(equalTo: self.addToCartBtn.leftAnchor, constant: 0).isActive = true
     }
 
 }

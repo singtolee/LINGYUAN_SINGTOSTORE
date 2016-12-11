@@ -44,7 +44,6 @@ class ColorSizeView: UIView, UICollectionViewDataSource, UICollectionViewDelegat
         collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return colorsizes.count
     }
