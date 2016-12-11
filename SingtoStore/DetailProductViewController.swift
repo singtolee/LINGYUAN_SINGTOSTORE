@@ -15,6 +15,8 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     var prdKey: String?
     var product: DetailProduct?
     var handle: UInt!
+    var loginHandle : UInt!
+    
     let ref = FIRDatabase.database().reference().child("AllProduct")
     
     let sw = UIScreen.main.bounds.width
@@ -140,7 +142,10 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
                         prd.prdInfoImages = info
                     }
                     self.product = prd
-                    self.populateView(prd)
+                    DispatchQueue.main.async(execute: { 
+                        self.populateView(prd)
+                    })
+                    //self.populateView(prd)
                 }else {
                     return
                 }
@@ -184,6 +189,9 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         ref.child(prdKey!).removeObserver(withHandle: handle)
+        if isUserLogedin() {
+            FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("FavoritePRD").removeObserver(withHandle: loginHandle)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

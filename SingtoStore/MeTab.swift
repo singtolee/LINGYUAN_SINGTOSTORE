@@ -42,7 +42,7 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
     
     let userName: UILabel = {
         let lab = UILabel()
-        lab.text = "EDIT PROFILE"
+        lab.text = ""
         lab.textColor = UIColor.white
         lab.font = UIFont(name: "ArialRoundedMTBold", size: 14)
         return lab
@@ -142,6 +142,7 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
     
     func isLogOutBtnsStatus() {
         userName.isHidden = true
+        userName.text = ""
         signOutBtn.isHidden = true
         loginBtn.isHidden = false
     }
@@ -273,9 +274,4 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
             navigationController?.pushViewController(editProfile, animated: true)
         }
     }
-    
-
-
-
-
 }

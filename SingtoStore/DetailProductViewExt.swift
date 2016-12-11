@@ -14,12 +14,19 @@ extension DetailProductViewController {
     func likeorUnlikeBtn() {
         if isUserLogedin() {
             let ref = FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!)
-            ref.child("FavoritePRD").observeSingleEvent(of: .value, with: { (snapshot) in
+            //ref.child("FavoritePRD").observeSingleEvent(of: .value, with: { (snapshot) in
+            self.loginHandle = ref.child("FavoritePRD").observe(.value, with: { (snapshot) in
                 if snapshot.hasChild(self.prdKey!) {
                     //use dispatchMain() caused dead lock
-                    self.likeButton.setImage(UIImage(named: "like"), for: .normal)
+                    DispatchQueue.main.async(execute: {
+                        self.likeButton.setImage(UIImage(named: "like"), for: .normal)
+                    })
+                    //self.likeButton.setImage(UIImage(named: "like"), for: .normal)
                 } else {
-                    self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
+                    DispatchQueue.main.async(execute: {
+                        self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
+                    })
+                    //self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
                 }
             })
         }
@@ -32,11 +39,11 @@ extension DetailProductViewController {
                 if snapshot.hasChild(self.prdKey!) {
                     // liked already, remove this prdKey frome list
                     ref.child("FavoritePRD").child(self.prdKey!).removeValue()
-                    self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
+                    //self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
                 } else {
                     //not liked yet, like this prd
                     ref.child("FavoritePRD").child(self.prdKey!).setValue(true)
-                    self.likeButton.setImage(UIImage(named: "like"), for: .normal)
+                    //self.likeButton.setImage(UIImage(named: "like"), for: .normal)
                 }
             
             })
@@ -46,6 +53,7 @@ extension DetailProductViewController {
             present(loginPage, animated: true, completion: nil)
         }
     }
+    
     
     func isUserLogedin() -> Bool {
         if FIRAuth.auth()?.currentUser != nil {
