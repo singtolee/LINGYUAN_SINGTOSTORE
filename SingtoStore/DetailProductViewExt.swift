@@ -24,11 +24,20 @@ extension DetailProductViewController {
                     self.cartView.center.x += self.view.bounds.width / 2 - 110
                     self.cartView.center.y -= self.view.bounds.height / 2
                     }, completion: nil)
+                var value: Dictionary = [String: Any]()
+                value["prdKey"] = self.prdKey!
+                value["prdTitle"] = self.product?.prdName
+                value["prdPrice"] = self.product?.prdPrice
+                value["prdImg"] = self.product?.prdImages?[path!]
+                value["prdCS"] = self.product?.prdCS?[path!]
+                value["ID"] = path!
+                value["Check"] = true
+                value["Qty"] = 1
                 
                 
-                self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().setValue(["prdKey": self.prdKey!, "ID": path!, "Check": true, "Qty": 1])
+                //self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().setValue(value)
                 
-                self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().setValue([], withCompletionBlock: { (error, refe) in
+                self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().setValue(value, withCompletionBlock: { (error, refe) in
                     if error != nil {
                         // failed add to cart, display try again hint
                         self.cartView.removeFromSuperview()
@@ -60,9 +69,10 @@ extension DetailProductViewController {
     }
     
     func likeorUnlikeBtn() {
-        if isUserLogedin() {
-            if let uid = FIRAuth.auth()?.currentUser?.uid {
-                let ref = self.userRef.child(uid).child("FavoritePRD")
+        
+        FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
+            if let us = user {
+                let ref = self.userRef.child(us.uid).child("FavoritePRD")
                 self.loginHandle = ref.observe(.value, with: { (snapshot) in
                     if snapshot.hasChild(self.prdKey!) {
                         //use dispatchMain() caused dead lock
@@ -78,10 +88,32 @@ extension DetailProductViewController {
                     }
                     
                 })
-                
-            } else {return}
-            
-        }
+            }
+        })
+        
+        
+//        if isUserLogedin() {
+//            if let uid = FIRAuth.auth()?.currentUser?.uid {
+//                let ref = self.userRef.child(uid).child("FavoritePRD")
+//                self.loginHandle = ref.observe(.value, with: { (snapshot) in
+//                    if snapshot.hasChild(self.prdKey!) {
+//                        //use dispatchMain() caused dead lock
+//                        DispatchQueue.main.async(execute: {
+//                            self.likeButton.setImage(UIImage(named: "like"), for: .normal)
+//                        })
+//                        //self.likeButton.setImage(UIImage(named: "like"), for: .normal)
+//                    } else {
+//                        DispatchQueue.main.async(execute: {
+//                            self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
+//                        })
+//                        //self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
+//                    }
+//                    
+//                })
+//                
+//            } else {return}
+//            
+//        }
     }
     
     func handleLikeClick() {

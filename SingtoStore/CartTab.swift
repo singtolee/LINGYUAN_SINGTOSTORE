@@ -59,7 +59,10 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
             if user == nil {
                 self.carts.removeAll()
                 self.tableView.reloadData()
+                self.totalPriceLable.text = "TOTOAL: THB 0.0"
+                self.bottomBar.isHidden = true
             } else {
+                self.bottomBar.isHidden = false
                 self.loadUserCart()
             }
         }
@@ -145,12 +148,32 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                     for child in snap.children {
                         if let csnap = child as? FIRDataSnapshot {
                             if let dict = csnap.value as? [String: AnyObject] {
+                                let cart = CartProduct()
+                                let title = dict["prdTitle"] as? String
+                                cart.pName = title
                                 let ke = dict["prdKey"] as? String
+                                cart.pKey = ke
                                 let id = dict["ID"] as? Int
+                                cart.pID = id
                                 let che = dict["Check"] as? Bool
+                                cart.pChecked = che
                                 let qty = dict["Qty"] as? Int
+                                cart.pQty = qty!
                                 let cartKey = csnap.key
-                                self.loadPrdByKey(key: ke!, id: id!, check: che!, num: qty!, ck: cartKey)
+                                cart.cartKey = cartKey
+                                let img = dict["prdImg"] as? String
+                                cart.pMainImage = img
+                                let cs = dict["prdCS"] as? String
+                                let price = dict["prdPrice"] as? Double
+                                cart.pPrice = price
+                                cart.pCS = cs
+                                cart.pCSRemain = 6
+                                self.carts.append(cart)
+                                DispatchQueue.main.async(execute: {
+                                    self.tableView.reloadData()
+                                    self.updateBottomBar()
+                                })
+                                //self.loadPrdByKey(key: ke!, id: id!, check: che!, num: qty!, ck: cartKey)
                             }
                         }
                         
@@ -167,31 +190,31 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         
     }
     
-    func loadPrdByKey(key: String, id: Int, check: Bool, num: Int, ck: String) {
-        prdRef.child(key).observeSingleEvent(of: .value, with: { (snap) in
-            if let dict = snap.value as? [String: AnyObject] {
-                let cart = CartProduct()
-                cart.pKey = snap.key
-                cart.pName = dict["productName"] as? String
-                cart.pPrice = dict["productPrice"] as? String
-                let pMainImages = dict["productImages"] as? [String]
-                cart.pMainImage = pMainImages?[0]
-                cart.pChecked = check
-                let cs = dict["prodcutCS"] as? [String]
-                //let qtys = dict["prodcutCSQty"] as? [String]
-                cart.pCS = cs?[id]
-                cart.pQty = num
-                cart.cartKey = ck
-                //cart.pCSRemain = (qtys?[id] as! Int)
-                cart.pCSRemain = 6 // now set the max Qty to be 6, can not buy more than 6
-                self.carts.append(cart)
-                DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
-                    self.updateBottomBar()
-                })
-            }
-        })
-    }
+//    func loadPrdByKey(key: String, id: Int, check: Bool, num: Int, ck: String) {
+//        prdRef.child(key).observeSingleEvent(of: .value, with: { (snap) in
+//            if let dict = snap.value as? [String: AnyObject] {
+//                let cart = CartProduct()
+//                cart.pKey = snap.key
+//                cart.pName = dict["productName"] as? String
+//                cart.pPrice = dict["productPrice"] as? String
+//                let pMainImages = dict["productImages"] as? [String]
+//                cart.pMainImage = pMainImages?[0]
+//                cart.pChecked = check
+//                let cs = dict["prodcutCS"] as? [String]
+//                //let qtys = dict["prodcutCSQty"] as? [String]
+//                cart.pCS = cs?[id]
+//                cart.pQty = num
+//                cart.cartKey = ck
+//                //cart.pCSRemain = (qtys?[id] as! Int)
+//                cart.pCSRemain = 6 // now set the max Qty to be 6, can not buy more than 6
+//                self.carts.append(cart)
+//                DispatchQueue.main.async(execute: {
+//                    self.tableView.reloadData()
+//                    self.updateBottomBar()
+//                })
+//            }
+//        })
+//    }
     
     func updateBottomBar() {
         var item = 0
@@ -199,7 +222,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         for cart in carts {
             if cart.pChecked! {
                 item = item + cart.pQty
-                total = total + Double(cart.pQty) * Double(cart.pPrice!)!   //at Backoffice, save price as Double
+                total = total + Double(cart.pQty) * cart.pPrice!  //at Backoffice, save price as Double
             }
         }
         self.totalPriceLable.text = "TOTOAL: THB " + String(total)

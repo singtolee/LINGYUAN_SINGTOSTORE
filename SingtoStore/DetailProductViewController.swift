@@ -249,16 +249,10 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         buyBtn.addTarget(self, action: #selector(buyNow), for: .touchUpInside)
     }
     
+    //this is the add to cart animation view
     func addCartView() {
         view.addSubview(cartView)
-        //cartView.translatesAutoresizingMaskIntoConstraints = false
         cartView.frame = CGRect(x: 80, y: view.frame.height, width: 60, height: 30)
-        //cartView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        //cartView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        //cartView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        //cartView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        //cartView.topAnchor.constraint(equalTo: self.addToCartBtn.topAnchor).isActive = true
-        //cartView.leftAnchor.constraint(equalTo: self.addToCartBtn.leftAnchor, constant: 0).isActive = true
     }
 
 }

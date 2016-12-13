@@ -11,7 +11,7 @@ class CartProduct: NSObject {
     var cartKey: String?  //the key in the SHOPPINGCART folder
     var pName: String?  //title
     var pCS: String?  //specification
-    var pPrice: String?
+    var pPrice: Double?
     var pMainImage: String?
     var pKey: String?
     var pQty: Int = 1 // how many wants to buy, should be <= pCSRemain

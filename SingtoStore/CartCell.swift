@@ -31,7 +31,7 @@ class CartCell: UITableViewCell {
             specification.text = cart?.pCS
             specification.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 25)
             
-            price.text = "THB " + (cart?.pPrice)!
+            price.text = "THB " + String((cart?.pPrice)!)
             price.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 20)
             
             qtyLable.text = String(cart!.pQty)
