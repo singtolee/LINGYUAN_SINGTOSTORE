@@ -16,6 +16,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     let cellID = "cellID"
     
     let ref = FIRDatabase.database().reference().child("users")
+    let prdRef = FIRDatabase.database().reference().child("AllProduct")
     var handle: UInt!
     
     let bottomBar = UIView()
@@ -23,6 +24,23 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     
     var carts = [CartProduct]()
     
+    let totalPriceLable: UILabel = {
+        let lb = UILabel()
+        lb.text = "TOTAL: THB 0.0"
+        lb.textColor = Tools.dancingShoesColor
+        lb.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        lb.textAlignment = .center
+        return lb
+    }()
+    
+    let checkOutBtn: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = Tools.dancingShoesColor
+        btn.setTitleColor(UIColor.white, for: .normal)
+        btn.setTitle("CHECK OUT", for: .normal)
+        btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
+        return btn
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +48,22 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         
         addBottomBar()
         addTableView()
+        ifUserLogOut()
         
-        self.loadUserCart()
+        //self.loadUserCart()
+    }
+    
+    func ifUserLogOut() {
+        FIRAuth.auth()?.addStateDidChangeListener() { (auth, user) in
+            // ...
+            if user == nil {
+                self.carts.removeAll()
+                self.tableView.reloadData()
+            } else {
+                self.loadUserCart()
+            }
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,7 +73,17 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        //will crash when switch between cartTab and other tabs very fast, as viewdiddisappear and willappear
+        
+        //self.carts.removeAll()
+        //self.tableView.reloadData()
         //remove observor
+//        if Tools.isUserLogedin() {
+//            if let uid = FIRAuth.auth()?.currentUser?.uid {
+//                ref.child(uid).child("SHOPPINGCART").removeObserver(withHandle: handle)
+//            }
+//            
+//        }
     }
     func addTableView() {
         view.addSubview(tableView)
@@ -57,12 +99,21 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     }
     func addBottomBar() {
         view.addSubview(bottomBar)
-        bottomBar.backgroundColor = Tools.dancingShoesColor
+        bottomBar.backgroundColor = UIColor.white
         bottomBar.translatesAutoresizingMaskIntoConstraints = false
-        bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -49).isActive = true
+        bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
         bottomBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         bottomBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         bottomBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        bottomBar.addSubview(totalPriceLable)
+        totalPriceLable.frame = CGRect(x: 0, y: 0, width: view.frame.width / 2, height: 40)
+        
+        bottomBar.addSubview(checkOutBtn)
+        checkOutBtn.frame = CGRect(x: view.frame.width / 2, y: 0, width: view.frame.width / 2, height: 40)
+        
+        
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,7 +129,9 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cart = carts[indexPath.item]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! CartCell
+        cell.cart = cart
         cell.selectionStyle = .none
         return cell
     }
@@ -87,17 +140,17 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         if Tools.isUserLogedin() {
             if let uid = FIRAuth.auth()?.currentUser?.uid {
                 let cartRef = ref.child(uid).child("SHOPPINGCART")
-                cartRef.observe(.value, with: { (snap) in
+                self.handle = cartRef.observe(.value, with: { (snap) in
                     self.carts.removeAll()
                     for child in snap.children {
                         if let csnap = child as? FIRDataSnapshot {
                             if let dict = csnap.value as? [String: AnyObject] {
-                                let cc = CartProduct()
-                                cc.pKey = dict["prdKey"] as? String
-                                self.loadPrdByKey(key: cc.pKey!)
-                                cc.pID = dict["ID"] as? Int
-                                print(cc.pID)
-                                self.carts.append(cc)
+                                let ke = dict["prdKey"] as? String
+                                let id = dict["ID"] as? Int
+                                let che = dict["Check"] as? Bool
+                                let qty = dict["Qty"] as? Int
+                                let cartKey = csnap.key
+                                self.loadPrdByKey(key: ke!, id: id!, check: che!, num: qty!, ck: cartKey)
                             }
                         }
                         
@@ -105,12 +158,51 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                 })
                 
             }
+        } else {
+            // user not login, display login hint with tableview empty status
+            //empty carts
+            //self.carts.removeAll()
+            //tableView.reloadData()
         }
         
     }
     
-    func loadPrdByKey(key: String) {
-        
+    func loadPrdByKey(key: String, id: Int, check: Bool, num: Int, ck: String) {
+        prdRef.child(key).observeSingleEvent(of: .value, with: { (snap) in
+            if let dict = snap.value as? [String: AnyObject] {
+                let cart = CartProduct()
+                cart.pKey = snap.key
+                cart.pName = dict["productName"] as? String
+                cart.pPrice = dict["productPrice"] as? String
+                let pMainImages = dict["productImages"] as? [String]
+                cart.pMainImage = pMainImages?[0]
+                cart.pChecked = check
+                let cs = dict["prodcutCS"] as? [String]
+                //let qtys = dict["prodcutCSQty"] as? [String]
+                cart.pCS = cs?[id]
+                cart.pQty = num
+                cart.cartKey = ck
+                //cart.pCSRemain = (qtys?[id] as! Int)
+                cart.pCSRemain = 6 // now set the max Qty to be 6, can not buy more than 6
+                self.carts.append(cart)
+                DispatchQueue.main.async(execute: {
+                    self.tableView.reloadData()
+                    self.updateBottomBar()
+                })
+            }
+        })
+    }
+    
+    func updateBottomBar() {
+        var item = 0
+        var total: Double = 0
+        for cart in carts {
+            if cart.pChecked! {
+                item = item + cart.pQty
+                total = total + Double(cart.pQty) * Double(cart.pPrice!)!   //at Backoffice, save price as Double
+            }
+        }
+        self.totalPriceLable.text = "TOTOAL: THB " + String(total)
     }
     
     

@@ -7,8 +7,38 @@
 //
 
 import UIKit
+import SDWebImage
+import FirebaseDatabase
+import FirebaseAuth
 
 class CartCell: UITableViewCell {
+    
+    var cart: CartProduct? {
+        didSet {
+            if (cart?.pChecked)! {
+                checkBtn.setImage(UIImage(named: "checked"), for: .normal)
+            } else {
+                checkBtn.setImage(UIImage(named: "unchecked"), for: .normal)
+            }
+            
+            if let imgUrl = URL(string: (cart?.pMainImage)!) {
+                imgView.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "placeholder48"))
+            }
+            
+            title.text = cart?.pName
+            title.font = UIFont(name: "AppleSDGothicNeo-Medium", size: frame.width / 20)
+            
+            specification.text = cart?.pCS
+            specification.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 25)
+            
+            price.text = "THB " + (cart?.pPrice)!
+            price.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 20)
+            
+            qtyLable.text = String(cart!.pQty)
+            
+            
+        }
+    }
     
     let checkBtn: UIButton = {
         let btn = UIButton()
@@ -53,14 +83,13 @@ class CartCell: UITableViewCell {
     
     let plusBtn: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "plus"), for: .normal)
-        btn.setImage(UIImage(named: "plusClicked"), for: .highlighted)
+        btn.setTitle("+", for: .normal)
+        btn.backgroundColor = UIColor.white
+        btn.setTitleColor(UIColor.black, for: .normal)
+        //btn.setImage(UIImage(named: "plus"), for: .normal)
+        //btn.setImage(UIImage(named: "plusClicked"), for: .highlighted)
         return btn
     }()
-    
-    func clicked() {
-        print(123123)
-    }
     
     let qtyLable: UILabel = {
         let lb = UILabel()
@@ -72,8 +101,12 @@ class CartCell: UITableViewCell {
     }()
     let minusBtn: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "minus"), for: .normal)
-        btn.setImage(UIImage(named: "minusClicked"), for: .selected)
+        btn.setTitle("-", for: .normal)
+        btn.backgroundColor = UIColor.white
+        btn.setTitleColor(UIColor.black, for: .normal)
+        //btn.titleLabel?.textColor = UIColor.black
+        //btn.setImage(UIImage(named: "minus"), for: .normal)
+        //btn.setImage(UIImage(named: "minusClicked"), for: .selected)
         return btn
     }()
     
@@ -81,16 +114,34 @@ class CartCell: UITableViewCell {
         addSubview(checkBtn)
         checkBtn.translatesAutoresizingMaskIntoConstraints = false
         checkBtn.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        checkBtn.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
-        checkBtn.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        checkBtn.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        checkBtn.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 15).isActive = true
+        checkBtn.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        checkBtn.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        checkBtn.addTarget(self, action: #selector(handleCheck), for: .touchUpInside)
+        
+    }
+    
+    func handleCheck() {
+        if let uid = FIRAuth.auth()?.currentUser?.uid {
+            let ref = FIRDatabase.database().reference().child("users").child(uid).child("SHOPPINGCART").child((cart?.cartKey)!).child("Check")
+            //ref.setValue(false)
+            ref.observeSingleEvent(of: .value, with: { (snap) in
+                if (snap.value as! Bool) {
+                    ref.setValue(false)
+                } else {
+                    ref.setValue(true)
+                }
+            })
+        }
+        
+        
     }
     
     func addImageView() {
         addSubview(imgView)
         imgView.translatesAutoresizingMaskIntoConstraints = false
         imgView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        imgView.leftAnchor.constraint(equalTo: checkBtn.rightAnchor, constant: 10).isActive = true
+        imgView.leftAnchor.constraint(equalTo: checkBtn.rightAnchor, constant: 15).isActive = true
         imgView.heightAnchor.constraint(equalToConstant: 110).isActive = true
         imgView.widthAnchor.constraint(equalToConstant: 110).isActive = true
     }
@@ -106,7 +157,7 @@ class CartCell: UITableViewCell {
     func addTitle() {
         addSubview(title)
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -45).isActive = true
+        title.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -40).isActive = true
         title.leftAnchor.constraint(equalTo: imgView.rightAnchor, constant: 10).isActive = true
         title.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
     }
@@ -114,7 +165,7 @@ class CartCell: UITableViewCell {
     func addPrice() {
         addSubview(price)
         price.translatesAutoresizingMaskIntoConstraints = false
-        price.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 15).isActive = true
+        price.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 10).isActive = true
         price.leftAnchor.constraint(equalTo: imgView.rightAnchor, constant: 10).isActive = true
         price.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
     }
@@ -122,20 +173,50 @@ class CartCell: UITableViewCell {
     func addStpper() {
         addSubview(stepperView)
         stepperView.translatesAutoresizingMaskIntoConstraints = false
-        stepperView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 45).isActive = true
+        stepperView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 40).isActive = true
         stepperView.leftAnchor.constraint(equalTo: imgView.rightAnchor, constant: 10).isActive = true
         stepperView.heightAnchor.constraint(equalToConstant: 24).isActive = true
         stepperView.widthAnchor.constraint(equalToConstant: 90).isActive = true
         
         stepperView.addSubview(minusBtn)
         minusBtn.frame = CGRect(x: 1, y: 0.5, width: 23, height: 23)
-        minusBtn.addTarget(self, action: #selector(clicked), for: .touchUpInside)
+        minusBtn.addTarget(self, action: #selector(handleMinus), for: .touchUpInside)
         stepperView.addSubview(plusBtn)
         plusBtn.frame = CGRect(x: 67, y: 0.5, width: 23, height: 23)
+        plusBtn.addTarget(self, action: #selector(handlePlus), for: .touchUpInside)
         stepperView.addSubview(qtyLable)
         qtyLable.frame = CGRect(x: 25, y: 0, width: 40, height: 24)
     }
     
+    func handlePlus() {
+        if let uid = FIRAuth.auth()?.currentUser?.uid {
+            let ref = FIRDatabase.database().reference().child("users").child(uid).child("SHOPPINGCART").child((cart?.cartKey)!).child("Qty")
+            ref.observeSingleEvent(of: .value, with: { (snap) in
+                var num = snap.value as! Int
+                num = num + 1
+                if num > (self.cart?.pCSRemain)! {
+                    ref.setValue(6)
+                } else {
+                    ref.setValue(num)
+                }
+            })
+        }
+    }
+    
+    func handleMinus() {
+        if let uid = FIRAuth.auth()?.currentUser?.uid {
+            let ref = FIRDatabase.database().reference().child("users").child(uid).child("SHOPPINGCART").child((cart?.cartKey)!).child("Qty")
+            ref.observeSingleEvent(of: .value, with: { (snap) in
+                var num = snap.value as! Int
+                num = num - 1
+                if num < 1 {
+                    ref.setValue(1)
+                } else {
+                    ref.setValue(num)
+                }
+            })
+        }
+    }
     
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
