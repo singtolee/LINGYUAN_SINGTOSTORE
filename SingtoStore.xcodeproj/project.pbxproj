@@ -53,6 +53,9 @@
 		096A65041DFBB18800EC5752 /* FavoritePrd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096A65031DFBB18800EC5752 /* FavoritePrd.swift */; };
 		096A65081DFBB79D00EC5752 /* FavoritePrdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096A65071DFBB79D00EC5752 /* FavoritePrdCell.swift */; };
 		096A650A1DFBBBD100EC5752 /* FavoriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096A65091DFBBBD100EC5752 /* FavoriteVC.swift */; };
+		096BF5731E00FF840061F59A /* CheckOutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BF5721E00FF840061F59A /* CheckOutVC.swift */; };
+		096BF5751E010C5F0061F59A /* AddressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BF5741E010C5F0061F59A /* AddressCard.swift */; };
+		096BF5771E0124C20061F59A /* StepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BF5761E0124C20061F59A /* StepperView.swift */; };
 		430008F5153A23603667FFE3 /* Pods_SingtoStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AABEBB40E62B6CF7EA3DD0DF /* Pods_SingtoStore.framework */; };
 /* End PBXBuildFile section */
 
@@ -106,6 +109,9 @@
 		096A65031DFBB18800EC5752 /* FavoritePrd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritePrd.swift; sourceTree = "<group>"; };
 		096A65071DFBB79D00EC5752 /* FavoritePrdCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritePrdCell.swift; sourceTree = "<group>"; };
 		096A65091DFBBBD100EC5752 /* FavoriteVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteVC.swift; sourceTree = "<group>"; };
+		096BF5721E00FF840061F59A /* CheckOutVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckOutVC.swift; sourceTree = "<group>"; };
+		096BF5741E010C5F0061F59A /* AddressCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressCard.swift; sourceTree = "<group>"; };
+		096BF5761E0124C20061F59A /* StepperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperView.swift; sourceTree = "<group>"; };
 		98F3A6A83D5D930B0F2D357D /* Pods-SingtoStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SingtoStore.release.xcconfig"; path = "Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore.release.xcconfig"; sourceTree = "<group>"; };
 		AABEBB40E62B6CF7EA3DD0DF /* Pods_SingtoStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SingtoStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA645D63271893B714C1DD5 /* Pods-SingtoStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SingtoStore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SingtoStore/Pods-SingtoStore.debug.xcconfig"; sourceTree = "<group>"; };
@@ -263,6 +269,7 @@
 		0928896C1DF26D9100A1DCEB /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				096BF5711E00FF4F0061F59A /* CHECKOUTVIEW */,
 				093A25291DF6AC5300C28592 /* DetailedProduct */,
 				093A25261DF6517900C28592 /* CellView */,
 				093A25211DF6512200C28592 /* Modal */,
@@ -410,6 +417,16 @@
 				096A65031DFBB18800EC5752 /* FavoritePrd.swift */,
 			);
 			name = Modal;
+			sourceTree = "<group>";
+		};
+		096BF5711E00FF4F0061F59A /* CHECKOUTVIEW */ = {
+			isa = PBXGroup;
+			children = (
+				096BF5721E00FF840061F59A /* CheckOutVC.swift */,
+				096BF5741E010C5F0061F59A /* AddressCard.swift */,
+				096BF5761E0124C20061F59A /* StepperView.swift */,
+			);
+			name = CHECKOUTVIEW;
 			sourceTree = "<group>";
 		};
 		9FD3BFA05A55176598DD3089 /* Pods */ = {
@@ -562,6 +579,7 @@
 				093A25231DF6513A00C28592 /* ShortProduct.swift in Sources */,
 				0966D26E1DFD6DA4008588D3 /* CartCell.swift in Sources */,
 				09059A501DF3F7B900DA572A /* FressAddress.swift in Sources */,
+				096BF5731E00FF840061F59A /* CheckOutVC.swift in Sources */,
 				092889661DF26B9F00A1DCEB /* Tabbar.swift in Sources */,
 				09059A451DF3DF3400DA572A /* EditUserName.swift in Sources */,
 				096A650A1DFBBBD100EC5752 /* FavoriteVC.swift in Sources */,
@@ -578,6 +596,7 @@
 				0966D26C1DFD679B008588D3 /* CartPrd.swift in Sources */,
 				092889711DF26E2B00A1DCEB /* ProductTab.swift in Sources */,
 				09059A5A1DF3FA3900DA572A /* EditPostAddress.swift in Sources */,
+				096BF5751E010C5F0061F59A /* AddressCard.swift in Sources */,
 				09059A3E1DF308FC00DA572A /* RegisterVC.swift in Sources */,
 				095601631DF99E20000B4DF4 /* InfoView.swift in Sources */,
 				09059A581DF3F88000DA572A /* EditFressAddress.swift in Sources */,
@@ -588,6 +607,7 @@
 				092889691DF26D1500A1DCEB /* Tools.swift in Sources */,
 				093A25341DF6B52C00C28592 /* CarouselView.swift in Sources */,
 				096A65041DFBB18800EC5752 /* FavoritePrd.swift in Sources */,
+				096BF5771E0124C20061F59A /* StepperView.swift in Sources */,
 				093A251D1DF6504900C28592 /* ScrollTab.swift in Sources */,
 				0928896F1DF26E1200A1DCEB /* StoryTab.swift in Sources */,
 				09429F1D1DF7C15E00EF69B6 /* ColorSizeCell.swift in Sources */,

@@ -195,7 +195,7 @@ class CartCell: UITableViewCell {
                 var num = snap.value as! Int
                 num = num + 1
                 if num > (self.cart?.pCSRemain)! {
-                    ref.setValue(6)
+                    ref.setValue((self.cart?.pCSRemain)!)
                 } else {
                     ref.setValue(num)
                 }

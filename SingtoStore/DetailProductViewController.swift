@@ -13,7 +13,7 @@ import FirebaseDatabase
 class DetailProductViewController: DancingShoesViewController, UIScrollViewDelegate {
 
     var prdKey: String?
-    var product: DetailProduct?
+    var product: DetailProduct!
     var handle: UInt!
     var loginHandle : UInt!
     

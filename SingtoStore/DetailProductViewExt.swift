@@ -60,7 +60,15 @@ extension DetailProductViewController {
     func buyNow() {
         if isUserLogedin() {
             //add prd to cart
-            print(1234568888)
+            let checkOutVc = CheckOutVC()
+            checkOutVc.prd = self.product
+            let paths = self.csView.collectionView.indexPathsForSelectedItems
+            let path = paths?[0].item
+            checkOutVc.selectedCS = path!
+            checkOutVc.prdKey = self.prdKey!
+            checkOutVc.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+
+            self.present(checkOutVc, animated: true, completion: nil)
         } else {
             //go to login
             let loginPage = LoginVC()
