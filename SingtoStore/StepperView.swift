@@ -47,6 +47,7 @@ class StepperView: UIView {
         minusBtn.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         minusBtn.widthAnchor.constraint(equalToConstant: 30).isActive = true
         minusBtn.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        //minusBtn.addTarget(self, action: #selector(decrease), for: .touchUpInside)
         
         addSubview(plusBtn)
         plusBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -54,6 +55,7 @@ class StepperView: UIView {
         plusBtn.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         plusBtn.heightAnchor.constraint(equalToConstant: 30).isActive = true
         plusBtn.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        //plusBtn.addTarget(self, action: #selector(add), for: .touchUpInside)
         
         addSubview(qtyLable)
         qtyLable.translatesAutoresizingMaskIntoConstraints = false
@@ -67,4 +69,19 @@ class StepperView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+//    func add() {
+//        var qty = Int(qtyLable.text!)!
+//        qty += 1
+//        qtyLable.text = String(qty)
+//    }
+//    
+//    func decrease() {
+//        var qty = Int(qtyLable.text!)!
+//        qty -= 1
+//        if qty < 1 {
+//            qty = 1
+//        }
+//        qtyLable.text = String(qty)
+//    }
 }

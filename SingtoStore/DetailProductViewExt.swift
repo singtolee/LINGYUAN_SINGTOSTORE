@@ -59,16 +59,32 @@ extension DetailProductViewController {
     
     func buyNow() {
         if isUserLogedin() {
-            //add prd to cart
-            let checkOutVc = CheckOutVC()
-            checkOutVc.prd = self.product
-            let paths = self.csView.collectionView.indexPathsForSelectedItems
-            let path = paths?[0].item
-            checkOutVc.selectedCS = path!
-            checkOutVc.prdKey = self.prdKey!
-            checkOutVc.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-
-            self.present(checkOutVc, animated: true, completion: nil)
+            FIRDatabase.database().reference().child("FreeDeliveryAddresses").child((FIRAuth.auth()?.currentUser?.uid)!).observeSingleEvent(of: .value, with: { (snap) in
+                if snap.hasChildren() {
+                    //has address
+                    let checkOutVc = CheckOutVC()
+                    checkOutVc.prd = self.product
+                    let paths = self.csView.collectionView.indexPathsForSelectedItems
+                    let path = paths?[0].item
+                    checkOutVc.selectedCS = path!
+                    checkOutVc.prdKey = self.prdKey!
+                    checkOutVc.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+                    self.present(checkOutVc, animated: true, completion: nil)
+                    
+                } else {
+                    //no address, pop up action list
+                    let editAddressFirst = UIAlertController(title: "Sorry", message: "Please edit your address first", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default) {(action) -> Void in
+                        let editAddressVC = EditFreeAddress()
+                        self.navigationController?.pushViewController(editAddressVC, animated: true)
+                    }
+                    editAddressFirst.addAction(okAction)
+                    let cancelAction = UIAlertAction(title: "CANCEL", style: .destructive) {(_: UIAlertAction) -> Void in
+                    }
+                    editAddressFirst.addAction(cancelAction)
+                    self.present(editAddressFirst, animated: true, completion: nil)
+                }
+            })
         } else {
             //go to login
             let loginPage = LoginVC()

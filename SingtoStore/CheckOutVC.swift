@@ -21,6 +21,8 @@ class CheckOutVC: UIViewController {
     var prdKey: String!
     var qtyHandle: UInt!
     
+    var max: Int = 1
+    
     let prdImg: UIImageView = {
         let img = UIImageView()
         img.image = UIImage(named: "placeholder48")
@@ -39,6 +41,13 @@ class CheckOutVC: UIViewController {
     
     let addressCard = AddressCard()
     
+    let maxQty: UILabel = {
+        let lb = UILabel()
+        lb.textColor = Tools.dancingShoesColor
+        lb.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 10)
+        return lb
+    }()
+    
     let totalPriceLable: UILabel = {
         let lb = UILabel()
         lb.text = "TOTAL: THB 0.0"
@@ -52,6 +61,7 @@ class CheckOutVC: UIViewController {
         let btn = UIButton()
         btn.backgroundColor = Tools.dancingShoesColor
         btn.setTitleColor(UIColor.white, for: .normal)
+        btn.setTitleColor(UIColor.gray, for: .disabled)
         btn.setTitle("CHECK OUT", for: .normal)
         btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
         return btn
@@ -114,6 +124,56 @@ class CheckOutVC: UIViewController {
         
         bottomBar.addSubview(checkOutBtn)
         checkOutBtn.frame = CGRect(x: view.frame.width / 2, y: 0, width: view.frame.width / 2, height: 40)
+        checkOutBtn.isEnabled = false
+        checkOutBtn.addTarget(self, action: #selector(checkOut), for: .touchUpInside)
+    }
+    
+    func checkOut() {
+        //if qty <= remain, check out,update remain qty , pop up sucessful alert, else, alert to reduce qty;
+        let date = Date()
+        let formatter = DateFormatter()
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm"
+        //let calender = Calendar.current
+        //let time = calender.dateComponents([.hour, .minute], from: date)
+        formatter.dateFormat = "dd-MM-yyyy"
+        let riqi = formatter.string(from: date)
+        let time = timeFormatter.string(from: date)
+        var order: Dictionary = [String: Any]()
+        order["isDone"] = false
+        order["date"] = riqi
+        order["time"] = time
+        order["userKey"] = FIRAuth.auth()?.currentUser?.uid
+        order["prdKey"] = self.prdKey
+        order["prdName"] = self.prdTitle.text
+        order["prdCS"] = self.cs.text
+        order["Qty"] = self.stepper.qtyLable.text
+        order["total"] = self.totalPriceLable.text
+        order["userAddress"] = self.addressCard.addressLable.text + " ," + self.addressCard.recipientLable.text
+        let orderRef = FIRDatabase.database().reference().child("ORDERS").child(riqi).child(self.userAddress.building)
+        let orderKey = orderRef.childByAutoId().key
+        orderRef.child(orderKey).setValue(order) { (error, ref) in
+            if error != nil {
+                //handle error
+                return
+            } else {
+                // update qty then dismiss
+                let duct = Int(self.stepper.qtyLable.text!)
+                let newQty = String(self.max - duct!)
+            self.prdRef.child(self.prdKey).child("prodcutCSQty").child(String(self.selectedCS)).setValue(newQty)
+                var my: Dictionary = [String: Any]()
+                my["prdKey"] = self.prdKey
+                my["qty"] = self.stepper.qtyLable.text
+                my["cs"] = self.cs.text
+                my["isDone"] = false
+                my["date"] = riqi
+                my["csID"] = self.selectedCS
+                my["time"] = time
+                FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Orders").child(orderKey).setValue(my)
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        
     }
     
     func setUpAddressCard() {
@@ -154,7 +214,7 @@ class CheckOutVC: UIViewController {
         cs.translatesAutoresizingMaskIntoConstraints = false
         cs.topAnchor.constraint(equalTo: prdImg.bottomAnchor, constant: 10).isActive = true
         cs.leftAnchor.constraint(equalTo: halfBG.leftAnchor, constant: 30).isActive = true
-        cs.widthAnchor.constraint(equalToConstant: view.frame.width / 2).isActive = true
+        cs.widthAnchor.constraint(equalToConstant: view.frame.width / 2 - 30).isActive = true
         cs.heightAnchor.constraint(equalToConstant: 30).isActive = true
         cs.text = prd.prdCS?[selectedCS]
         cs.font = UIFont(name: "AppleSDGothicNeo-Light", size: 14)
@@ -164,6 +224,15 @@ class CheckOutVC: UIViewController {
         stepper.leftAnchor.constraint(equalTo: cs.rightAnchor, constant: 0).isActive = true
         stepper.widthAnchor.constraint(equalToConstant: 105).isActive = true
         stepper.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        stepper.minusBtn.addTarget(self, action: #selector(decrease), for: .touchUpInside)
+        stepper.plusBtn.addTarget(self, action: #selector(add), for: .touchUpInside)
+        
+        halfBG.addSubview(maxQty)
+        maxQty.translatesAutoresizingMaskIntoConstraints = false
+        maxQty.centerYAnchor.constraint(equalTo: stepper.centerYAnchor).isActive = true
+        maxQty.leftAnchor.constraint(equalTo: stepper.rightAnchor, constant: 5).isActive = true
+        maxQty.widthAnchor.constraint(equalToConstant: 45).isActive = true
+        maxQty.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     func loadUserAddress() {
@@ -176,20 +245,46 @@ class CheckOutVC: UIViewController {
                     free.phone = dict["phone"]!
                     free.room = dict["roomNumber"]!
                     self.userAddress = free
-                }
                 DispatchQueue.main.async(execute: { 
                     self.addressCard.address = self.userAddress
+                    self.checkOutBtn.isEnabled = true
                 })
+                } else {//no have address yet , pop up hint
+                    
+                }
             })
         }
         
     }
     
+    func add() {
+        var qty = Int(stepper.qtyLable.text!)!
+        //var qty = Int(qtyLable.text!)!
+        qty += 1
+        if qty > max {
+            qty = max
+        }
+        let total = prd.prdPrice! * Double(qty)
+        stepper.qtyLable.text = String(qty)
+        totalPriceLable.text = "TOTAL: THB \(total)"
+    }
+    
+    func decrease() {
+        var qty = Int(stepper.qtyLable.text!)!
+        qty -= 1
+        if qty < 1 {
+            qty = 1
+        }
+        let total = prd.prdPrice! * Double(qty)
+        stepper.qtyLable.text = String(qty)
+        totalPriceLable.text = "TOTAL: THB \(total)"
+    }
+    
     func qtyChecker() {
         self.qtyHandle = prdRef.child(self.prdKey).child("prodcutCSQty").child(String(selectedCS)).observe(.value, with: { (snap) in
             let remain = snap.value as! String
-            let ii = Int(remain)!
-            print(ii)
+            self.max = Int(remain)!
+            self.maxQty.text = "(\(self.max) LEFT)"
         })
     }
 

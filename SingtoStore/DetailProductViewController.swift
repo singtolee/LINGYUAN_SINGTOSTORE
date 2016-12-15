@@ -169,6 +169,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         self.carouselView.pageControl.numberOfPages = prd.prdImages!.count
         
         self.middleView.commitmentView.isHidden = false
+        self.bottomBar.isHidden = false
         self.middleView.prdc = prd
         
         self.csView.heightAnchor.constraint(equalToConstant: 24 * CGFloat(round(Double(prd.prdCS!.count) / 2))).isActive = true
@@ -215,6 +216,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     func setUpBottomBar() {
         view.addSubview(bottomBar)
         bottomBar.backgroundColor = UIColor.white
+        bottomBar.isHidden = true
         bottomBar.translatesAutoresizingMaskIntoConstraints = false
         bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         bottomBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
