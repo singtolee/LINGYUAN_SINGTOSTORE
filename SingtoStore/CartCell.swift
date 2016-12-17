@@ -13,6 +13,8 @@ import FirebaseAuth
 
 class CartCell: UITableViewCell {
     
+    var nowQty: Int!
+    
     var cart: CartProduct? {
         didSet {
             if (cart?.pChecked)! {
@@ -32,7 +34,7 @@ class CartCell: UITableViewCell {
             specification.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 25)
             
             price.text = "THB " + String((cart?.pPrice)!)
-            price.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 20)
+            price.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 25)
             
             qtyLable.text = String(cart!.pQty)
             
@@ -189,19 +191,26 @@ class CartCell: UITableViewCell {
     }
     
     func handlePlus() {
-        if let uid = FIRAuth.auth()?.currentUser?.uid {
-            let ref = FIRDatabase.database().reference().child("users").child(uid).child("SHOPPINGCART").child((cart?.cartKey)!).child("Qty")
-            ref.observeSingleEvent(of: .value, with: { (snap) in
-                var num = snap.value as! Int
-                num = num + 1
-                if num > (self.cart?.pCSRemain)! {
-                    ref.setValue((self.cart?.pCSRemain)!)
-                } else {
-                    ref.setValue(num)
+        let qtyRef = FIRDatabase.database().reference().child("AllProduct").child((self.cart?.pKey)!).child("prodcutCSQty").child(String((self.cart?.pID)!))
+        qtyRef.observeSingleEvent(of: .value, with: { (snap) in
+            let aa = snap.value as! String
+            self.nowQty = Int(aa)!
+            if self.nowQty > 0 {
+                if let uid = FIRAuth.auth()?.currentUser?.uid {
+                    let ref = FIRDatabase.database().reference().child("users").child(uid).child("SHOPPINGCART").child((self.cart?.cartKey)!).child("Qty")
+                    ref.observeSingleEvent(of: .value, with: { (snap) in
+                        var num = snap.value as! Int
+                        num = num + 1
+                        if num > self.nowQty {
+                            ref.setValue(self.nowQty)
+                        } else {
+                            ref.setValue(num)
+                        }
+                    })
                 }
-            })
-        }
-    }
+            }
+        })
+}
     
     func handleMinus() {
         if let uid = FIRAuth.auth()?.currentUser?.uid {

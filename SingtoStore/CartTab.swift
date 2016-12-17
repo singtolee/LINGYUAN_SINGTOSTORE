@@ -15,6 +15,9 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     
     let cellID = "cellID"
     
+    let addressRef = FIRDatabase.database().reference().child("FreeDeliveryAddresses")
+    var userAddress: FreeAddress!
+    
     let ref = FIRDatabase.database().reference().child("users")
     let prdRef = FIRDatabase.database().reference().child("AllProduct")
     var handle: UInt!
@@ -37,9 +40,17 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         let btn = UIButton()
         btn.backgroundColor = Tools.dancingShoesColor
         btn.setTitleColor(UIColor.white, for: .normal)
+        btn.setTitleColor(UIColor.gray, for: .disabled)
         btn.setTitle("CHECK OUT", for: .normal)
         btn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 14)
         return btn
+    }()
+    
+    let indicator: UIActivityIndicatorView = {
+        let indi = UIActivityIndicatorView()
+        indi.hidesWhenStopped = true
+        indi.activityIndicatorViewStyle = .gray
+        return indi
     }()
     
     override func viewDidLoad() {
@@ -48,9 +59,12 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         
         addBottomBar()
         addTableView()
+        loadUserAddress()
+        view.addSubview(indicator)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         ifUserLogOut()
-        
-        //self.loadUserCart()
     }
     
     func ifUserLogOut() {
@@ -66,27 +80,14 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                 self.loadUserCart()
             }
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //self.loadUserCart()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        //will crash when switch between cartTab and other tabs very fast, as viewdiddisappear and willappear
-        
-        //self.carts.removeAll()
-        //self.tableView.reloadData()
-        //remove observor
-//        if Tools.isUserLogedin() {
-//            if let uid = FIRAuth.auth()?.currentUser?.uid {
-//                ref.child(uid).child("SHOPPINGCART").removeObserver(withHandle: handle)
-//            }
-//            
-//        }
     }
     func addTableView() {
         view.addSubview(tableView)
@@ -114,9 +115,62 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         
         bottomBar.addSubview(checkOutBtn)
         checkOutBtn.frame = CGRect(x: view.frame.width / 2, y: 0, width: view.frame.width / 2, height: 40)
-        
-        
-        
+        checkOutBtn.addTarget(self, action: #selector(checkOutAll), for: .touchUpInside)
+        checkOutBtn.isEnabled = false
+    }
+    func checkOutAll() {
+        indicator.startAnimating()
+        for cart in carts {
+            if cart.pChecked! {
+                var order: Dictionary = [String: Any]()
+                order["isDone"] = false
+                let riq = Tools.getDateTime().riqi
+                order["date"] = riq
+                order["time"] = Tools.getDateTime().time
+                order["userKey"] = FIRAuth.auth()?.currentUser?.uid
+                order["prdKey"] = cart.pKey
+                order["prdName"] = cart.pName
+                order["prdCS"] = cart.pCS
+                order["Qty"] = cart.pQty
+                order["total"] = Double(cart.pQty) * cart.pPrice!
+                order["userAddress"] = self.userAddress.recipient + " ," + self.userAddress.phone + " ," + self.userAddress.room + " ," + self.userAddress.building
+                let orderRef = FIRDatabase.database().reference().child("ORDERS").child(riq).child(self.userAddress.building)
+                let orderKey = orderRef.childByAutoId().key
+                orderRef.child(orderKey).setValue(order, withCompletionBlock: { (err, ref) in
+                    if err != nil {
+                        //handle error
+                    } else {
+                        // update Qty， get remain first, and remove from cart
+                        self.prdRef.child(cart.pKey!).child("prodcutCSQty").child(String((cart.pID)!)).observeSingleEvent(of: .value, with: { (snap) in
+                            let bb = snap.value as! String
+                            let duct = cart.pQty
+                            let max = Int(bb)!
+                            let newQty = String(max - duct)
+                            self.prdRef.child(cart.pKey!).child("prodcutCSQty").child(String((cart.pID)!)).setValue(newQty)
+                            self.ref.child((FIRAuth.auth()?.currentUser?.uid)!).child("SHOPPINGCART").child(cart.cartKey!).removeValue()
+                            //write to user ORDERS
+                            var my: Dictionary = [String: Any]()
+                            my["prdKey"] = cart.pKey
+                            my["qty"] = cart.pQty
+                            my["cs"] = cart.pCS
+                            my["isDone"] = false
+                            my["date"] = riq
+                            my["csID"] = cart.pID
+                            my["time"] = Tools.getDateTime().time
+                            FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Orders").child(orderKey).setValue(my)
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                    }
+                })
+                
+            }
+        }
+        let buySuccess = UIAlertController(title: "SUCCESS", message: "Your order will be shipped out within 24 hours.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .destructive) {(action) -> Void in
+            self.indicator.stopAnimating()
+        }
+        buySuccess.addAction(okAction)
+        self.present(buySuccess, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -139,12 +193,27 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            self.deleteFromCartByKey(key: carts[indexPath.item].cartKey!)
+        }
+    }
+    
+    func deleteFromCartByKey(key: String) {
+        if let uid = FIRAuth.auth()?.currentUser?.uid {
+            let cartRef = ref.child(uid).child("SHOPPINGCART")
+            cartRef.child(key).removeValue()
+        }
+    }
+    
     func loadUserCart() {
         if Tools.isUserLogedin() {
             if let uid = FIRAuth.auth()?.currentUser?.uid {
                 let cartRef = ref.child(uid).child("SHOPPINGCART")
                 self.handle = cartRef.observe(.value, with: { (snap) in
                     self.carts.removeAll()
+                    self.tableView.reloadData()
+                    self.updateBottomBar()
                     for child in snap.children {
                         if let csnap = child as? FIRDataSnapshot {
                             if let dict = csnap.value as? [String: AnyObject] {
@@ -173,13 +242,10 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                                     self.tableView.reloadData()
                                     self.updateBottomBar()
                                 })
-                                //self.loadPrdByKey(key: ke!, id: id!, check: che!, num: qty!, ck: cartKey)
                             }
                         }
-                        
                     }
                 })
-                
             }
         } else {
             // user not login, display login hint with tableview empty status
@@ -187,34 +253,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
             //self.carts.removeAll()
             //tableView.reloadData()
         }
-        
     }
-    
-//    func loadPrdByKey(key: String, id: Int, check: Bool, num: Int, ck: String) {
-//        prdRef.child(key).observeSingleEvent(of: .value, with: { (snap) in
-//            if let dict = snap.value as? [String: AnyObject] {
-//                let cart = CartProduct()
-//                cart.pKey = snap.key
-//                cart.pName = dict["productName"] as? String
-//                cart.pPrice = dict["productPrice"] as? String
-//                let pMainImages = dict["productImages"] as? [String]
-//                cart.pMainImage = pMainImages?[0]
-//                cart.pChecked = check
-//                let cs = dict["prodcutCS"] as? [String]
-//                //let qtys = dict["prodcutCSQty"] as? [String]
-//                cart.pCS = cs?[id]
-//                cart.pQty = num
-//                cart.cartKey = ck
-//                //cart.pCSRemain = (qtys?[id] as! Int)
-//                cart.pCSRemain = 6 // now set the max Qty to be 6, can not buy more than 6
-//                self.carts.append(cart)
-//                DispatchQueue.main.async(execute: {
-//                    self.tableView.reloadData()
-//                    self.updateBottomBar()
-//                })
-//            }
-//        })
-//    }
     
     func updateBottomBar() {
         var item = 0
@@ -228,6 +267,24 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         self.totalPriceLable.text = "TOTOAL: THB " + String(total)
     }
     
-    
-    
+    func loadUserAddress() {
+        if let uid = FIRAuth.auth()?.currentUser?.uid {
+            addressRef.child(uid).observeSingleEvent(of: .value, with: { (snap) in
+                if let dict = snap.value as? [String: String] {
+                    let free = FreeAddress()
+                    free.recipient = dict["recipient"]!
+                    free.building = dict["officeBuilding"]!
+                    free.phone = dict["phone"]!
+                    free.room = dict["roomNumber"]!
+                    self.userAddress = free
+                    DispatchQueue.main.async(execute: {
+                        self.checkOutBtn.isEnabled = true
+                    })
+                } else {//no have address yet , pop up hint
+                    
+                }
+            })
+        }
+        
+    }
 }

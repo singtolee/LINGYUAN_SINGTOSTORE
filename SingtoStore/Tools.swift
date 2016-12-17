@@ -50,6 +50,17 @@ class Tools {
         })
     }
     
+    static func getDateTime() -> (riqi: String, time: String) {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        let timeFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        timeFormatter.dateFormat = "HH:mm"
+        let riqi = dateFormatter.string(from: date)
+        let time = timeFormatter.string(from: date)
+        return (riqi, time)
+    }
+    
     static func isUserLogedin() -> Bool {
         if FIRAuth.auth()?.currentUser != nil {
             // User is signed in.

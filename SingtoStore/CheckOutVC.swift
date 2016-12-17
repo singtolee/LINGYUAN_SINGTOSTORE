@@ -67,6 +67,13 @@ class CheckOutVC: UIViewController {
         return btn
     }()
     
+    let indicator: UIActivityIndicatorView = {
+        let indi = UIActivityIndicatorView()
+        indi.hidesWhenStopped = true
+        indi.activityIndicatorViewStyle = .whiteLarge
+        return indi
+    }()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,6 +136,13 @@ class CheckOutVC: UIViewController {
     }
     
     func checkOut() {
+        //add indicator
+        view.addSubview(indicator)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        indicator.bottomAnchor.constraint(equalTo: halfBG.topAnchor, constant: -20).isActive = true
+        indicator.startAnimating()
+        
         //if qty <= remain, check out,update remain qty , pop up sucessful alert, else, alert to reduce qty;
         let date = Date()
         let formatter = DateFormatter()
@@ -169,8 +183,21 @@ class CheckOutVC: UIViewController {
                 my["date"] = riqi
                 my["csID"] = self.selectedCS
                 my["time"] = time
-                FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Orders").child(orderKey).setValue(my)
-                self.dismiss(animated: true, completion: nil)
+                FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Orders").child(orderKey).setValue(my, withCompletionBlock: { (error, ref) in
+                    if error != nil {
+                        //display try again message
+                    } else {
+                        //display successful message then dismiss vc
+                        let buySuccess = UIAlertController(title: "SUCCESS", message: "Your order will be shipped out within 24 hours.", preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .destructive) {(action) -> Void in
+                            self.indicator.stopAnimating()
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                        buySuccess.addAction(okAction)
+                        self.present(buySuccess, animated: true, completion: nil)
+                    }
+                })
+                //self.dismiss(animated: true, completion: nil)
             }
         }
         

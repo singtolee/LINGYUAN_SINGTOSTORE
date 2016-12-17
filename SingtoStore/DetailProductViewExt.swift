@@ -114,30 +114,6 @@ extension DetailProductViewController {
                 })
             }
         })
-        
-        
-//        if isUserLogedin() {
-//            if let uid = FIRAuth.auth()?.currentUser?.uid {
-//                let ref = self.userRef.child(uid).child("FavoritePRD")
-//                self.loginHandle = ref.observe(.value, with: { (snapshot) in
-//                    if snapshot.hasChild(self.prdKey!) {
-//                        //use dispatchMain() caused dead lock
-//                        DispatchQueue.main.async(execute: {
-//                            self.likeButton.setImage(UIImage(named: "like"), for: .normal)
-//                        })
-//                        //self.likeButton.setImage(UIImage(named: "like"), for: .normal)
-//                    } else {
-//                        DispatchQueue.main.async(execute: {
-//                            self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
-//                        })
-//                        //self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
-//                    }
-//                    
-//                })
-//                
-//            } else {return}
-//            
-//        }
     }
     
     func handleLikeClick() {

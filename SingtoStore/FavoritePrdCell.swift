@@ -13,7 +13,8 @@ class FavroitPrdCell: UITableViewCell {
         didSet {
             name.text = prd?.pName!
             name.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 20)
-            price.text = "THB " + (prd?.pPrice)!
+            let prices = Double((prd?.pPrice)!)
+            price.text = "THB \(prices!)"
             price.font = UIFont(name: "AppleSDGothicNeo-Light", size: frame.width / 25)
             if let imgUrl = URL(string: (prd?.pMainImages?[0])!) {
                 profileImageView.sd_setImage(with: imgUrl, placeholderImage: UIImage(named: "placeholder48"))

@@ -49,7 +49,8 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     
     let addToCartBtn: UIButton = {
         let addBtn = UIButton()
-        addBtn.setTitle("ADD TO CART", for: UIControlState())
+        addBtn.setTitle("ADD TO CART", for: .normal)
+        addBtn.setTitleColor(UIColor.gray, for: .disabled)
         addBtn.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
         addBtn.backgroundColor = Tools.dancingShoesColor
         addBtn.layer.cornerRadius = 6
@@ -58,7 +59,8 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
     
     let buyBtn: UIButton = {
         let buy = UIButton()
-        buy.setTitle("BUY NOW", for: UIControlState())
+        buy.setTitle("BUY NOW", for: .normal)
+        buy.setTitleColor(UIColor.gray, for: .disabled)
         buy.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 16)
         buy.backgroundColor = Tools.dancingShoesColor
         buy.layer.cornerRadius = 6
@@ -75,6 +77,19 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         findPrdbyKey()
         likeorUnlikeBtn()
     }
+    
+//    func outStockChecker() {
+//        let paths = self.csView.collectionView.indexPathsForSelectedItems
+//        let path = paths?[0].item
+//        if Int(csView.qtys[path!])! <= 0 {
+//            addToCartBtn.isEnabled = false
+//            buyBtn.isEnabled = false
+//        }else {
+//            addToCartBtn.isEnabled = true
+//            buyBtn.isEnabled = true
+//            
+//        }
+//    }
     
     func addInfoView() {
         scrollView.addSubview(infoView)
@@ -154,6 +169,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
                     self.product = prd
                     DispatchQueue.main.async(execute: { 
                         self.populateView(prd)
+                        //self.outStockChecker()
                     })
                     //self.populateView(prd)
                 }else {
@@ -179,6 +195,15 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         
         let ss = IndexPath(item: 0, section: 0)
         csView.collectionView.selectItem(at: ss, animated: false, scrollPosition: [])
+        
+        //only select cs wiht Qty > 0, in stock
+        for i in (prd.prdCSQty?.indices)! {
+            if Int((prd.prdCSQty?[i])!)! > 0 {
+                let ss = IndexPath(item: i, section: 0)
+                csView.collectionView.selectItem(at: ss, animated: false, scrollPosition: [])
+                break
+            }
+        }
         
         if (prd.prdInfoImages != nil) {
             addInfoView()

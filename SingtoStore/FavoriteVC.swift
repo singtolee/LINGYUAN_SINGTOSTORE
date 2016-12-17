@@ -55,6 +55,7 @@ class FavoriteVC: UITableViewController {
         if let uid = FIRAuth.auth()?.currentUser?.uid {
             handle = ref.child(uid).child("FavoritePRD").observe(.value, with: { (snapshot) in
                 self.favoritePrds.removeAll()
+                self.tableView.reloadData()
                 for child in snapshot.children {
                     let csnap = child as! FIRDataSnapshot
                     let ke = csnap.key

@@ -40,8 +40,8 @@ class ColorSizeView: UIView, UICollectionViewDataSource, UICollectionViewDelegat
         collectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     
-        let selectedIndexPath = IndexPath(item: 0, section: 0)
-        collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
+        //let selectedIndexPath = IndexPath(item: 0, section: 0)
+        //collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -52,6 +52,10 @@ class ColorSizeView: UIView, UICollectionViewDataSource, UICollectionViewDelegat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ColorSizeCell
         let url = colorsizes[indexPath.item]
         let qty = qtys[indexPath.item]
+        let iQty = Int(qty)
+        if iQty! < 1 {
+            cell.isUserInteractionEnabled = false
+        }
         cell.cs.text = url + "  (" + qty + " LEFT)"
         return cell
     }
