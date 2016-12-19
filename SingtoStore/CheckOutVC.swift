@@ -15,6 +15,9 @@ class CheckOutVC: UIViewController {
     
     let addressRef = FIRDatabase.database().reference().child("FreeDeliveryAddresses")
     let prdRef = FIRDatabase.database().reference().child("AllProduct")
+    let userRef = FIRDatabase.database().reference().child("users")
+    let orderRef = FIRDatabase.database().reference().child("ORDERS")
+    let ref = FIRDatabase.database().reference()
     var userAddress: FreeAddress!
     var prd: DetailProduct!
     var selectedCS: Int!
@@ -114,6 +117,11 @@ class CheckOutVC: UIViewController {
         halfBG.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         halfBG.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         halfBG.heightAnchor.constraint(equalToConstant: 220).isActive = true
+        
+        view.addSubview(indicator)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        indicator.bottomAnchor.constraint(equalTo: halfBG.topAnchor, constant: -20).isActive = true
     }
     
     func addBottomBar() {
@@ -132,76 +140,103 @@ class CheckOutVC: UIViewController {
         bottomBar.addSubview(checkOutBtn)
         checkOutBtn.frame = CGRect(x: view.frame.width / 2, y: 0, width: view.frame.width / 2, height: 40)
         checkOutBtn.isEnabled = false
-        checkOutBtn.addTarget(self, action: #selector(checkOut), for: .touchUpInside)
+        checkOutBtn.addTarget(self, action: #selector(safeCheckOut), for: .touchUpInside)
     }
     
-    func checkOut() {
-        //add indicator
-        view.addSubview(indicator)
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        indicator.bottomAnchor.constraint(equalTo: halfBG.topAnchor, constant: -20).isActive = true
+    
+    func safeCheckOut() {
         indicator.startAnimating()
+        let qtyBuy = Int(self.stepper.qtyLable.text!)!
         
-        //if qty <= remain, check out,update remain qty , pop up sucessful alert, else, alert to reduce qty;
-        let date = Date()
-        let formatter = DateFormatter()
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "HH:mm"
-        //let calender = Calendar.current
-        //let time = calender.dateComponents([.hour, .minute], from: date)
-        formatter.dateFormat = "dd-MM-yyyy"
-        let riqi = formatter.string(from: date)
-        let time = timeFormatter.string(from: date)
+        let safeRef = self.prdRef.child(self.prdKey).child("prodcutCSQty").child(String(self.selectedCS))
+        
+        safeRef.runTransactionBlock({ (currentQty) -> FIRTransactionResult in
+            let qty = currentQty.value as? String
+            if qty != nil {
+                if (Int(qty!)! - qtyBuy) >= 0 {
+                    // enough to sale
+                    currentQty.value = String(Int(qty!)! - qtyBuy)
+                    return FIRTransactionResult.success(withValue: currentQty)
+                }else {
+                    //not enough
+                    //print("low in stock, try buy less")
+                    return FIRTransactionResult.abort()
+                    
+                }
+                
+            }else {
+                //qty = nil , means there is error with database, alret try again
+                return FIRTransactionResult.abort()
+            }
+            }) { (error, committed, snap) in
+                if error != nil {
+                    //handle error, try again
+                    let title = "ERROR"
+                    let message = "Unknown error, please try again."
+                    self.alertVC(tit: title, msg: message)
+
+                } else {
+                    //ok to sale, put orders into two paths
+                    if committed {
+                        // deduct qty, then write order to two paths => Public and Users
+                        self.writePublicAndUserOrders()
+                    } else {
+                        //present modify qty to buy and try again
+                        let title = "FAILD MAKING ORDER"
+                        let message = "We are low in stock, please reduce the number."
+                        self.alertVC(tit: title, msg: message)
+                        //print("Unable to make order")
+                    }
+                }
+        }
+        
+    }
+    
+    func alertVC(tit: String, msg: String) {
+        let alertVC = UIAlertController(title: tit, message: msg, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .destructive) {(action) -> Void in
+            self.indicator.stopAnimating()
+            self.dismiss(animated: true, completion: nil)
+        }
+        alertVC.addAction(okAction)
+        self.present(alertVC, animated: true, completion: nil)
+        
+    }
+    
+    func writePublicAndUserOrders() {
+        let riqi = Tools.getDateTime().riqi
+        let time = Tools.getDateTime().time
+        let uid = FIRAuth.auth()?.currentUser?.uid
         var order: Dictionary = [String: Any]()
         order["isDone"] = false
         order["date"] = riqi
         order["time"] = time
-        order["userKey"] = FIRAuth.auth()?.currentUser?.uid
+        order["userKey"] = uid
         order["prdKey"] = self.prdKey
-        order["prdName"] = self.prdTitle.text
-        order["prdCS"] = self.cs.text
-        order["Qty"] = self.stepper.qtyLable.text
-        order["total"] = self.totalPriceLable.text
-        order["userAddress"] = self.addressCard.addressLable.text + " ," + self.addressCard.recipientLable.text
-        let orderRef = FIRDatabase.database().reference().child("ORDERS").child(riqi).child(self.userAddress.building)
-        let orderKey = orderRef.childByAutoId().key
-        orderRef.child(orderKey).setValue(order) { (error, ref) in
+        order["selectedCSID"] = self.selectedCS
+        order["Qty"] = Int(self.stepper.qtyLable.text!)
+        
+        let oRef = orderRef.child(riqi).child(self.userAddress.building)
+        let orderKey = oRef.childByAutoId().key
+        
+        let childUpdates = ["/PUBLICORDERS/\(riqi)/\(orderKey)": order,
+                            "/users/\(uid!)/Orders/\(orderKey)": order]
+        
+        self.ref.updateChildValues(childUpdates) { (error, refrence) in
             if error != nil {
-                //handle error
-                return
+                //error
+                let title = "ERROR"
+                let message = "Unknown error, please try again."
+                self.alertVC(tit: title, msg: message)
             } else {
-                // update qty then dismiss
-                let duct = Int(self.stepper.qtyLable.text!)
-                let newQty = String(self.max - duct!)
-            self.prdRef.child(self.prdKey).child("prodcutCSQty").child(String(self.selectedCS)).setValue(newQty)
-                var my: Dictionary = [String: Any]()
-                my["prdKey"] = self.prdKey
-                my["qty"] = self.stepper.qtyLable.text
-                my["cs"] = self.cs.text
-                my["isDone"] = false
-                my["date"] = riqi
-                my["csID"] = self.selectedCS
-                my["time"] = time
-                FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Orders").child(orderKey).setValue(my, withCompletionBlock: { (error, ref) in
-                    if error != nil {
-                        //display try again message
-                    } else {
-                        //display successful message then dismiss vc
-                        let buySuccess = UIAlertController(title: "SUCCESS", message: "Your order will be shipped out within 24 hours.", preferredStyle: .alert)
-                        let okAction = UIAlertAction(title: "OK", style: .destructive) {(action) -> Void in
-                            self.indicator.stopAnimating()
-                            self.dismiss(animated: true, completion: nil)
-                        }
-                        buySuccess.addAction(okAction)
-                        self.present(buySuccess, animated: true, completion: nil)
-                    }
-                })
-                //self.dismiss(animated: true, completion: nil)
+                // success
+                let title = "SUCCESS"
+                let message = "Your order will arrive with 24 hours, check it at ORDERS."
+                self.alertVC(tit: title, msg: message)
             }
         }
-        
     }
+    
     
     func setUpAddressCard() {
         halfBG.addSubview(addressCard)

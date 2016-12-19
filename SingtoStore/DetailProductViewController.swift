@@ -78,19 +78,6 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         likeorUnlikeBtn()
     }
     
-//    func outStockChecker() {
-//        let paths = self.csView.collectionView.indexPathsForSelectedItems
-//        let path = paths?[0].item
-//        if Int(csView.qtys[path!])! <= 0 {
-//            addToCartBtn.isEnabled = false
-//            buyBtn.isEnabled = false
-//        }else {
-//            addToCartBtn.isEnabled = true
-//            buyBtn.isEnabled = true
-//            
-//        }
-//    }
-    
     func addInfoView() {
         scrollView.addSubview(infoView)
         infoView.translatesAutoresizingMaskIntoConstraints = false
@@ -138,27 +125,21 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         middleView.topAnchor.constraint(equalTo: self.carouselView.bottomAnchor).isActive = true
         middleView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         middleView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        middleView.heightAnchor.constraint(equalToConstant: (view.frame.width / 3.5) + 6 + (view.frame.width * 0.2)).isActive = true
+        middleView.heightAnchor.constraint(equalToConstant: (sw / 3.5) + 6 + (sw * 0.2)).isActive = true
     }
     
     func findPrdbyKey() {
         if (prdKey != nil){
             handle = ref.child(prdKey!).observe(.value, with: { (snap) in
                 if let dict = snap.value as? [String: AnyObject] {
-                    //print(dict)
                     let prd = DetailProduct()
-                    var jg = "0"
                     prd.prdID = dict["productID"] as? String
                     prd.prdName = dict["productName"] as? String
                     prd.prdSub = dict["productSubDetail"] as? String
                     prd.prdPackageInfo = dict["productPackageInfo"] as? String
                     prd.prdSuppler = dict["productSuppler"] as? String
-                    jg = (dict["productPrice"] as? String)!
-                    if(Double(jg) != nil) {
-                        prd.prdPrice = Double(jg)
-                    } else {
-                        prd.prdPrice = 9999.0
-                    }
+                    let jg = dict["productPrice"] as? String ?? "9999.0"
+                    prd.prdPrice = Double(jg)
                     prd.isRefundable = dict["productRefundable"] as? Bool
                     prd.prdImages = dict["productImages"] as? [String]
                     prd.prdCS = dict["prodcutCS"] as? [String]
@@ -169,9 +150,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
                     self.product = prd
                     DispatchQueue.main.async(execute: { 
                         self.populateView(prd)
-                        //self.outStockChecker()
                     })
-                    //self.populateView(prd)
                 }else {
                     return
                 }
@@ -193,15 +172,16 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         self.csView.qtys = prd.prdCSQty!
         self.csView.collectionView.reloadData()
         
-        let ss = IndexPath(item: 0, section: 0)
-        csView.collectionView.selectItem(at: ss, animated: false, scrollPosition: [])
-        
-        //only select cs wiht Qty > 0, in stock
         for i in (prd.prdCSQty?.indices)! {
             if Int((prd.prdCSQty?[i])!)! > 0 {
                 let ss = IndexPath(item: i, section: 0)
                 csView.collectionView.selectItem(at: ss, animated: false, scrollPosition: [])
-                break
+                addToCartBtn.isEnabled = true
+                buyBtn.isEnabled = true
+                break // stop for-in from here
+            } else {
+                addToCartBtn.isEnabled = false
+                buyBtn.isEnabled = false
             }
         }
         
@@ -265,6 +245,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         addToCartBtn.widthAnchor.constraint(equalToConstant: 110).isActive = true
         addToCartBtn.leftAnchor.constraint(equalTo: likeButton.rightAnchor, constant: 0).isActive = true
         addToCartBtn.addTarget(self, action: #selector(addToCart), for: .touchUpInside)
+        addToCartBtn.isEnabled = false
         
         
         bottomBar.addSubview(buyBtn)
@@ -274,6 +255,7 @@ class DetailProductViewController: DancingShoesViewController, UIScrollViewDeleg
         buyBtn.rightAnchor.constraint(equalTo: bottomBar.rightAnchor, constant: -2).isActive = true
         buyBtn.leftAnchor.constraint(equalTo: addToCartBtn.rightAnchor, constant: 2).isActive = true
         buyBtn.addTarget(self, action: #selector(buyNow), for: .touchUpInside)
+        buyBtn.isEnabled = false
     }
     
     //this is the add to cart animation view
