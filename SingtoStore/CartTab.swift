@@ -10,10 +10,12 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import FirebaseDatabase
+import SVProgressHUD
 
 class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSource {
     
     let cellID = "cellID"
+    var lowQty = false
     
     let addressRef = FIRDatabase.database().reference().child("FreeDeliveryAddresses")
     var userAddress: FreeAddress!
@@ -55,31 +57,10 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         return btn
     }()
     
-    let proBar: UIProgressView = {
-        
-        let bar = UIProgressView()
-        bar.progressTintColor = Tools.dancingShoesColor
-        bar.progressViewStyle = .bar
-        bar.progress = 0
-        return bar
-    }()
-    
-    func addProBar() {
-        view.addSubview(proBar)
-        proBar.isHidden = true
-        proBar.translatesAutoresizingMaskIntoConstraints = false
-        proBar.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        proBar.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        proBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        proBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(CartCell.self, forCellReuseIdentifier: cellID)
         addBottomBar()
         addTableView()
-        addProBar()
         loadUserAddress()
     }
     
@@ -96,6 +77,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .singleLine
+        tableView.register(CartCell.self, forCellReuseIdentifier: cellID)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -134,11 +116,16 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func checkOutWithProgressBar() {
+        //check qty=> update qty => write orders => remove from Cart
         let addressMsg = "Deliever to: " + userAddress.recipient + " ," + userAddress.phone + " ," + userAddress.room + " ," + userAddress.building
         let willCheckOutAlert = UIAlertController(title: "Are you sure to make this order?", message: addressMsg, preferredStyle: .alert)
         let cancelAct = UIAlertAction(title: "CANCEL", style: .default) {(action) -> Void in
         }
         let okAction = UIAlertAction(title: "ORDER", style: .default) {(action) -> Void in
+            
+            SVProgressHUD.setDefaultStyle(SVProgressHUDStyle.dark)
+            SVProgressHUD.show(withStatus: "Submiting orders...")
+            
             for cart in self.carts {
                 if cart.pChecked! {
                     self.ckCarts.append(cart)
@@ -146,116 +133,97 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
             }
             
             let num = self.ckCarts.count
-            for i in 0..<num {
-                self.checkOutOnebyOne(c: self.ckCarts[i], ii: Float(i + 1), num: Float(num + 1))
+            self.lowQty = false
+            for i in 0 ..< num {
+                self.checkOutOnebyOne(c: self.ckCarts[i], i: i + 1, num: num)
             }
-            
         }
         willCheckOutAlert.addAction(cancelAct)
         willCheckOutAlert.addAction(okAction)
         self.present(willCheckOutAlert, animated: true, completion: nil)
     }
     
-    func checkOutOnebyOne(c: CartProduct, ii: Float, num: Float) {
-        var order: Dictionary = [String: Any]()
-        order["isDone"] = false
-        let riq = Tools.getDateTime().riqi
-        order["date"] = riq
-        order["time"] = Tools.getDateTime().time
-        order["userKey"] = FIRAuth.auth()?.currentUser?.uid
-        order["prdKey"] = c.pKey
-        order["prdName"] = c.pName
-        order["prdCS"] = c.pCS
-        order["Qty"] = c.pQty
-        order["total"] = Double(c.pQty) * c.pPrice!
-        order["userAddress"] = self.userAddress.recipient + " ," + self.userAddress.phone + " ," + self.userAddress.room + " ," + self.userAddress.building
-        let orderRef = FIRDatabase.database().reference().child("ORDERS").child(riq).child(self.userAddress.building)
-        let orderKey = orderRef.childByAutoId().key
-        orderRef.child(orderKey).setValue(order, withCompletionBlock: { (err, ref) in
-            if err != nil {
-                //handle error
-            } else {
-                // update Qty， get remain first, and remove from cart
-                self.prdRef.child(c.pKey!).child("prodcutCSQty").child(String((c.pID)!)).observeSingleEvent(of: .value, with: { (snap) in
-                    let bb = snap.value as! String
-                    let duct = c.pQty
-                    let max = Int(bb)!
-                    let newQty = String(max - duct)
-                    self.prdRef.child(c.pKey!).child("prodcutCSQty").child(String((c.pID)!)).setValue(newQty)
-                    self.ref.child((FIRAuth.auth()?.currentUser?.uid)!).child("SHOPPINGCART").child(c.cartKey!).removeValue()
-                    //write to user ORDERS
-                    var my: Dictionary = [String: Any]()
-                    my["prdKey"] = c.pKey
-                    my["qty"] = c.pQty
-                    my["cs"] = c.pCS
-                    my["isDone"] = false
-                    my["date"] = riq
-                    my["csID"] = c.pID
-                    my["time"] = Tools.getDateTime().time
-                    FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Orders").child(orderKey).setValue(my, withCompletionBlock: { (err, ref) in
-                        if err != nil {
-                            //error msg
-                        } else {
-                            self.proBar.progress = ii / num
-                        }
-                    })
-                    //self.dismiss(animated: true, completion: nil)
-                })
-            }
-        })
+    func alertVC(tit: String, msg: String) {
+        let alertVC = UIAlertController(title: tit, message: msg, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .destructive) {(action) -> Void in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alertVC.addAction(okAction)
+        self.present(alertVC, animated: true, completion: nil)
+        
     }
     
-    func checkOutAll() {
-        for cart in carts {
-            if cart.pChecked! {
-                var order: Dictionary = [String: Any]()
-                order["isDone"] = false
-                let riq = Tools.getDateTime().riqi
-                order["date"] = riq
-                order["time"] = Tools.getDateTime().time
-                order["userKey"] = FIRAuth.auth()?.currentUser?.uid
-                order["prdKey"] = cart.pKey
-                order["prdName"] = cart.pName
-                order["prdCS"] = cart.pCS
-                order["Qty"] = cart.pQty
-                order["total"] = Double(cart.pQty) * cart.pPrice!
-                order["userAddress"] = self.userAddress.recipient + " ," + self.userAddress.phone + " ," + self.userAddress.room + " ," + self.userAddress.building
-                let orderRef = FIRDatabase.database().reference().child("ORDERS").child(riq).child(self.userAddress.building)
-                let orderKey = orderRef.childByAutoId().key
-                orderRef.child(orderKey).setValue(order, withCompletionBlock: { (err, ref) in
-                    if err != nil {
-                        //handle error
-                    } else {
-                        // update Qty， get remain first, and remove from cart
-                        self.prdRef.child(cart.pKey!).child("prodcutCSQty").child(String((cart.pID)!)).observeSingleEvent(of: .value, with: { (snap) in
-                            let bb = snap.value as! String
-                            let duct = cart.pQty
-                            let max = Int(bb)!
-                            let newQty = String(max - duct)
-                            self.prdRef.child(cart.pKey!).child("prodcutCSQty").child(String((cart.pID)!)).setValue(newQty)
-                            self.ref.child((FIRAuth.auth()?.currentUser?.uid)!).child("SHOPPINGCART").child(cart.cartKey!).removeValue()
-                            //write to user ORDERS
-                            var my: Dictionary = [String: Any]()
-                            my["prdKey"] = cart.pKey
-                            my["qty"] = cart.pQty
-                            my["cs"] = cart.pCS
-                            my["isDone"] = false
-                            my["date"] = riq
-                            my["csID"] = cart.pID
-                            my["time"] = Tools.getDateTime().time
-                            FIRDatabase.database().reference().child("users").child((FIRAuth.auth()?.currentUser?.uid)!).child("Orders").child(orderKey).setValue(my)
-                            //self.dismiss(animated: true, completion: nil)
-                        })
-                    }
-                })
-                
+    func checkOutOnebyOne(c: CartProduct, i: Int, num: Int) {
+        let safeRef = self.prdRef.child(c.pKey!).child("prodcutCSQty").child(String(c.pID!))
+        safeRef.runTransactionBlock({ (currentQty) -> FIRTransactionResult in
+            let qty = currentQty.value as? String
+            if qty != nil {
+                if (Int(qty!)! - c.pQty) >= 0 {
+                    currentQty.value = String(Int(qty!)! - c.pQty)
+                    return FIRTransactionResult.success(withValue: currentQty)
+                } else {
+                    return FIRTransactionResult.abort()
+                }
+            }else {
+                return FIRTransactionResult.success(withValue: currentQty)
             }
+            }) { (error, committed, snap) in
+                if error != nil {
+                    // unknown error
+                }else {
+                    if committed {
+                        //enough for sell, remove from cart, write to order paths
+                        let riqi = Tools.getDateTime().riqi
+                        let time = Tools.getDateTime().time
+                        let uid = FIRAuth.auth()?.currentUser?.uid
+                        var order: Dictionary = [String: Any]()
+                        order["status"] = 0
+                        order["date"] = riqi
+                        order["time"] = time
+                        order["userKey"] = uid
+                        order["prdKey"] = c.pKey!
+                        order["selectedCSID"] = c.pID!
+                        order["Qty"] = c.pQty
+                        let orderKey = self.ref.childByAutoId().key
+                        
+                        //remove from cart
+                        self.ref.child(uid!).child("SHOPPINGCART").child(c.cartKey!).removeValue()
+                        
+                        let childUpdates = ["/PUBLICORDERS/\(riqi)/\(orderKey)": order,
+                                            "/users/\(uid!)/Orders/\(orderKey)": order]
+                        
+                        FIRDatabase.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (err, ref) in
+                            //SVProgressHUD.dismiss()
+                            if err != nil {
+                                return
+                            } else {
+                                if i == num {
+                                    self.ckCarts.removeAll()
+                                    SVProgressHUD.dismiss()
+                                    if self.lowQty {
+                                        let title = "WARN"
+                                        let message = "Some products are low in stock,Please reduce the quantity."
+                                        self.alertVC(tit: title, msg: message)
+                                    } else {
+                                        let title = "SUCCESS"
+                                        let message = "You can check the status of your orders in ORDERS"
+                                        self.alertVC(tit: title, msg: message)
+                                    }
+                                }
+                            }
+                        })
+                    }else {
+                        self.lowQty = true
+                        if i == num {
+                            SVProgressHUD.dismiss()
+                            self.ckCarts.removeAll()
+                            let title = "WARN"
+                            let message = "Some products are low in stock,Please reduce the quantity."
+                            self.alertVC(tit: title, msg: message)
+                        }
+                    }
+                }
         }
-        //let buySuccess = UIAlertController(title: "SUCCESS", message: "Your order will be shipped out within 24 hours.", preferredStyle: .alert)
-        //let okAction = UIAlertAction(title: "OK", style: .destructive) {(action) -> Void in
-        //}
-        //buySuccess.addAction(okAction)
-        //self.present(buySuccess, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -376,6 +344,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                 })
             }else {
                 self.carts.removeAll()
+                self.ckCarts.removeAll()
                 self.tableView.reloadData()
                 self.totalPriceLable.text = "TOTOAL: THB 0.0"
                 self.bottomBar.isHidden = true

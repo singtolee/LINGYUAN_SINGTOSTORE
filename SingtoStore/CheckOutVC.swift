@@ -161,12 +161,12 @@ class CheckOutVC: UIViewController {
                     //not enough
                     //print("low in stock, try buy less")
                     return FIRTransactionResult.abort()
-                    
                 }
                 
             }else {
                 //qty = nil , means there is error with database, alret try again
-                return FIRTransactionResult.abort()
+                // here should not return .abort()
+                return FIRTransactionResult.success(withValue: currentQty)
             }
             }) { (error, committed, snap) in
                 if error != nil {
@@ -208,7 +208,7 @@ class CheckOutVC: UIViewController {
         let time = Tools.getDateTime().time
         let uid = FIRAuth.auth()?.currentUser?.uid
         var order: Dictionary = [String: Any]()
-        order["isDone"] = false
+        order["status"] = 0   //cancelled = -1, default confirmed = 0, deliverying = 1, done = 2
         order["date"] = riqi
         order["time"] = time
         order["userKey"] = uid
