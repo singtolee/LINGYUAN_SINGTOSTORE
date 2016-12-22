@@ -184,6 +184,11 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                         order["prdKey"] = c.pKey!
                         order["selectedCSID"] = c.pID!
                         order["Qty"] = c.pQty
+                        //extra
+                        order["url"] = c.pMainImage
+                        order["title"] = c.pName
+                        order["price"] = c.pPrice
+                        order["cs"] = c.pCS
                         let orderKey = self.ref.childByAutoId().key
                         
                         //remove from cart
@@ -304,6 +309,12 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func updateBottomBar() {
+        let badge = carts.count
+        if badge > 0 {
+            tabBarController?.tabBar.items?[2].badgeValue = String(badge)
+        } else {
+            tabBarController?.tabBar.items?[2].badgeValue = nil
+        }
         var item = 0
         var total: Double = 0
         for cart in carts {

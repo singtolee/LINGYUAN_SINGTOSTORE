@@ -215,6 +215,11 @@ class CheckOutVC: UIViewController {
         order["prdKey"] = self.prdKey
         order["selectedCSID"] = self.selectedCS
         order["Qty"] = Int(self.stepper.qtyLable.text!)
+        //extra
+        order["url"] = prd.prdImages![selectedCS]
+        order["title"] = prd.prdName
+        order["price"] = prd.prdPrice
+        order["cs"] = prd.prdCS![selectedCS]
         
         let oRef = orderRef.child(riqi).child(self.userAddress.building)
         let orderKey = oRef.childByAutoId().key

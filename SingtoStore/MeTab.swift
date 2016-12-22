@@ -210,8 +210,8 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
         //check if user signed in
         if FIRAuth.auth()?.currentUser != nil {
             if (indexPath as NSIndexPath).row == 0 {
-                //let orderView = OrderView()
-                //navigationController?.pushViewController(orderView, animated: true)
+                let orderView = OrderTableView()
+                navigationController?.pushViewController(orderView, animated: true)
             }
             else if (indexPath as NSIndexPath).row == 1 {
                 let addressView = MyAddress()
