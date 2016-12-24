@@ -48,7 +48,7 @@ class OrderCell: UITableViewCell {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.image = UIImage(named: "placeholder48")
-        iv.backgroundColor = UIColor.gray
+        iv.backgroundColor = Tools.headerColor
         return iv
     }()
     
@@ -74,7 +74,7 @@ class OrderCell: UITableViewCell {
     let timeStampe: UILabel = {
         let lb = UILabel()
         lb.text = "12:34, 10th Oct 2015"
-        lb.textColor = UIColor.black
+        lb.textColor = Tools.headerColor
         lb.font = UIFont(name: "AppleSDGothicNeo-Light", size: 12)
         return lb
     }()
@@ -268,12 +268,12 @@ class OrderCell: UITableViewCell {
     }
     
     func cancelStatus() {
-        ccDot.backgroundColor = UIColor.gray
-        shipDot.backgroundColor = UIColor.gray
-        doneDot.backgroundColor = UIColor.gray
+        ccDot.backgroundColor = Tools.headerColor
+        shipDot.backgroundColor = Tools.headerColor
+        doneDot.backgroundColor = Tools.headerColor
         
-        lineA.backgroundColor = UIColor.gray
-        lineB.backgroundColor = UIColor.gray
+        lineA.backgroundColor = Tools.headerColor
+        lineB.backgroundColor = Tools.headerColor
         
         ccLab.text = "CANCELLED"
         ccLab.textColor = Tools.dancingShoesColor
@@ -286,11 +286,11 @@ class OrderCell: UITableViewCell {
     
     func confirmedStatus() {
         ccDot.backgroundColor = Tools.dancingShoesColor
-        shipDot.backgroundColor = UIColor.gray
-        doneDot.backgroundColor = UIColor.gray
+        shipDot.backgroundColor = Tools.headerColor
+        doneDot.backgroundColor = Tools.headerColor
         
-        lineA.backgroundColor = UIColor.gray
-        lineB.backgroundColor = UIColor.gray
+        lineA.backgroundColor = Tools.headerColor
+        lineB.backgroundColor = Tools.headerColor
         
         ccLab.text = "CONFIRMED"
         ccLab.textColor = Tools.dancingShoesColor
@@ -304,10 +304,10 @@ class OrderCell: UITableViewCell {
     func shippingStatus() {
         ccDot.backgroundColor = Tools.dancingShoesColor
         shipDot.backgroundColor = Tools.dancingShoesColor
-        doneDot.backgroundColor = UIColor.gray
+        doneDot.backgroundColor = Tools.headerColor
         
         lineA.backgroundColor = Tools.dancingShoesColor
-        lineB.backgroundColor = UIColor.gray
+        lineB.backgroundColor = Tools.headerColor
         
         ccLab.text = "CONFIRMED"
         ccLab.textColor = Tools.dancingShoesColor
