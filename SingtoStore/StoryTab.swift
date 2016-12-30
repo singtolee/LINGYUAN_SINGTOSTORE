@@ -11,10 +11,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import SDWebImage
 
-class StoryTab: DancingShoesViewController {
-    //parameters
-    let ANG: CGFloat = 0.4
-    let ROTMAX = 0.8
+class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
     
     let likeBtn: UIButton = {
         let btn = UIButton()
@@ -34,98 +31,84 @@ class StoryTab: DancingShoesViewController {
         return btn
     }()
     
-    let swipPrd = SwipPrdView()
-    
     let prdRef = FIRDatabase.database().reference().child("AllProduct")
     var allPrds = [DetailProduct]()
+    var allCards = [SwipPrdView]()
+    var currentIndex: Int = 0
+    var bufCards = [SwipPrdView]()
+    var MAX = 2
+    //var cp: CGPoint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
+        //cp = CGPoint(x: view.frame.width/2, y: view.frame.width/2 + 15)
         loadAllPrds()
-        addView(v: swipPrd)
-        //set pangestrue
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(viewDidDrag))
-        panGesture.maximumNumberOfTouches = 1
-        swipPrd.addGestureRecognizer(panGesture)
     }
     
-    func viewDidDrag(_ sender: UIPanGestureRecognizer) {
-        let x = view.center.x
-        let y = view.frame.width/2 + 20
-        let oP = CGPoint(x: x, y: y)
+    func creatCardAtIndex(index: Int) ->SwipPrdView {
+        let v = SwipPrdView()
+        v.prd = allPrds[index]
+        v.delegate = self
+        addView(v: v)
+        return v
+    }
+    
+    func populateCards() {
+        if self.allPrds.count > 0 {
+            // default 2 cards, in case there are one 1 or no product
+            let num = allPrds.count > MAX ? MAX : allPrds.count
+            for i in 0 ..< allPrds.count {
+                let newCard = creatCardAtIndex(index: i)
+                allCards.append(newCard)
+                if i < num {
+                    bufCards.append(newCard)
+                }
+            }
+            for i in 0 ..< bufCards.count {
+                passBtn.isHidden = false
+                likeBtn.isHidden = false
+                if i > 0 {
+                    view.insertSubview(bufCards[i], belowSubview: bufCards[i-1])
+                }else {
+                    view.addSubview(bufCards[i])
+                }
+                currentIndex = currentIndex + 1
+            }
+        }
+    }
         
-        let offX = sender.translation(in: view).x
-        let offY = sender.translation(in: view).y
-        switch sender.state {
-        case .changed:
-            let alfL = min(offX/150, 1)
-            let alfP = min(-offX/150, 1)
-            let rotA = min(ANG * offX/360, 1)
-            swipPrd.passImg.alpha = alfP
-            swipPrd.likeImg.alpha = alfL
-            swipPrd.transform = CGAffineTransform(rotationAngle: rotA)
-            swipPrd.center = CGPoint(x: oP.x + offX, y: oP.y + offY)
-        case .ended:
-            if offX > 150 {
-                likeAction(y: offY)
-            } else if offX < -150 {
-                passAction(y: offY)
-            } else {
-                restoreAction(p: oP)
-            }
-        default:
-            break
-        }
-    }
-    
-    func passAction(y: CGFloat){
-        let disapperP = CGPoint(x: -500, y: y*2)
-        UIView.animate(withDuration: 0.3, animations: { 
-            self.swipPrd.center = disapperP
-            }) { (true) in
-                self.swipPrd.removeFromSuperview()
-        }
-    }
-    func likeAction(y: CGFloat){
-        let disapperP = CGPoint(x: 500, y: y*2)
-        UIView.animate(withDuration: 0.3, animations: {
-            self.swipPrd.center = disapperP
-        }) { (true) in
-            self.swipPrd.removeFromSuperview()
-        }
-    }
-    func restoreAction(p: CGPoint){
-        UIView.animate(withDuration: 0.3) { 
-            self.swipPrd.center = p
-            self.swipPrd.transform = CGAffineTransform(rotationAngle: 0)
-            self.swipPrd.likeImg.alpha = 0
-            self.swipPrd.passImg.alpha = 0
-        }
-    }
-    
     func loadAllPrds() {
-        self.prdRef.observe(.childAdded, with: { (snap) in
-            if let dict = snap.value as? [String: Any] {
-                let prd = DetailProduct()
-                prd.prdName = dict["productName"] as? String
-                prd.prdSub = dict["productSubDetail"] as? String
-                let jg = dict["productPrice"] as? String ?? "9999.0"
-                prd.prdPrice = Double(jg)
-                prd.prdImages = dict["productImages"] as? [String]
-                prd.prdInfoImages = dict["productInfoImages"] as? [String]
-                self.allPrds.append(prd)
-                self.swipPrd.prd = self.allPrds[0]
+        self.prdRef.observe(.value, with: { (snap) in
+            self.allPrds.removeAll()
+            self.allCards.removeAll()
+            self.bufCards.removeAll()
+            self.currentIndex = 0
+            for child in snap.children {
+                if let csnap = child as? FIRDataSnapshot {
+                    let dict = csnap.value as? [String: Any]
+                    let prd = DetailProduct()
+                    prd.prdName = dict?["productName"] as? String
+                    prd.prdSub = dict?["productSubDetail"] as? String
+                    let jg = dict?["productPrice"] as? String ?? "9999.0"
+                    prd.prdPrice = Double(jg)
+                    prd.prdImages = dict?["productImages"] as? [String]
+                    prd.prdInfoImages = dict?["productInfoImages"] as? [String]
+                    self.allPrds.append(prd)
+                }
             }
+            DispatchQueue.main.async(execute: { 
+                self.populateCards()
+            })
         })
     }
-    
     func addView(v: UIView) {
         view.addSubview(v)
         v.backgroundColor = Tools.headerColor
         v.clipsToBounds = true
         v.layer.cornerRadius = 4
         v.translatesAutoresizingMaskIntoConstraints = false
+        //v.center = self.cp
         v.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         v.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
         v.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
@@ -139,6 +122,7 @@ class StoryTab: DancingShoesViewController {
         passBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -view.frame.width/5).isActive = true
         passBtn.heightAnchor.constraint(equalToConstant: 60).isActive = true
         passBtn.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        passBtn.isHidden = true
         passBtn.addTarget(self, action: #selector(handlePass), for: .touchUpInside)
         
         view.addSubview(likeBtn)
@@ -147,24 +131,77 @@ class StoryTab: DancingShoesViewController {
         likeBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: view.frame.width/5).isActive = true
         likeBtn.heightAnchor.constraint(equalToConstant: 60).isActive = true
         likeBtn.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        likeBtn.isHidden = true
         likeBtn.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
     }
+    
+    func like_addNewSubView() {
+        bufCards.remove(at: 0)
+        if currentIndex < allCards.count {
+            bufCards.append(allCards[currentIndex])
+            currentIndex = currentIndex + 1
+            view.insertSubview(bufCards[MAX - 1], belowSubview: bufCards[MAX - 2])
+            bufCards[MAX - 1].topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+            bufCards[MAX - 1].leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        } else {
+            bufCards.append(allCards[0])
+            currentIndex = 1
+            view.insertSubview(bufCards[MAX - 1], belowSubview: bufCards[MAX - 2])
+            bufCards[MAX - 1].topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+            bufCards[MAX - 1].leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+            
+
+        }
+        
+    }
+    func pass_addNewSubView() {
+        bufCards.remove(at: 0)
+        if currentIndex < allCards.count {
+            bufCards.append(allCards[currentIndex])
+            currentIndex = currentIndex + 1
+            view.insertSubview(bufCards[MAX - 1], belowSubview: bufCards[MAX - 2])
+            bufCards[MAX - 1].topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+            bufCards[MAX - 1].leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        } else {
+            bufCards.append(allCards[0])
+            bufCards[0].center = bufCards[1].center
+            currentIndex = 1
+            view.insertSubview(bufCards[MAX - 1], belowSubview: bufCards[MAX - 2])
+            bufCards[MAX - 1].topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+            bufCards[MAX - 1].leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        }
+    }
+    
     func handleLike(){
-        UIView.animate(withDuration: 0.4, animations: {
-            self.swipPrd.center.x = self.view.center.x + 500
-            self.swipPrd.center.y = self.view.center.y - 100
-            self.swipPrd.transform = CGAffineTransform(rotationAngle: 0.2)
-        }) { (true) in
-            self.swipPrd.removeFromSuperview()
+        if bufCards.count > 0 {
+            likeBtn.isEnabled = true
+            UIView.animate(withDuration: 0.4, animations: {
+                self.bufCards[0].center.x = self.view.center.x + 500
+                self.bufCards[0].center.y = self.view.center.y - 100
+                self.bufCards[0].transform = CGAffineTransform(rotationAngle: 0.2)
+            }) { (true) in
+                self.bufCards[0].transform = CGAffineTransform(rotationAngle: 0)
+                self.bufCards[0].removeFromSuperview()
+                self.like_addNewSubView()
+            }
+        } else {
+            likeBtn.isEnabled = false
         }
     }
     func handlePass(){
-        UIView.animate(withDuration: 0.4, animations: {
-            self.swipPrd.center.x = self.view.center.x - 700
-            self.swipPrd.center.y = self.view.center.y - 100
-            self.swipPrd.transform = CGAffineTransform(rotationAngle: -0.2)
-        }) { (true) in
-            self.swipPrd.removeFromSuperview()
+        if bufCards.count > 0 {
+            passBtn.isEnabled = true
+            UIView.animate(withDuration: 0.4, animations: {
+                self.bufCards[0].center.x = self.view.center.x - 700
+                self.bufCards[0].center.y = self.view.center.y - 100
+                self.bufCards[0].transform = CGAffineTransform(rotationAngle: -0.2)
+            }) { (true) in
+                self.bufCards[0].transform = CGAffineTransform(rotationAngle: 0)
+                self.bufCards[0].removeFromSuperview()
+                self.pass_addNewSubView()
+            }
+        }else {
+            passBtn.isEnabled = false
         }
     }
 }

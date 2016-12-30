@@ -6,11 +6,24 @@
 //  Copyright © 2559 Singto. All rights reserved.
 //
 
+protocol SwipPrdViewDelegate {
+    func like_addNewSubView()
+    func pass_addNewSubView()
+}
+
 import Foundation
 import UIKit
 import SDWebImage
 
 class SwipPrdView: UIView {
+    
+    var delegate: SwipPrdViewDelegate!
+    let ANG: CGFloat = 0.4
+    let ROTMAX = 0.8
+    var oP = CGPoint(x: 0, y: 0)
+    var oX = CGFloat(0)
+    var oY = CGFloat(0)
+    
     var prd: DetailProduct? {
         didSet {
             title.text = prd?.prdName
@@ -70,8 +83,71 @@ class SwipPrdView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addMainImg()
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        self.addGestureRecognizer(pan)
     }
     
+    func handlePan(_ sender: UIPanGestureRecognizer) {
+        let offX = sender.translation(in: self).x
+        let offY = sender.translation(in: self).y
+        
+        switch sender.state {
+        case .began:
+            oX = self.center.x
+            oY = self.center.y
+            oP = self.center
+        case .changed:
+            //print("O center: ", oP, "OFF-X", offX, "OFF-Y", offY)
+            let alfL = min(offX/150, 1)
+            let alfP = min(-offX/150, 1)
+            let rotA = min(ANG * offX/360, 1)
+            self.passImg.alpha = alfP
+            self.likeImg.alpha = alfL
+            self.transform = CGAffineTransform(rotationAngle: rotA)
+            self.center = CGPoint(x: oX + offX, y: oY + offY)
+        case .ended:
+            if offX > 150 {
+                likeAction(y: offY, p: oP)
+            }else if offX < -150 {
+                passAction(y: offY)
+            } else {
+                restoreAction(p: oP)
+            }
+        default:
+            break
+        }
+    }
+    
+    func passAction(y: CGFloat){
+        let disapperP = CGPoint(x: -500, y: y*2)
+        UIView.animate(withDuration: 0.3, animations: {
+            self.center = disapperP
+        }) { (true) in
+            self.transform = CGAffineTransform(rotationAngle: 0)
+            self.passImg.alpha = 0
+            self.removeFromSuperview()
+            self.delegate.pass_addNewSubView()
+        }
+    }
+    func likeAction(y: CGFloat, p: CGPoint){
+        let disapperP = CGPoint(x: 500, y: y*2)
+        UIView.animate(withDuration: 0.3, animations: {
+            self.center = disapperP
+        }) { (true) in
+            self.transform = CGAffineTransform(rotationAngle: 0)
+            self.likeImg.alpha = 0
+            self.removeFromSuperview()
+            self.delegate.like_addNewSubView()
+        }
+    }
+    func restoreAction(p: CGPoint){
+        UIView.animate(withDuration: 0.3) {
+            self.center = p
+            self.transform = CGAffineTransform(rotationAngle: 0)
+            self.likeImg.alpha = 0
+            self.passImg.alpha = 0
+        }
+    }
     
     func addMainImg() {
         addSubview(mainImgView)
