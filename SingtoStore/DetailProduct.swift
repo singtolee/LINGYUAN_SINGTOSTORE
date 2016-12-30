@@ -8,6 +8,7 @@
 
 import Foundation
 class DetailProduct: NSObject {
+    var prdKey: String?
     var prdID: String?
     var prdName: String?
     var prdSub: String?

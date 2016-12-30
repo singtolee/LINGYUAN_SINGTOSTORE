@@ -13,6 +13,8 @@ import SDWebImage
 
 class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
     
+    let indicator = MyIndicator()
+    
     let likeBtn: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage(named: "like"), for: .normal)
@@ -40,6 +42,7 @@ class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "SINGTOSTORE"
         setUpViews()
         loadAllPrds()
     }
@@ -50,6 +53,12 @@ class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
         v.delegate = self
         addView(v: v)
         return v
+    }
+    func showDetailPrdView(view: SwipPrdView) {
+        let vc = DetailProductViewController()
+        vc.prdKey = view.prd?.prdKey
+        self.navigationController?.pushViewController(vc, animated: true)
+        //self.present(vc, animated: true, completion: nil)
     }
     
     func populateCards() {
@@ -77,6 +86,7 @@ class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
     }
         
     func loadAllPrds() {
+        indicator.startAnimating()
         self.prdRef.observeSingleEvent(of: .value, with: { (snap) in
             self.allPrds.removeAll()
             self.allCards.removeAll()
@@ -86,17 +96,18 @@ class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
                 if let csnap = child as? FIRDataSnapshot {
                     let dict = csnap.value as? [String: Any]
                     let prd = DetailProduct()
+                    prd.prdKey = csnap.key
                     prd.prdName = dict?["productName"] as? String
                     prd.prdSub = dict?["productSubDetail"] as? String
                     let jg = dict?["productPrice"] as? String ?? "9999.0"
                     prd.prdPrice = Double(jg)
                     prd.prdImages = dict?["productImages"] as? [String]
-                    prd.prdInfoImages = dict?["productInfoImages"] as? [String]
                     self.allPrds.append(prd)
                 }
             }
             DispatchQueue.main.async(execute: { 
                 self.populateCards()
+                self.indicator.stopAnimating()
             })
         })
     }
@@ -113,6 +124,12 @@ class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
     }
     
     func setUpViews() {
+        view.addSubview(indicator)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        indicator.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        indicator.widthAnchor.constraint(equalToConstant: 42).isActive = true
         view.addSubview(passBtn)
         passBtn.translatesAutoresizingMaskIntoConstraints = false
         passBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90).isActive = true
@@ -146,8 +163,6 @@ class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
             view.insertSubview(bufCards[MAX - 1], belowSubview: bufCards[MAX - 2])
             bufCards[MAX - 1].topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
             bufCards[MAX - 1].leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-            
-
         }
         
     }

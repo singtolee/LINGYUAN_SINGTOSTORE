@@ -9,6 +9,7 @@
 protocol SwipPrdViewDelegate {
     func like_addNewSubView()
     func pass_addNewSubView()
+    func showDetailPrdView(view: SwipPrdView)
 }
 
 import Foundation
@@ -93,6 +94,11 @@ class SwipPrdView: UIView {
         addMainImg()
         let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         self.addGestureRecognizer(pan)
+        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToDetailPrdView)))
+    }
+    
+    func goToDetailPrdView() {
+        delegate.showDetailPrdView(view: self)
     }
     
     func handlePan(_ sender: UIPanGestureRecognizer) {
