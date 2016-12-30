@@ -37,12 +37,10 @@ class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
     var currentIndex: Int = 0
     var bufCards = [SwipPrdView]()
     var MAX = 2
-    //var cp: CGPoint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
-        //cp = CGPoint(x: view.frame.width/2, y: view.frame.width/2 + 15)
         loadAllPrds()
     }
     
@@ -79,7 +77,7 @@ class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
     }
         
     func loadAllPrds() {
-        self.prdRef.observe(.value, with: { (snap) in
+        self.prdRef.observeSingleEvent(of: .value, with: { (snap) in
             self.allPrds.removeAll()
             self.allCards.removeAll()
             self.bufCards.removeAll()
@@ -108,7 +106,6 @@ class StoryTab: DancingShoesViewController, SwipPrdViewDelegate {
         v.clipsToBounds = true
         v.layer.cornerRadius = 4
         v.translatesAutoresizingMaskIntoConstraints = false
-        //v.center = self.cp
         v.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         v.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
         v.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true

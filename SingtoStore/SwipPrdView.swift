@@ -27,11 +27,11 @@ class SwipPrdView: UIView {
     var prd: DetailProduct? {
         didSet {
             title.text = prd?.prdName
-            title.font = UIFont(name: "AppleSDGothicNeo-Medium", size: self.frame.width/20)
+            title.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 16)
             subTitle.text = prd?.prdSub
-            subTitle.font = UIFont(name: "AppleSDGothicNeo-Medium", size: self.frame.width/30)
+            subTitle.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
             price.text = "THB \((prd?.prdPrice)!)"
-            price.font = UIFont(name: "AppleSDGothicNeo-Medium", size: self.frame.width/30)
+            price.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 12)
             let url = URL(string: (prd?.prdImages?[0])!)
             mainImgView.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder48"))
         }
@@ -60,14 +60,22 @@ class SwipPrdView: UIView {
     let title: UILabel = {
         let lb = UILabel()
         lb.textAlignment = .center
-        //lb.text = "PRD TITLE"
+        lb.text = "PRD TITLE"
         return lb
     }()
+    
+//    let title: UITextView = {
+//        let tv = UITextView()
+//        tv.textAlignment = .center
+//        tv.text = "I am Title"
+//        tv.textColor = UIColor.yellow
+//        return tv
+//    }()
     
     let subTitle: UILabel = {
         let lb = UILabel()
         lb.textAlignment = .center
-        //lb.text = "PRD SUB-TITLE"
+        lb.text = "PRD SUB-TITLE"
         lb.textColor = UIColor.gray
         return lb
     }()
@@ -75,7 +83,7 @@ class SwipPrdView: UIView {
     let price: UILabel = {
         let lb = UILabel()
         lb.textAlignment = .center
-        //lb.text = "PRD SUB-TITLE"
+        lb.text = "PRD SUB-TITLE"
         lb.textColor = Tools.dancingShoesColor
         return lb
     }()
@@ -162,7 +170,6 @@ class SwipPrdView: UIView {
         title.centerYAnchor.constraint(equalTo: mainImgView.bottomAnchor, constant: 14).isActive = true
         title.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         title.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        //title.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         addSubview(subTitle)
         subTitle.translatesAutoresizingMaskIntoConstraints = false
