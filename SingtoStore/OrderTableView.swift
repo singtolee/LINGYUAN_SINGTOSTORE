@@ -45,7 +45,8 @@ class OrderTableView: UITableViewController {
                         oo.oDate = dict?["date"] as? String
                         oo.oTime = dict?["time"] as? String
                         oo.oStatus = dict?["status"] as? Int
-                        self.orders.append(oo)
+                        self.orders.insert(oo, at: 0)
+                        //self.orders.append(oo)
                         self.tableView.reloadData()
                     }
                 }
