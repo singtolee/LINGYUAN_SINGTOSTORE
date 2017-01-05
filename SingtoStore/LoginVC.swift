@@ -80,7 +80,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func setUpWelcomeLable() {
-        self.welcomeLable.text = "welcome to aomai"
+        self.welcomeLable.text = "SingtoStore"
         self.welcomeLable.font = UIFont(name: "ArialRoundedMTBold", size: 26)
         //set to be at center
         self.welcomeLable.textAlignment = .center

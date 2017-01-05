@@ -157,7 +157,7 @@ class MeTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataSou
             if let user = user {
                 // User is signed in.
                 self.isLogInBtnStatus()
-                FIRDatabase.database().reference().child("users").child(user.uid).observe(.value, with: { (snap) in
+                FIRDatabase.database().reference().child("users").child(user.uid).child("USERINFO").observe(.value, with: { (snap) in
                     if let dict = snap.value as? [String: AnyObject] {
                         if let uname = dict["name"] {
                             self.userName.text = (uname as! String)

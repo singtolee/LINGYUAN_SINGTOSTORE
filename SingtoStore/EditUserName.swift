@@ -77,7 +77,7 @@ class EidtUserName: UIViewController, UITextFieldDelegate {
         let newName = Tools.trim(nameTF.text!)
         if (newName.characters.count > 0) {
             self.indicator.startAnimating()
-            FIRDatabase.database().reference().child("users").child(uid!).updateChildValues(["name": newName]) { (error, ref) in
+            FIRDatabase.database().reference().child("users").child(uid!).child("USERINFO").updateChildValues(["name": newName]) { (error, ref) in
                 if error != nil {
                     self.indicator.stopAnimating()
                     return

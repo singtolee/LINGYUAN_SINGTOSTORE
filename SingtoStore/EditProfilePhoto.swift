@@ -28,7 +28,7 @@ class EditProfilePhoto: UIViewController, UIImagePickerControllerDelegate, UINav
         self.title = "PROFILE PHOTO"
         self.setUpAvatarView()
         let uid = FIRAuth.auth()?.currentUser?.uid
-        FIRDatabase.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snap) in
+        FIRDatabase.database().reference().child("users").child(uid!).child("USERINFO").observeSingleEvent(of: .value, with: { (snap) in
             if let dict = snap.value as? [String: AnyObject] {
                 if let uUrl = dict["userAvatarUrl"] {
                     //use extension
@@ -107,7 +107,7 @@ class EditProfilePhoto: UIViewController, UIImagePickerControllerDelegate, UINav
                 if let avatarUrl = metadata?.downloadURL()?.absoluteString{
                     let values = ["userAvatarUrl": avatarUrl]
                     //Tools.registerUserIntoDatabaseWithUID(uid!, values: values)
-                    let ref = FIRDatabase.database().reference().child("users").child(uid!)
+                    let ref = FIRDatabase.database().reference().child("users").child(uid!).child("USERINFO")
                     ref.updateChildValues(values, withCompletionBlock: {(err, ref) in
                         if err != nil {
                             let failedWriteDatabaseAlert = UIAlertController(title: "Error", message: err?.localizedDescription, preferredStyle: UIAlertControllerStyle.alert)

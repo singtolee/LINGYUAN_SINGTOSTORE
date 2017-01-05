@@ -42,7 +42,7 @@ class Tools {
     }
     
     static func registerUserIntoDatabaseWithUID(_ uid: String, values: [String: String]) {
-        let ref = FIRDatabase.database().reference().child("users").child(uid)
+        let ref = FIRDatabase.database().reference().child("users").child(uid).child("USERINFO")
         ref.updateChildValues(values, withCompletionBlock: {(err, ref) in
             if err != nil {
                 print(err)

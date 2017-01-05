@@ -71,7 +71,7 @@ class EditProfileTableViewController: UITableViewController {
     
     func fetchUserInfo() {
         let uid = FIRAuth.auth()?.currentUser?.uid
-        FIRDatabase.database().reference().child("users").child(uid!).observe(.value, with: { (snap) in
+        FIRDatabase.database().reference().child("users").child(uid!).child("USERINFO").observe(.value, with: { (snap) in
             if let dict = snap.value as? [String: AnyObject] {
                 if let uname = dict["name"] {
                     self.userInfo[1] = uname as! String
