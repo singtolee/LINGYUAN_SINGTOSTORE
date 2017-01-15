@@ -324,7 +324,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                         self.updateBottomBar()
                     }else{
                         //TODO
-                        //print("Could not find this ",snap.key)
+                        print("Could not find this ",snap.key)
                     }
                 })
 
@@ -334,7 +334,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     
     func findIndexByKey(key: String) -> Int {
         var index = -1
-        for i in 0...self.carts.count-1 {
+        for i in 0..<self.carts.count {
             if carts[i].cartKey == key {
                 index = i
                 break
