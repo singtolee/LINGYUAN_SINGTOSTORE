@@ -127,7 +127,7 @@ class MiddleView: UIView {
     
     let nonrefundableLable: UILabel = {
         let lb = UILabel()
-        let iconSize = CGRect(x: 0, y: 0, width: 12, height: 12)
+        let iconSize = CGRect(x: 0, y: 1, width: 8, height: 8)
         let attributedString = NSMutableAttributedString(string: "  ")
         let attachment = NSTextAttachment()
         attachment.image = UIImage(named: "undot")

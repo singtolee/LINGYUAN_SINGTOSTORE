@@ -33,11 +33,11 @@ extension DetailProductViewController {
                 value["ID"] = path!
                 value["Check"] = true
                 value["Qty"] = 1
+                //save cartKey at the same time
+                let ccKey = self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().key
+                value["cartKey"] = ccKey
                 
-                
-                //self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().setValue(value)
-                
-                self.userRef.child(uid).child("SHOPPINGCART").childByAutoId().setValue(value, withCompletionBlock: { (error, refe) in
+                self.userRef.child(uid).child("SHOPPINGCART").child(ccKey).setValue(value, withCompletionBlock: { (error, refe) in
                     if error != nil {
                         // failed add to cart, display try again hint
                         self.cartView.removeFromSuperview()

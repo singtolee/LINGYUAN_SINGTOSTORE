@@ -62,6 +62,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         addBottomBar()
         addTableView()
         loadUserAddress()
+        //listenCart()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +89,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     func addBottomBar() {
         view.addSubview(bottomBar)
         bottomBar.backgroundColor = UIColor.white
+        bottomBar.isHidden = true
         bottomBar.translatesAutoresizingMaskIntoConstraints = false
         bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
         bottomBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -264,50 +266,83 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         }
     }
     
-    func loadUserCart() {
-        if Tools.isUserLogedin() {
-            if let uid = FIRAuth.auth()?.currentUser?.uid {
+    func listenCart(){
+        if Tools.isUserLogedin(){
+            if let uid = FIRAuth.auth()?.currentUser?.uid{
                 let cartRef = ref.child(uid).child("SHOPPINGCART")
-                self.handle = cartRef.observe(.value, with: { (snap) in
-                    self.carts.removeAll()
-                    self.tableView.reloadData()
+                cartRef.observe(.childAdded, with: { (snap) in
+                    //child add
+                    let cc = CartProduct()
+                    if let dict = snap.value as? [String: Any]{
+                        cc.cartKey = snap.key
+                        cc.pKey = dict["prdKey"] as? String
+                        cc.pName = dict["prdTitle"] as? String
+                        cc.pMainImage = dict["prdImg"] as? String
+                        cc.pChecked = dict["Check"] as? Bool
+                        cc.pCS = dict["prdCS"] as? String
+                        cc.pPrice = dict["prdPrice"] as? Double
+                        cc.pID = dict["ID"] as? Int
+                        cc.pQty = (dict["Qty"] as? Int)!
+                        
+                    }
+                    self.carts.insert(cc, at: 0)
+                    //print("After adding ",self.carts.count)
+                    self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .automatic)
                     self.updateBottomBar()
-                    for child in snap.children {
-                        if let csnap = child as? FIRDataSnapshot {
-                            if let dict = csnap.value as? [String: AnyObject] {
-                                let cart = CartProduct()
-                                let title = dict["prdTitle"] as? String
-                                cart.pName = title
-                                let ke = dict["prdKey"] as? String
-                                cart.pKey = ke
-                                let id = dict["ID"] as? Int
-                                cart.pID = id
-                                let che = dict["Check"] as? Bool
-                                cart.pChecked = che
-                                let qty = dict["Qty"] as? Int
-                                cart.pQty = qty!
-                                let cartKey = csnap.key
-                                cart.cartKey = cartKey
-                                let img = dict["prdImg"] as? String
-                                cart.pMainImage = img
-                                let cs = dict["prdCS"] as? String
-                                let price = dict["prdPrice"] as? Double
-                                cart.pPrice = price
-                                cart.pCS = cs
-                                cart.pCSRemain = 6
-                                self.carts.append(cart)
-                                DispatchQueue.main.async(execute: {
-                                    self.tableView.reloadData()
-                                    self.updateBottomBar()
-                                })
-                            }
-                        }
+                    
+                })
+                cartRef.observe(.childChanged, with: { (snap) in
+                    //child changed
+                    let cc = CartProduct()
+                    if let dict = snap.value as? [String: Any]{
+                        cc.cartKey = snap.key
+                        cc.pKey = dict["prdKey"] as? String
+                        cc.pName = dict["prdTitle"] as? String
+                        cc.pMainImage = dict["prdImg"] as? String
+                        cc.pChecked = dict["Check"] as? Bool
+                        cc.pCS = dict["prdCS"] as? String
+                        cc.pPrice = dict["prdPrice"] as? Double
+                        cc.pID = dict["ID"] as? Int
+                        cc.pQty = (dict["Qty"] as? Int)!
+                        
+                    }
+                    let i = self.findIndexByKey(key: snap.key)
+                    self.carts[i] = cc
+                    //print("After Changing ",self.carts.count)
+                    self.tableView.reloadRows(at: [IndexPath(row:i,section:0)], with: .none)
+                    
+                    self.updateBottomBar()
+                })
+                cartRef.observe(.childRemoved, with: { (snap) in
+                    //child removed
+                    let i = self.findIndexByKey(key: snap.key)
+                    //print("Index removed at: ", i)
+                    if i != -1 {
+                        self.carts.remove(at: i)
+                        //print("After remone, Now left ", self.carts.count)
+                        self.tableView.deleteRows(at: [IndexPath(row:i,section:0)], with: .fade)
+                        self.updateBottomBar()
+                    }else{
+                        //TODO
+                        //print("Could not find this ",snap.key)
                     }
                 })
+
             }
         }
     }
     
+    func findIndexByKey(key: String) -> Int {
+        var index = -1
+        for i in 0...self.carts.count-1 {
+            if carts[i].cartKey == key {
+                index = i
+                break
+            }
+        }
+        return index
+    }
+
     func updateBottomBar() {
         let badge = carts.count
         if badge > 0 {
@@ -334,8 +369,11 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     func loadUserAddress() {
         FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
             if  user?.uid != nil {
+                //clear before login
+                self.carts.removeAll();
+                self.ckCarts.removeAll();
+                self.listenCart()
                 //self.bottomBar.isHidden = false
-                self.loadUserCart()
                 self.addressRef.child((user?.uid)!).observe(.value, with: { (snap) in
                     if let dict = snap.value as? [String: String] {
                         let free = FreeAddress()
@@ -357,6 +395,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                 self.carts.removeAll()
                 self.ckCarts.removeAll()
                 self.tableView.reloadData()
+                self.updateBottomBar()
                 self.totalPriceLable.text = "TOTOAL: THB 0.0"
                 self.bottomBar.isHidden = true
                 self.userAddress = nil
