@@ -395,7 +395,10 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                 self.totalPriceLable.text = "TOTOAL: THB 0.0"
                 self.bottomBar.isHidden = true
                 self.userAddress = nil
-                self.ref.child(self.uid!).child("SHOPPINGCART").removeAllObservers()//this is IMPORTANT!!! is not removed, event will be observed many time.
+                if (self.uid != nil){
+                    self.ref.child(self.uid!).child("SHOPPINGCART").removeAllObservers()//this is IMPORTANT!!! is not removed, event will be observed many time.
+                    self.addressRef.child(self.uid!).removeAllObservers()
+                }
             }
         })
     }

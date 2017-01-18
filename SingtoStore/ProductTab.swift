@@ -29,6 +29,7 @@ class ProductTab: DancingShoesViewController {
     }
     
     func loadTabandVCs() {
+        self.viewControllers.removeAll()
         for cate in CategoryList {
             let vc = CategoryProductView(collectionViewLayout: UICollectionViewFlowLayout())
             vc.category = cate
@@ -50,6 +51,7 @@ class ProductTab: DancingShoesViewController {
     func loadCategory() {
         self.indicator.startAnimating()
         FIRDatabase.database().reference().child("ProductCategory").observe(.value, with: { (snap) in
+            self.CategoryList.removeAll()
             for child in snap.children {
                 guard let csnap = child as? FIRDataSnapshot else {return}
                 let category = csnap.value as! String
