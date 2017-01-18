@@ -22,7 +22,8 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     
     let ref = FIRDatabase.database().reference().child("users")
     let prdRef = FIRDatabase.database().reference().child("AllProduct")
-    var handle: UInt!
+    
+    var uid: String?
     
     let bottomBar = UIView()
     let tableView = UITableView()
@@ -62,7 +63,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         addBottomBar()
         addTableView()
         loadUserAddress()
-        //listenCart()
+        print("VIEW DID LOAD")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -169,67 +170,67 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
             }else {
                 return FIRTransactionResult.success(withValue: currentQty)
             }
-            }) { (error, committed, snap) in
-                if error != nil {
-                    // unknown error
-                }else {
-                    if committed {
-                        //enough for sell, remove from cart, write to order paths
-                        let riqi = Tools.getDateTime().riqi
-                        let time = Tools.getDateTime().time
-                        let uid = FIRAuth.auth()?.currentUser?.uid
-                        var order: Dictionary = [String: Any]()
-                        order["status"] = 0
-                        order["date"] = riqi
-                        order["time"] = time
-                        order["userKey"] = uid
-                        order["prdKey"] = c.pKey!
-                        order["selectedCSID"] = c.pID!
-                        order["Qty"] = c.pQty
-                        //extra
-                        order["url"] = c.pMainImage
-                        order["title"] = c.pName
-                        order["price"] = c.pPrice
-                        order["cs"] = c.pCS
-                        let orderKey = self.ref.childByAutoId().key
-                        
-                        //remove from cart
-                        self.ref.child(uid!).child("SHOPPINGCART").child(c.cartKey!).removeValue()
-                        
-                        let childUpdates = ["/PUBLICORDERS/\(riqi)/\(orderKey)": order,
-                                            "/users/\(uid!)/Orders/\(orderKey)": order]
-                        
-                        FIRDatabase.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (err, ref) in
-                            //SVProgressHUD.dismiss()
-                            if err != nil {
-                                return
-                            } else {
-                                if i == num {
-                                    self.ckCarts.removeAll()
-                                    SVProgressHUD.dismiss()
-                                    if self.lowQty {
-                                        let title = "WARN"
-                                        let message = "Some products are low in stock,Please reduce the quantity."
-                                        self.alertVC(tit: title, msg: message)
-                                    } else {
-                                        let title = "SUCCESS"
-                                        let message = "You can check the status of your orders in ORDERS"
-                                        self.alertVC(tit: title, msg: message)
-                                    }
+        }) { (error, committed, snap) in
+            if error != nil {
+                // unknown error
+            }else {
+                if committed {
+                    //enough for sell, remove from cart, write to order paths
+                    let riqi = Tools.getDateTime().riqi
+                    let time = Tools.getDateTime().time
+                    let uid = FIRAuth.auth()?.currentUser?.uid
+                    var order: Dictionary = [String: Any]()
+                    order["status"] = 0
+                    order["date"] = riqi
+                    order["time"] = time
+                    order["userKey"] = uid
+                    order["prdKey"] = c.pKey!
+                    order["selectedCSID"] = c.pID!
+                    order["Qty"] = c.pQty
+                    //extra
+                    order["url"] = c.pMainImage
+                    order["title"] = c.pName
+                    order["price"] = c.pPrice
+                    order["cs"] = c.pCS
+                    let orderKey = self.ref.childByAutoId().key
+                    
+                    //remove from cart
+                    self.ref.child(uid!).child("SHOPPINGCART").child(c.cartKey!).removeValue()
+                    
+                    let childUpdates = ["/PUBLICORDERS/\(riqi)/\(orderKey)": order,
+                                        "/users/\(uid!)/Orders/\(orderKey)": order]
+                    
+                    FIRDatabase.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (err, ref) in
+                        //SVProgressHUD.dismiss()
+                        if err != nil {
+                            return
+                        } else {
+                            if i == num {
+                                self.ckCarts.removeAll()
+                                SVProgressHUD.dismiss()
+                                if self.lowQty {
+                                    let title = "WARN"
+                                    let message = "Some products are low in stock,Please reduce the quantity."
+                                    self.alertVC(tit: title, msg: message)
+                                } else {
+                                    let title = "SUCCESS"
+                                    let message = "You can check the status of your orders in ORDERS"
+                                    self.alertVC(tit: title, msg: message)
                                 }
                             }
-                        })
-                    }else {
-                        self.lowQty = true
-                        if i == num {
-                            SVProgressHUD.dismiss()
-                            self.ckCarts.removeAll()
-                            let title = "WARN"
-                            let message = "Some products are low in stock,Please reduce the quantity."
-                            self.alertVC(tit: title, msg: message)
                         }
+                    })
+                }else {
+                    self.lowQty = true
+                    if i == num {
+                        SVProgressHUD.dismiss()
+                        self.ckCarts.removeAll()
+                        let title = "WARN"
+                        let message = "Some products are low in stock,Please reduce the quantity."
+                        self.alertVC(tit: title, msg: message)
                     }
                 }
+            }
         }
     }
     
@@ -266,70 +267,65 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         }
     }
     
-    func listenCart(){
-        if Tools.isUserLogedin(){
-            if let uid = FIRAuth.auth()?.currentUser?.uid{
-                let cartRef = ref.child(uid).child("SHOPPINGCART")
-                cartRef.observe(.childAdded, with: { (snap) in
-                    //child add
-                    let cc = CartProduct()
-                    if let dict = snap.value as? [String: Any]{
-                        cc.cartKey = snap.key
-                        cc.pKey = dict["prdKey"] as? String
-                        cc.pName = dict["prdTitle"] as? String
-                        cc.pMainImage = dict["prdImg"] as? String
-                        cc.pChecked = dict["Check"] as? Bool
-                        cc.pCS = dict["prdCS"] as? String
-                        cc.pPrice = dict["prdPrice"] as? Double
-                        cc.pID = dict["ID"] as? Int
-                        cc.pQty = (dict["Qty"] as? Int)!
-                        
-                    }
-                    self.carts.insert(cc, at: 0)
-                    //print("After adding ",self.carts.count)
-                    self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .automatic)
-                    self.updateBottomBar()
-                    
-                })
-                cartRef.observe(.childChanged, with: { (snap) in
-                    //child changed
-                    let cc = CartProduct()
-                    if let dict = snap.value as? [String: Any]{
-                        cc.cartKey = snap.key
-                        cc.pKey = dict["prdKey"] as? String
-                        cc.pName = dict["prdTitle"] as? String
-                        cc.pMainImage = dict["prdImg"] as? String
-                        cc.pChecked = dict["Check"] as? Bool
-                        cc.pCS = dict["prdCS"] as? String
-                        cc.pPrice = dict["prdPrice"] as? Double
-                        cc.pID = dict["ID"] as? Int
-                        cc.pQty = (dict["Qty"] as? Int)!
-                        
-                    }
-                    let i = self.findIndexByKey(key: snap.key)
-                    self.carts[i] = cc
-                    //print("After Changing ",self.carts.count)
-                    self.tableView.reloadRows(at: [IndexPath(row:i,section:0)], with: .none)
-                    
-                    self.updateBottomBar()
-                })
-                cartRef.observe(.childRemoved, with: { (snap) in
-                    //child removed
-                    let i = self.findIndexByKey(key: snap.key)
-                    //print("Index removed at: ", i)
-                    if i != -1 {
-                        self.carts.remove(at: i)
-                        //print("After remone, Now left ", self.carts.count)
-                        self.tableView.deleteRows(at: [IndexPath(row:i,section:0)], with: .fade)
-                        self.updateBottomBar()
-                    }else{
-                        //TODO
-                        print("Could not find this ",snap.key)
-                    }
-                })
-
+    func listenCart(uid: String){
+        let cartRef = ref.child(uid).child("SHOPPINGCART")
+        cartRef.observe(.childAdded, with: { (snap) in
+            //child add
+            let cc = CartProduct()
+            if let dict = snap.value as? [String: Any]{
+                cc.cartKey = snap.key
+                cc.pKey = dict["prdKey"] as? String
+                cc.pName = dict["prdTitle"] as? String
+                cc.pMainImage = dict["prdImg"] as? String
+                cc.pChecked = dict["Check"] as? Bool
+                cc.pCS = dict["prdCS"] as? String
+                cc.pPrice = dict["prdPrice"] as? Double
+                cc.pID = dict["ID"] as? Int
+                cc.pQty = (dict["Qty"] as? Int)!
+                
             }
-        }
+            self.carts.insert(cc, at: 0)
+            //print("After adding ",self.carts.count)
+            self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .automatic)
+            self.updateBottomBar()
+            
+        })
+        cartRef.observe(.childChanged, with: { (snap) in
+            //child changed
+            let cc = CartProduct()
+            if let dict = snap.value as? [String: Any]{
+                cc.cartKey = snap.key
+                cc.pKey = dict["prdKey"] as? String
+                cc.pName = dict["prdTitle"] as? String
+                cc.pMainImage = dict["prdImg"] as? String
+                cc.pChecked = dict["Check"] as? Bool
+                cc.pCS = dict["prdCS"] as? String
+                cc.pPrice = dict["prdPrice"] as? Double
+                cc.pID = dict["ID"] as? Int
+                cc.pQty = (dict["Qty"] as? Int)!
+                
+            }
+            let i = self.findIndexByKey(key: snap.key)
+            self.carts[i] = cc
+            //print("After Changing ",self.carts.count)
+            self.tableView.reloadRows(at: [IndexPath(row:i,section:0)], with: .none)
+            
+            self.updateBottomBar()
+        })
+        cartRef.observe(.childRemoved, with: { (snap) in
+            //child removed
+            let i = self.findIndexByKey(key: snap.key)
+            //print("Index removed at: ", i)
+            if i != -1 {
+                self.carts.remove(at: i)
+                //print("After remone, Now left ", self.carts.count)
+                self.tableView.deleteRows(at: [IndexPath(row:i,section:0)], with: .fade)
+                self.updateBottomBar()
+            }else{
+                //TODO
+                print("Could not find this ",snap.key)
+            }
+        })
     }
     
     func findIndexByKey(key: String) -> Int {
@@ -342,7 +338,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         }
         return index
     }
-
+    
     func updateBottomBar() {
         let badge = carts.count
         if badge > 0 {
@@ -369,10 +365,11 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
     func loadUserAddress() {
         FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
             if  user?.uid != nil {
+                self.uid = user?.uid
                 //clear before login
                 self.carts.removeAll();
                 self.ckCarts.removeAll();
-                self.listenCart()
+                self.listenCart(uid: self.uid!)
                 //self.bottomBar.isHidden = false
                 self.addressRef.child((user?.uid)!).observe(.value, with: { (snap) in
                     if let dict = snap.value as? [String: String] {
@@ -399,6 +396,7 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
                 self.totalPriceLable.text = "TOTOAL: THB 0.0"
                 self.bottomBar.isHidden = true
                 self.userAddress = nil
+                self.ref.child(self.uid!).child("SHOPPINGCART").removeAllObservers()//this is IMPORTANT!!! is not removed, event will be observed many time.
             }
         })
     }
