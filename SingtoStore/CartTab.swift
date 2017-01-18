@@ -63,7 +63,6 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         addBottomBar()
         addTableView()
         loadUserAddress()
-        print("VIEW DID LOAD")
     }
     
     override func viewWillAppear(_ animated: Bool) {
