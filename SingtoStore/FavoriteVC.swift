@@ -15,10 +15,7 @@ import SDWebImage
 class FavoriteVC: UITableViewController {
     
     let cellId = "cellID"
-    var handle: UInt!
-    
     let ref = FIRDatabase.database().reference().child("users")
-    
     var favoritePrds = [FavoriteProduct]()
 
     override func viewDidLoad() {
@@ -27,33 +24,45 @@ class FavoriteVC: UITableViewController {
         tableView.register(FavroitPrdCell.self, forCellReuseIdentifier: cellId)
         tableView.separatorStyle = .singleLine
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-        newloadFavoritePrds()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.favoritePrds.removeAll();
+        self.tableView.reloadData();
+        loadFavoritePrds()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        //ref.child((FIRAuth.auth()?.currentUser?.uid)!).child("FavoritePRD").removeObserver(withHandle: handle)
+        if let uid = FIRAuth.auth()?.currentUser?.uid{
+            ref.child(uid).child("FavoritePRD").removeAllObservers()
+        }
     }
     
     func loadFavoritePrds() {
         if let uid = FIRAuth.auth()?.currentUser?.uid {
-            handle = ref.child(uid).child("FavoritePRD").observe(.childAdded, with: { (snapshot) in
+            //observe add
+            ref.child(uid).child("FavoritePRD").observe(.childAdded, with: { (snapshot) in
                 let ke = snapshot.key
                 self.loadFavoritePrdByKey(prdk: ke)
                 })
-        } else {
-            print("Not Login")
-            return
+            // observe delete
+            ref.child(uid).child("FavoritePRD").observe(.childRemoved, with: { (snap) in
+                let ke = snap.key
+                for i in 0..<self.favoritePrds.count{
+                    if(self.favoritePrds[i].pKey == ke){
+                        self.favoritePrds.remove(at: i)
+                        self.tableView.deleteRows(at: [IndexPath(row:i,section:0)], with: .fade)
+                    }
+                }
+            })
         }
     }
     
     func newloadFavoritePrds() {
         if let uid = FIRAuth.auth()?.currentUser?.uid {
-            handle = ref.child(uid).child("FavoritePRD").observe(.value, with: { (snapshot) in
+            ref.child(uid).child("FavoritePRD").observe(.value, with: { (snapshot) in
                 self.favoritePrds.removeAll()
                 self.tableView.reloadData()
                 for child in snapshot.children {
@@ -76,9 +85,11 @@ class FavoriteVC: UITableViewController {
                 fav.pName = dict["productName"] as? String
                 fav.pPrice = dict["productPrice"] as? String
                 fav.pMainImages = dict["productImages"] as? [String]
-                self.favoritePrds.append(fav)
+                //self.favoritePrds.append(fav)
+                self.favoritePrds.insert(fav, at: 0)
                 DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
+                    //self.tableView.reloadData()
+                    self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .automatic)
                 })
             }
         })

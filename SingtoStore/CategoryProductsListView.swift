@@ -73,6 +73,7 @@ class CategoryProductView: UICollectionViewController, UICollectionViewDelegateF
                 self.shortPrd.insert(prd, at: 0)
                 DispatchQueue.main.async(execute: {
                     self.collectionView?.reloadData()
+                    //self.collectionView?.insertItems(at: [IndexPath(row: 0, section: 0)])
                     self.loadingIndicator.stopAnimating()
                 })
             } else {
