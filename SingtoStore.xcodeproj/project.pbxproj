@@ -519,7 +519,7 @@
 				0928894C1DF26A5800A1DCEB /* Resources */,
 				572F55093A82F2A116DEA192 /* [CP] Embed Pods Frameworks */,
 				AA616555D673ED9A0CD02B02 /* [CP] Copy Pods Resources */,
-				092526E31E470FFC00703496 /* ShellScript */,
+				09C7B5941E47835000333B72 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -585,7 +585,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		092526E31E470FFC00703496 /* ShellScript */ = {
+		09C7B5941E47835000333B72 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -596,7 +596,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "";
+			shellScript = "GOOGLE_APP_ID=1:1050288730700:ios:4dc1c7323df1e836\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"/Users/Singto/LingYuanApp/IOS/SingtoStore/aomai-f24a2-firebase-adminsdk-mekhv-48bd4f1cd5.json\"";
 		};
 		572F55093A82F2A116DEA192 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
