@@ -27,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.tintColor = Tools.dancingShoesColor
         //FIRApp.configure()
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        
         return true
     }
     
