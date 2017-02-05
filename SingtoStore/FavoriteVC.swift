@@ -28,13 +28,13 @@ class FavoriteVC: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.favoritePrds.removeAll();
-        self.tableView.reloadData();
         loadFavoritePrds()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        self.favoritePrds.removeAll();
+        self.tableView.reloadData();
         if let uid = FIRAuth.auth()?.currentUser?.uid{
             ref.child(uid).child("FavoritePRD").removeAllObservers()
         }
@@ -54,6 +54,7 @@ class FavoriteVC: UITableViewController {
                     if(self.favoritePrds[i].pKey == ke){
                         self.favoritePrds.remove(at: i)
                         self.tableView.deleteRows(at: [IndexPath(row:i,section:0)], with: .fade)
+                        break
                     }
                 }
             })
@@ -72,7 +73,7 @@ class FavoriteVC: UITableViewController {
                 }
             })
         } else {
-            print("Not Login")
+            //print("Not Login")
             return
         }
     }
@@ -87,10 +88,11 @@ class FavoriteVC: UITableViewController {
                 fav.pMainImages = dict["productImages"] as? [String]
                 //self.favoritePrds.append(fav)
                 self.favoritePrds.insert(fav, at: 0)
-                DispatchQueue.main.async(execute: {
-                    //self.tableView.reloadData()
-                    self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .automatic)
-                })
+                self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .automatic)
+//                DispatchQueue.main.async(execute: {
+//                    //self.tableView.reloadData()
+//                    self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .automatic)
+//                })
             }
         })
     }

@@ -124,11 +124,11 @@ extension DetailProductViewController {
                     if snapshot.hasChild(self.prdKey!) {
                         // liked already, remove this prdKey frome list
                         ref.child(self.prdKey!).removeValue()
-                        //self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
+                        self.likeButton.setImage(UIImage(named: "unlike"), for: .normal)
                     } else {
                         //not liked yet, like this prd
                         ref.child(self.prdKey!).setValue(true)
-                        //self.likeButton.setImage(UIImage(named: "like"), for: .normal)
+                        self.likeButton.setImage(UIImage(named: "like"), for: .normal)
                     }
                     
                 })

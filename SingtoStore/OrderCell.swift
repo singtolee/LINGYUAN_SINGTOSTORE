@@ -74,7 +74,7 @@ class OrderCell: UITableViewCell {
     let timeStampe: UILabel = {
         let lb = UILabel()
         lb.text = "12:34, 10th Oct 2015"
-        lb.textColor = Tools.headerColor
+        lb.textColor = UIColor.lightGray
         lb.font = UIFont(name: "AppleSDGothicNeo-Light", size: 12)
         return lb
     }()
