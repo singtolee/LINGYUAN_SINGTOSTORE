@@ -26,6 +26,8 @@ class OrderTableView: UITableViewController {
         self.title = "ORDERS"
         tableView.register(OrderCell.self, forCellReuseIdentifier: cellID)
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y:0, width: tableView.frame.width, height: 1))
+        let empty = CartEmptyState(frame: tableView.frame)
+        tableView.backgroundView = empty
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,6 +50,7 @@ class OrderTableView: UITableViewController {
                         self.orders.insert(oo, at: 0)
                         //self.orders.append(oo)
                         self.tableView.reloadData()
+                        self.tableView.backgroundView = nil
                     }
                 }
             })

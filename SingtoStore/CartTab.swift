@@ -85,6 +85,8 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: bottomBar.topAnchor, constant: 0).isActive = true
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y:0, width: tableView.frame.width, height: 1))
+        let empty = CartEmptyState(frame: tableView.frame)
+        tableView.backgroundView = empty
     }
     func addBottomBar() {
         view.addSubview(bottomBar)
@@ -342,8 +344,15 @@ class CartTab: DancingShoesViewController, UITableViewDelegate, UITableViewDataS
         let badge = carts.count
         if badge > 0 {
             tabBarController?.tabBar.items?[2].badgeValue = String(badge)
+            tableView.backgroundView = nil
         } else {
             tabBarController?.tabBar.items?[2].badgeValue = nil
+            //tableview is empty, add an empty view
+            //let emptyStateLabel = UILabel(frame: tableView.frame)
+            //emptyStateLabel.text = "Your cart is EMPTY"
+            //tableView.backgroundView = emptyStateLabel
+            let emptyView = CartEmptyState(frame: tableView.frame)
+            tableView.backgroundView = emptyView
         }
         var item = 0
         var total: Double = 0

@@ -57,6 +57,7 @@
 		096A65041DFBB18800EC5752 /* FavoritePrd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096A65031DFBB18800EC5752 /* FavoritePrd.swift */; };
 		096A65081DFBB79D00EC5752 /* FavoritePrdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096A65071DFBB79D00EC5752 /* FavoritePrdCell.swift */; };
 		096A650A1DFBBBD100EC5752 /* FavoriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096A65091DFBBBD100EC5752 /* FavoriteVC.swift */; };
+		096B5F9B1E4F657E00C66C77 /* CartEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096B5F9A1E4F657E00C66C77 /* CartEmptyState.swift */; };
 		096BF5731E00FF840061F59A /* CheckOutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BF5721E00FF840061F59A /* CheckOutVC.swift */; };
 		096BF5751E010C5F0061F59A /* AddressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BF5741E010C5F0061F59A /* AddressCard.swift */; };
 		096BF5771E0124C20061F59A /* StepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096BF5761E0124C20061F59A /* StepperView.swift */; };
@@ -117,6 +118,7 @@
 		096A65031DFBB18800EC5752 /* FavoritePrd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritePrd.swift; sourceTree = "<group>"; };
 		096A65071DFBB79D00EC5752 /* FavoritePrdCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritePrdCell.swift; sourceTree = "<group>"; };
 		096A65091DFBBBD100EC5752 /* FavoriteVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteVC.swift; sourceTree = "<group>"; };
+		096B5F9A1E4F657E00C66C77 /* CartEmptyState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartEmptyState.swift; sourceTree = "<group>"; };
 		096BF5721E00FF840061F59A /* CheckOutVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckOutVC.swift; sourceTree = "<group>"; };
 		096BF5741E010C5F0061F59A /* AddressCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressCard.swift; sourceTree = "<group>"; };
 		096BF5761E0124C20061F59A /* StepperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepperView.swift; sourceTree = "<group>"; };
@@ -425,6 +427,7 @@
 			isa = PBXGroup;
 			children = (
 				0966D26D1DFD6DA4008588D3 /* CartCell.swift */,
+				096B5F9A1E4F657E00C66C77 /* CartEmptyState.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -657,6 +660,7 @@
 				095897A21E0BBD7E00FC1675 /* OrderTableView.swift in Sources */,
 				092889661DF26B9F00A1DCEB /* Tabbar.swift in Sources */,
 				09059A451DF3DF3400DA572A /* EditUserName.swift in Sources */,
+				096B5F9B1E4F657E00C66C77 /* CartEmptyState.swift in Sources */,
 				096A650A1DFBBBD100EC5752 /* FavoriteVC.swift in Sources */,
 				093A251F1DF6508500C28592 /* ScrollViewControllers.swift in Sources */,
 				09059A431DF3DE0800DA572A /* EditUserProfileVC.swift in Sources */,

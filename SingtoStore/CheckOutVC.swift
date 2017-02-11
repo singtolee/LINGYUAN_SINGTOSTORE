@@ -295,6 +295,7 @@ class CheckOutVC: UIViewController {
         stepper.plusBtn.addTarget(self, action: #selector(add), for: .touchUpInside)
         
         halfBG.addSubview(maxQty)
+        maxQty.isHidden = true
         maxQty.translatesAutoresizingMaskIntoConstraints = false
         maxQty.centerYAnchor.constraint(equalTo: stepper.centerYAnchor).isActive = true
         maxQty.leftAnchor.constraint(equalTo: stepper.rightAnchor, constant: 5).isActive = true
@@ -351,7 +352,13 @@ class CheckOutVC: UIViewController {
         self.qtyHandle = prdRef.child(self.prdKey).child("prodcutCSQty").child(String(selectedCS)).observe(.value, with: { (snap) in
             let remain = snap.value as! String
             self.max = Int(remain)!
-            self.maxQty.text = "(\(self.max) LEFT)"
+            if(self.max < 10){
+                self.maxQty.isHidden = false
+                self.maxQty.text = "(\(self.max) LEFT)"
+            }else{
+                self.maxQty.isHidden = true
+            }
+            //self.maxQty.text = "(\(self.max) LEFT)"
         })
     }
 

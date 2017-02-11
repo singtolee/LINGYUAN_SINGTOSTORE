@@ -24,6 +24,8 @@ class FavoriteVC: UITableViewController {
         tableView.register(FavroitPrdCell.self, forCellReuseIdentifier: cellId)
         tableView.separatorStyle = .singleLine
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+        let empty = CartEmptyState(frame: tableView.frame)
+        tableView.backgroundView = empty
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +56,10 @@ class FavoriteVC: UITableViewController {
                     if(self.favoritePrds[i].pKey == ke){
                         self.favoritePrds.remove(at: i)
                         self.tableView.deleteRows(at: [IndexPath(row:i,section:0)], with: .fade)
+                        if(self.favoritePrds.count == 0){
+                            let empty = CartEmptyState(frame: self.tableView.frame)
+                            self.tableView.backgroundView = empty
+                        }
                         break
                     }
                 }
@@ -88,6 +94,7 @@ class FavoriteVC: UITableViewController {
                 fav.pMainImages = dict["productImages"] as? [String]
                 //self.favoritePrds.append(fav)
                 self.favoritePrds.insert(fav, at: 0)
+                self.tableView.backgroundView = nil
                 self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .automatic)
 //                DispatchQueue.main.async(execute: {
 //                    //self.tableView.reloadData()
